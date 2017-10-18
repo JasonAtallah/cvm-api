@@ -24,9 +24,9 @@ app.use(cors({
   maxAge: 3600,
   origin: function(origin, callback) {
     if (config.cors.whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   }
 }));
