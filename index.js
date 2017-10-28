@@ -30,10 +30,8 @@ app.use(cors({
     }
   }
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-var jwtCheck = jwt({
+app.use(jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
@@ -43,10 +41,10 @@ var jwtCheck = jwt({
   audience: config.auth0.audience,
   issuer: config.auth0.issuer,
   algorithms: [config.auth0.algorithm]
-});
+}));
 
-app.use(jwtCheck);
-app.options('*', cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 routes(app);
 
