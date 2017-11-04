@@ -1,5 +1,5 @@
 const request = require('request-promise');
-const config = require('./config');
+const config = require('../config');
 
 module.exports = {
   getMgr: (req, res, next) =>
