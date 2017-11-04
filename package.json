@@ -1,5 +1,5 @@
 {
-  "name": "cannasbis-vendor-mgmt-api",
+  "name": "cannabis-vendor-mgmt-api",
   "version": "1.0.0",
   "description": "Cannabis vendor management api",
   "author": "Ariel Jakobovits <arieljake@gmail.com>",
@@ -16,7 +16,9 @@
     "express-jwt-authz": "^1.0.0",
     "jwks-rsa": "^1.2.0",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.33"
+    "mongodb": "^2.2.33",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",

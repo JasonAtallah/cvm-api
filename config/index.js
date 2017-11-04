@@ -13,7 +13,12 @@ const config = module.exports = {
         algorithm: process.env.AUTH0_ALGORITHM,
         audience: process.env.AUTH0_AUDIENCE,
         issuer: process.env.AUTH0_ISSUER,
-        jwksUri: process.env.AUTH0_JWKS_URI
+        jwksUri: process.env.AUTH0_JWKS_URI,
+        client: {
+          audience: process.env.AUTH0_CLIENT_AUDIENCE,
+          id: process.env.AUTH0_CLIENT_ID,
+          secret: process.env.AUTH0_CLIENT_SECRET
+        }
       },
       host: process.env.APP_HOST,
       mongo: {
