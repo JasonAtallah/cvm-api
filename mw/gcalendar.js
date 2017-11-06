@@ -84,6 +84,8 @@ module.exports = bindAll({
       next();
     } else if (req.body.name) {
       this.createCalendar(req, res, next);
+    } else {
+      next(new Error('no calendar provided'));
     }
   }
 });
