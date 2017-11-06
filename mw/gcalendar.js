@@ -1,9 +1,7 @@
 const request = require('request-promise');
-const bindAll = require('lodash.bindall');
 const GCalendarSpecs = require('../lib/gcalendar/specs');
 
-module.exports = bindAll({
-
+var gcalendar = module.exports = new class GCalendarService {
   /**
   {
    "kind": "calendar#calendar",
@@ -13,7 +11,7 @@ module.exports = bindAll({
    "timeZone": "America/Los_Angeles"
   }
   **/
-  createCalendar: function (req, res, next) {
+  createCalendar (req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -30,16 +28,16 @@ module.exports = bindAll({
     };
 
     request(options)
-      .then((body) => {
-        req.calendar = JSON.parse(body);
+      .then((calendar) => {
+        req.calendar = calendar;
         next();
       })
       .catch((err) => {
         next(err);
       });
-  },
+  }
 
-  getCalendarList: function (req, res, next) {
+  getCalendarList (req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -63,29 +61,29 @@ module.exports = bindAll({
       .catch((err) => {
         next(err);
       });
-  },
+  }
 
-  mapCalendarList: function (req, res, next) {
+  mapCalendarList (req, res, next) {
     req.calendars = req.gcalendarlist.items
       .filter(GCalendarSpecs.calendarList_validCalendar)
       .map(GCalendarSpecs.calendar_mapToCommon);
 
     next();
-  },
+  }
 
-  mapCalendar: function (req, res, next) {
+  mapCalendar (req, res, next) {
     req.calendar = GCalendarSpecs.calendar_mapToCommon(req.calendar);
     next();
-  },
+  }
 
-  prepCalendar(req, res, next) {
+  prepCalendar (req, res, next) {
     if (req.body.id) {
       req.calendar = req.body;
       next();
     } else if (req.body.name) {
-      this.createCalendar(req, res, next);
+      gcalendar.createCalendar(req, res, next);
     } else {
       next(new Error('no calendar provided'));
     }
   }
-});
+};
