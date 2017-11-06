@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -18,11 +18,11 @@ const app = express();
 
 app.use(cors({
   optionsSuccessStatus: 200,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   credentials: true,
   maxAge: 3600,
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (config.cors.whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -48,6 +48,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 routes(app);
 
-var server = app.listen(config.port, function() {
+var server = app.listen(config.port, function () {
   console.log(`App is running on port ${config.port}`);
 });
