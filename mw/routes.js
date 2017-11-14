@@ -64,10 +64,16 @@ module.exports = function (app) {
     mongo.getVendors,
     sendReqVar('vendors'));
 
+  router.put('/vendors/:vendorId/approve',
+    /*isBuyer,*/
+    mongo.approveVendor,
+    sendReqVar('vendor')
+    /* TODO: send email... */);
+
   router.put('/vendors/:vendorId/reject',
     /*isBuyer,*/
     mongo.rejectVendor,
-    sendOk()
+    sendReqVar('vendor')
     /* TODO: send email... */);
 
   app.use('/api', router);

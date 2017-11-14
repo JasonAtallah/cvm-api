@@ -1,6 +1,34 @@
+const ObjectID = require('mongodb').ObjectID;
 const config = require('../config');
 
 module.exports = {
+  approveVendor(req, res, next) {
+    console.dir(req.params);
+    const select = {
+      _id: new ObjectID(req.params.vendorId),
+      ownerId: req.user.sub
+    };
+    console.dir(select);
+    const update = {
+      $set: {
+        status: 'approved'
+      }
+    };
+
+    return config.mongo.getDB
+      .then((db) => {
+        db.collection('vendors').findAndModify(select, [], update, { new: true })
+          .then((result) => {
+            console.dir(result);
+            req.vendor = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   cleanBuyer(req, res, next) {
     delete req.buyer._id;
     next();
@@ -37,10 +65,26 @@ module.exports = {
       });
   },
 
+  getEvents(req, res, next) {
+    const query = {
+      ownerId: req.user.sub
+    };
+
+    return config.mongo.getDB
+      .then((db) => {
+        db.collection('events').find(query).toArray(function (err, events) {
+          req.events = events;
+          next();
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   getVendors(req, res, next) {
     const query = {
-      ownerId: req.user.id,
-      vendorId: req.query.vendorId
+      ownerId: req.user.sub
     };
 
     return config.mongo.getDB
@@ -55,38 +99,23 @@ module.exports = {
       });
   },
 
-  getEvents(req, res, next) {
-    const query = {};
-
-    return config.mongo.getDB
-      .then((db) => {
-        db.collection('events').find(query).toArray(function (err, events) {
-          req.events = events;
-          next();
-        });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   rejectVendor(req, res, next) {
     const select = {
-      ownerId: req.user.id,
-      vendorId: req.body.vendorId
+      _id: new ObjectID(req.params.vendorId),
+      ownerId: req.user.sub
     };
 
     const update = {
       $set: {
-        isRejected: true
+        status: 'rejected'
       }
     };
 
     return config.mongo.getDB
       .then((db) => {
-        db.collection('vendors').update(select, update)
+        db.collection('vendors').findAndModify(select, [], update, { new: true })
           .then((result) => {
-            req.result = result;
+            req.vendor = result.value;
             next();
           });
       })
@@ -97,7 +126,7 @@ module.exports = {
 
   updateCalendar(req, res, next) {
     const select = {
-      id: req.user.sub || req.user.user_id || req.user.id
+      id: req.user.sub
     };
 
     const update = {
