@@ -64,6 +64,11 @@ module.exports = function (app) {
     mongo.getVendors,
     sendReqVar('vendors'));
 
+  router.post('/vendors',
+    /*isBuyer,*/
+    mongo.createVendor,
+    sendReqVar('vendor'));
+
   router.put('/vendors/:vendorId/approve',
     /*isBuyer,*/
     mongo.approveVendor,

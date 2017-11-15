@@ -3,12 +3,11 @@ const config = require('../config');
 
 module.exports = {
   approveVendor(req, res, next) {
-    console.dir(req.params);
     const select = {
       _id: new ObjectID(req.params.vendorId),
       ownerId: req.user.sub
     };
-    console.dir(select);
+
     const update = {
       $set: {
         status: 'approved'
@@ -19,7 +18,6 @@ module.exports = {
       .then((db) => {
         db.collection('vendors').findAndModify(select, [], update, { new: true })
           .then((result) => {
-            console.dir(result);
             req.vendor = result.value;
             next();
           });
@@ -32,6 +30,33 @@ module.exports = {
   cleanBuyer(req, res, next) {
     delete req.buyer._id;
     next();
+  },
+
+  createVendor(req, res, next) {
+    const values = req.body;
+
+    values.products = [];
+    values.status = null;
+    values.ownerId = req.user.sub;
+
+    if (!values.name || !values.city) {
+      res.status(400).send({
+        error: 'name and city are required'
+      });
+      return;
+    }
+
+    return config.mongo.getDB
+      .then((db) => {
+        return db.collection('vendors').insert(values)
+          .then((result) => {
+            req.vendor = result.ops[0];
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
   },
 
   getBuyer(req, res, next) {
@@ -126,7 +151,7 @@ module.exports = {
 
   updateCalendar(req, res, next) {
     const select = {
-      id: req.user.sub
+      id: req.user.sub || req.user.user_id
     };
 
     const update = {

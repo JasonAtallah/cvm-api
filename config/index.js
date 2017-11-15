@@ -33,7 +33,7 @@ const config = module.exports = {
 
     _.extend(config, {
       cors: {
-        whitelist: [config.webApp.host]
+        whitelist: [config.webApp.host, 'http://localhost:8080']
       }
     });
 
