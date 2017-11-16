@@ -59,19 +59,20 @@ module.exports = {
       });
   },
 
-  getBuyer(req, res, next) {
-    const query = {
-      id: req.user.sub || req.user.user_id
-    };
+  extractQuestionnaire(req, res, next) {
+    req.questionnaire = req.buyer.questionnaire;
+    next();
+  },
 
+  getBuyer(req, res, next) {
     return config.mongo.getDB
       .then((db) => {
-        db.collection('buyers').findOne(query)
+        db.collection('buyers').findOne(req.buyerQuery)
           .then((buyer) => {
             if (buyer) {
               req.buyer = buyer;
               next();
-            }else {
+            } else {
               let buyer = {
                 id: query.id,
                 gcalendar: null
@@ -105,6 +106,21 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
+  },
+
+  prepBuyerQuery(type) {
+    return (req, res, next) => {
+      if (type === 'hardcoded') {
+        req.buyerQuery = {
+          id: 'google-oauth2|113600761856375492940'
+        };
+      } else {
+        req.buyerQuery = {
+          id: req.user.sub || req.user.user_id
+        };
+      }
+      next();
+    };
   },
 
   rejectVendor(req, res, next) {
