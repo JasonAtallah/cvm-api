@@ -86,6 +86,33 @@ var gcalendar = module.exports = new class GCalendarService {
         next(err);
       });
   }
+  
+  getCalendarEvents(req, res, next) {
+    let g_access_token = req.user.identities[0].access_token;
+    let calendarId = req.buyer.gcalendar.id;
+
+    var options = {
+      method: 'GET',
+      url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`,
+      headers: {
+        authorization: `Bearer ${g_access_token}`
+      },
+      qs: {
+        minAccessRole: 'writer',
+        showDeleted: false,
+        showHidden: false
+      }
+    };
+
+    request(options)
+      .then((body) => {
+        req.events = JSON.parse(body);
+        next();
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 
   mapCalendarList(req, res, next) {
     req.calendars = req.gcalendarlist.items

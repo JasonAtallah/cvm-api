@@ -56,7 +56,10 @@ module.exports = function (app) {
 
   router.get('/events',
     /*isBuyer,*/
-    mongo.getEvents,
+    auth0.getMgr,
+    auth0.getUser,
+    mongo.getBuyer,
+    gcalendar.getCalendarEvents,
     sendReqVar('events'));
 
   router.post('/events',

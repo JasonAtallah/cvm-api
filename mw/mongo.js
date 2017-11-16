@@ -68,7 +68,6 @@ module.exports = {
       .then((db) => {
         db.collection('buyers').findOne(query)
           .then((buyer) => {
-            console.dir(buyer);
             if (buyer) {
               req.buyer = buyer;
               next();
@@ -85,23 +84,6 @@ module.exports = {
                 });
             }
           });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
-  getEvents(req, res, next) {
-    const query = {
-      ownerId: req.user.sub || req.user.user_id
-    };
-
-    return config.mongo.getDB
-      .then((db) => {
-        db.collection('events').find(query).toArray(function (err, events) {
-          req.events = events;
-          next();
-        });
       })
       .catch((err) => {
         next(err);
