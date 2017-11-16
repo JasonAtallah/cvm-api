@@ -1,4 +1,5 @@
 const request = require('request-promise');
+const moment = require('moment');
 const GCalendarSpecs = require('../lib/gcalendar/specs');
 
 var gcalendar = module.exports = new class GCalendarService {
@@ -11,7 +12,7 @@ var gcalendar = module.exports = new class GCalendarService {
    "timeZone": "America/Los_Angeles"
   }
   **/
-  createCalendar (req, res, next) {
+  createCalendar(req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -37,7 +38,30 @@ var gcalendar = module.exports = new class GCalendarService {
       });
   }
 
-  getCalendarList (req, res, next) {
+  createCalendarEvent(req, res, next) {
+    let g_access_token = req.user.identities[0].access_token;
+
+    var options = {
+      method: 'POST',
+      url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
+      json: true,
+      headers: {
+        authorization: `Bearer ${g_access_token}`
+      },
+      body: req.event
+    };
+
+    request(options)
+      .then((event) => {
+        req.event = event;
+        next();
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+
+  getCalendarList(req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -63,7 +87,7 @@ var gcalendar = module.exports = new class GCalendarService {
       });
   }
 
-  mapCalendarList (req, res, next) {
+  mapCalendarList(req, res, next) {
     req.calendars = req.gcalendarlist.items
       .filter(GCalendarSpecs.calendarList_validCalendar)
       .map(GCalendarSpecs.calendar_mapToCommon);
@@ -71,12 +95,17 @@ var gcalendar = module.exports = new class GCalendarService {
     next();
   }
 
-  mapCalendar (req, res, next) {
+  mapCalendar(req, res, next) {
     req.calendar = GCalendarSpecs.calendar_mapToCommon(req.calendar);
     next();
   }
 
-  prepCalendar (req, res, next) {
+  mapCalendarEvent(req, res, next) {
+    console.dir(req.event);
+    next();
+  }
+
+  prepCalendar(req, res, next) {
     if (req.body.id) {
       req.calendar = req.body;
       next();
@@ -85,5 +114,21 @@ var gcalendar = module.exports = new class GCalendarService {
     } else {
       next(new Error('no calendar provided'));
     }
+  }
+
+  prepCalendarEvent(req, res, next) {
+    const timeParts = req.body.time.split(':');
+    const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
+    req.event = {
+      start: {
+        dateTime: startM.toDate()
+      },
+      end: {
+        dateTime: startM.add(req.body.duration, 'minutes').toDate()
+      },
+      summary: req.body.name,
+      location: req.body.location
+    };
+    next();
   }
 };

@@ -59,6 +59,16 @@ module.exports = function (app) {
     mongo.getEvents,
     sendReqVar('events'));
 
+  router.post('/events',
+    /*isBuyer,*/
+    auth0.getMgr,
+    auth0.getUser,
+    mongo.getBuyer,
+    gcalendar.prepCalendarEvent,
+    gcalendar.createCalendarEvent,
+    gcalendar.mapCalendarEvent,
+    sendReqVar('event'));
+
   router.get('/vendors',
     /*isBuyer,*/
     mongo.getVendors,

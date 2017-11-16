@@ -61,13 +61,14 @@ module.exports = {
 
   getBuyer(req, res, next) {
     const query = {
-      id: req.user.sub
+      id: req.user.sub || req.user.user_id
     };
 
     return config.mongo.getDB
       .then((db) => {
         db.collection('buyers').findOne(query)
           .then((buyer) => {
+            console.dir(buyer);
             if (buyer) {
               req.buyer = buyer;
               next();
@@ -92,7 +93,7 @@ module.exports = {
 
   getEvents(req, res, next) {
     const query = {
-      ownerId: req.user.sub
+      ownerId: req.user.sub || req.user.user_id
     };
 
     return config.mongo.getDB
