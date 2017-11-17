@@ -10,13 +10,13 @@ module.exports = function (app) {
   const isBuyer = jwtAuthz(['buyer']);
   const router = express.Router();
 
-  function sendReqVar(name) {
+  function sendReqVar (name) {
     return (req, res) => {
       res.status(200).send(req[name]);
     };
   }
 
-  function sendOk() {
+  function sendOk () {
     return (req, res) => {
       res.status(202).send({
         status: 'OK'
@@ -26,7 +26,7 @@ module.exports = function (app) {
 
   router.get('/buyer',
     /*isBuyer,*/
-    mongo.prepBuyerQuery(),    
+    mongo.prepBuyerQuery(),
     mongo.getBuyer,
     mongo.cleanBuyer,
     sendReqVar('buyer'));
@@ -59,7 +59,7 @@ module.exports = function (app) {
     /*isBuyer,*/
     auth0.getMgr,
     auth0.getUser,
-    mongo.prepBuyerQuery(),    
+    mongo.prepBuyerQuery(),
     mongo.getBuyer,
     gcalendar.getCalendarEvents,
     sendReqVar('events'));
@@ -68,7 +68,7 @@ module.exports = function (app) {
     /*isBuyer,*/
     auth0.getMgr,
     auth0.getUser,
-    mongo.prepBuyerQuery(),    
+    mongo.prepBuyerQuery(),
     mongo.getBuyer,
     gcalendar.prepCalendarEvent,
     gcalendar.createCalendarEvent,
@@ -80,7 +80,7 @@ module.exports = function (app) {
     mongo.prepBuyerQuery('hardcoded'),
     mongo.getBuyer,
     mongo.extractQuestionnaire,
-    sendReqVar('questionnaire'))
+    sendReqVar('questionnaire'));
 
   router.get('/vendors',
     /*isBuyer,*/

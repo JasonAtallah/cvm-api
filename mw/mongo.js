@@ -73,10 +73,9 @@ module.exports = {
               req.buyer = buyer;
               next();
             } else {
-              let buyer = {
-                id: query.id,
+              let buyer = Object.assign({
                 gcalendar: null
-              };
+              }, req.buyerQuery);
 
               db.collection('buyers').insert(buyer)
                 .then((result) => {
