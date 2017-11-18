@@ -111,7 +111,7 @@ module.exports = {
     return (req, res, next) => {
       if (type === 'hardcoded') {
         req.buyerQuery = {
-          id: 'google-oauth2|113600761856375492940'
+          id: process.env.DEFAULT_BUYER_ID
         };
       } else {
         req.buyerQuery = {

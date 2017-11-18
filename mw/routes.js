@@ -113,6 +113,13 @@ module.exports = function (app) {
 
   app.use(function (err, req, res, next) {
     console.log('error: ' + err.message);
-    res.status(500).send(err.message);
+    if (err.status) {
+      err.statusCode = err.status;
+    }
+    if (err.statusCode) {
+      res.status(err.statusCode).send(err.message);
+    } else {
+      res.status(500).send(err.message);
+    }
   });
 };
