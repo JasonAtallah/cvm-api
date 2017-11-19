@@ -1,4 +1,5 @@
 const ObjectID = require('mongodb').ObjectID;
+const Grid = require('mongodb').Grid;
 const config = require('../config');
 
 module.exports = {

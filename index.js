@@ -1,15 +1,10 @@
 'use strict';
 
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
-const jwt = require('express-jwt');
-const jwksRsa = require('jwks-rsa');
 const path = require('path');
-
 const config = require('./config');
-const routes = require('./mw/routes');
 
 dotenv.load();
 config.load();
@@ -31,22 +26,24 @@ app.use(cors({
   }
 }));
 
-app.use(jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: config.auth0.jwksUri
-  }),
-  audience: config.auth0.audience,
-  issuer: config.auth0.issuer,
-  algorithms: [config.auth0.algorithm]
-}));
+require('./mw/api')(app);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(function (req, res, next) {
+  console.log(req.path + ' not found');
+  res.status(404).send('File not found.');
+});
 
-routes(app);
+app.use(function (err, req, res, next) {
+  console.log('error: ' + err.message);
+  if (err.status) {
+    err.statusCode = err.status;
+  }
+  if (err.statusCode) {
+    res.status(err.statusCode).send(err.message);
+  } else {
+    res.status(500).send(err.message);
+  }
+});
 
 var server = app.listen(config.port, function () {
   console.log(`App is running on port ${config.port}`);
