@@ -1,5 +1,8 @@
-const request = require('request-promise');
+const jwksRsa = require('jwks-rsa');
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
 const moment = require('moment');
+const request = require('request-promise');
 const config = require('../config');
 
 module.exports = {
@@ -49,5 +52,19 @@ module.exports = {
         req.user = JSON.parse(result);
         next();
       });
-  }
+  },
+
+  isBuyer: jwtAuthz(['buyer']),
+  isLoggedIn: jwt({
+    secret: jwksRsa.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: config.auth0.jwksUri
+    }),
+    audience: config.auth0.audience,
+    issuer: config.auth0.issuer,
+    algorithms: [config.auth0.algorithm]
+  })
+
 };

@@ -12,7 +12,7 @@ var gcalendar = module.exports = new class GCalendarService {
    "timeZone": "America/Los_Angeles"
   }
   **/
-  createCalendar(req, res, next) {
+  createCalendar (req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -33,12 +33,10 @@ var gcalendar = module.exports = new class GCalendarService {
         req.calendar = calendar;
         next();
       })
-      .catch((err) => {
-        next(err);
-      });
+      .catch(next);
   }
 
-  createCalendarEvent(req, res, next) {
+  createCalendarEvent (req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -56,12 +54,10 @@ var gcalendar = module.exports = new class GCalendarService {
         req.event = event;
         next();
       })
-      .catch((err) => {
-        next(err);
-      });
+      .catch(next);
   }
 
-  getCalendarList(req, res, next) {
+  getCalendarList (req, res, next) {
     let g_access_token = req.user.identities[0].access_token;
 
     var options = {
@@ -82,12 +78,35 @@ var gcalendar = module.exports = new class GCalendarService {
         req.gcalendarlist = JSON.parse(body);
         next();
       })
-      .catch((err) => {
-        next(err);
-      });
+      .catch(next);
   }
 
-  mapCalendarList(req, res, next) {
+  getCalendarEvents (req, res, next) {
+    let g_access_token = req.user.identities[0].access_token;
+    let calendarId = req.buyer.gcalendar.id;
+
+    var options = {
+      method: 'GET',
+      url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`,
+      headers: {
+        authorization: `Bearer ${g_access_token}`
+      },
+      qs: {
+        minAccessRole: 'writer',
+        showDeleted: false,
+        showHidden: false
+      }
+    };
+
+    request(options)
+      .then((body) => {
+        req.events = JSON.parse(body);
+        next();
+      })
+      .catch(next);
+  }
+
+  mapCalendarList (req, res, next) {
     req.calendars = req.gcalendarlist.items
       .filter(GCalendarSpecs.calendarList_validCalendar)
       .map(GCalendarSpecs.calendar_mapToCommon);
@@ -95,17 +114,16 @@ var gcalendar = module.exports = new class GCalendarService {
     next();
   }
 
-  mapCalendar(req, res, next) {
+  mapCalendar (req, res, next) {
     req.calendar = GCalendarSpecs.calendar_mapToCommon(req.calendar);
     next();
   }
 
-  mapCalendarEvent(req, res, next) {
-    console.dir(req.event);
+  mapCalendarEvent (req, res, next) {
     next();
   }
 
-  prepCalendar(req, res, next) {
+  prepCalendar (req, res, next) {
     if (req.body.id) {
       req.calendar = req.body;
       next();
@@ -116,7 +134,7 @@ var gcalendar = module.exports = new class GCalendarService {
     }
   }
 
-  prepCalendarEvent(req, res, next) {
+  prepCalendarEvent (req, res, next) {
     const timeParts = req.body.time.split(':');
     const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
     req.event = {
