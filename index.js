@@ -1,6 +1,5 @@
 'use strict';
 
-const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
 const path = require('path');
@@ -10,21 +9,6 @@ dotenv.load();
 config.load();
 
 const app = express();
-
-app.use(cors({
-  optionsSuccessStatus: 200,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  credentials: true,
-  maxAge: 3600,
-  origin: function (origin, callback) {
-    if (config.cors.whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Not allowed by CORS: ${origin}`));
-    }
-  }
-}));
 
 require('./mw/api')(app);
 

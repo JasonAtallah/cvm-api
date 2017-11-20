@@ -67,16 +67,30 @@ module.exports = function (app) {
     gcalendar.mapCalendarEvent,
     responses.sendReqVar('event'));
 
-  app.post('/api/files',
-    parse.file,
-    responses.sendReqVar('file'));
-
-  app.get('/api/questionnaire',
+  app.get('/api/questionnaires/:questionnaireId',
     /*isVendor,*/
-    mongo.prepBuyerQuery('hardcoded'),
+    mongo.prepBuyerQuery(),
     mongo.getBuyer,
     mongo.extractQuestionnaire,
     responses.sendReqVar('questionnaire'));
+
+  app.post('/api/questionnaires/:buyerId/responses',
+    /*isVendor,*/
+    parse.json,
+    mongo.prepQuestionnaireResponse,
+    mongo.saveQuestionnaireResponse,
+    mongo.mapQuestionnaireResponse,
+    responses.sendReqVar('response'));
+
+  app.post('/api/questionnaires/:buyerId/responses/:responseId/files',
+    function (req, res, next) { console.log(req.params.buyerId, req.params.responseId); next(); },
+    mongo.getResponse, // mongo.response
+    function (req, res, next) { console.log('hi'); next(); },
+    parse.file, // req.file(s)
+    function (req, res, next) { console.log('file compelete'); next(); },
+    // mongo.prepResponseFileUpdate, // mongo.response.flowers.strains[0].testResults[0] = req.file
+    // mongo.updateResponse, // commit req.response
+    responses.sendReqVar('file'));
 
   app.get('/api/vendors',
     auth.isLoggedIn,

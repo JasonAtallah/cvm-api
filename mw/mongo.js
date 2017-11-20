@@ -1,12 +1,13 @@
 const ObjectID = require('mongodb').ObjectID;
 const Grid = require('mongodb').Grid;
+const _ = require('lodash');
 const config = require('../config');
 
 module.exports = {
   approveVendor(req, res, next) {
     const select = {
       _id: new ObjectID(req.params.vendorId),
-      ownerId: req.user.sub
+      buyerId: req.user.sub
     };
 
     const update = {
@@ -15,7 +16,7 @@ module.exports = {
       }
     };
 
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         db.collection('vendors').findAndModify(select, [], update, { new: true })
           .then((result) => {
@@ -38,7 +39,7 @@ module.exports = {
 
     values.products = [];
     values.status = null;
-    values.ownerId = req.user.sub;
+    values.buyerId = req.user.sub;
 
     if (!values.name || !values.city) {
       res.status(400).send({
@@ -47,7 +48,7 @@ module.exports = {
       return;
     }
 
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         return db.collection('vendors').insert(values)
           .then((result) => {
@@ -66,7 +67,7 @@ module.exports = {
   },
 
   getBuyer(req, res, next) {
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         db.collection('buyers').findOne(req.buyerQuery)
           .then((buyer) => {
@@ -91,12 +92,36 @@ module.exports = {
       });
   },
 
+  getResponse(req, res, next) {
+    const query = {
+      _id: req.params.responseId
+    };
+    console.dir(query);
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('vendors').findOne(query);
+      })
+      .then((response) => {
+        if (response) {
+          req.response = response;
+          next();
+        } else {
+          const error = new Error('Response not found');
+          error.status = 404;
+          next(error);
+        }
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   getVendors(req, res, next) {
     const query = {
-      ownerId: req.user.sub
+      buyerId: req.user.sub
     };
 
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         db.collection('vendors').find(query).toArray(function (err, vendors) {
           req.vendors = vendors;
@@ -108,11 +133,16 @@ module.exports = {
       });
   },
 
+  mapQuestionnaireResponse(req, res, next) {
+    req.response = _.omit(req.response, ['buyerId']);
+    next();
+  },
+
   prepBuyerQuery(type) {
     return (req, res, next) => {
-      if (type === 'hardcoded') {
+      if (req.params.questionnaireId) {
         req.buyerQuery = {
-          id: process.env.DEFAULT_BUYER_ID
+          id: req.params.questionnaireId
         };
       } else {
         req.buyerQuery = {
@@ -123,10 +153,17 @@ module.exports = {
     };
   },
 
+  prepQuestionnaireResponse(req, res, next) {
+    req.response = Object.assign({}, req.body, {
+      buyerId: req.params.buyerId
+    });
+    next();
+  },
+
   rejectVendor(req, res, next) {
     const select = {
       _id: new ObjectID(req.params.vendorId),
-      ownerId: req.user.sub
+      buyerId: req.user.sub
     };
 
     const update = {
@@ -135,11 +172,25 @@ module.exports = {
       }
     };
 
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         db.collection('vendors').findAndModify(select, [], update, { new: true })
           .then((result) => {
             req.vendor = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  saveQuestionnaireResponse(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('vendors').insert(req.response)
+          .then((result) => {
+            req.response = result.ops[0];
             next();
           });
       })
@@ -159,7 +210,7 @@ module.exports = {
       }
     };
 
-    return config.mongo.getDB
+    config.mongo.getDB
       .then((db) => {
         db.collection('buyers').update(select, update)
           .then((result) => {
