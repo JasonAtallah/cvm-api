@@ -84,6 +84,7 @@ module.exports = function (app) {
 
   app.put('/api/questionnaires/:buyerId/responses/:responseId',
     /*isVendor,*/
+    mongo.getResponse,
     parse.json,
     mongo.prepUpdateQuestionnaireResponse,
     mongo.updateQuestionnaireResponse,
