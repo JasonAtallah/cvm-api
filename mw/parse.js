@@ -10,12 +10,14 @@ const gridFSStorage = GridFS({
 const multerUpload = multer({
   storage: gridFSStorage,
   limits: {
-    fileSize: 1000000
+    fileSize: 10000000
   }
 });
 
 module.exports = {
-  file: multerUpload.single('file'),
+  file(field) {
+    return multerUpload.single(field);
+  },
   form: bodyParser.urlencoded({ extended: true }),
   json: bodyParser.json()
 };
