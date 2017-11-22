@@ -1,5 +1,4 @@
 const ObjectID = require('mongodb').ObjectID;
-const Grid = require('mongodb').Grid;
 const _ = require('lodash');
 const config = require('../config');
 
@@ -69,7 +68,7 @@ module.exports = {
   getBuyer(req, res, next) {
     config.mongo.getDB
       .then((db) => {
-        db.collection('buyers').findOne(req.buyerQuery)
+        return db.collection('buyers').findOne(req.buyerQuery)
           .then((buyer) => {
             if (buyer) {
               req.buyer = buyer;
@@ -79,7 +78,7 @@ module.exports = {
                 gcalendar: null
               }, req.buyerQuery);
 
-              db.collection('buyers').insert(buyer)
+              return db.collection('buyers').insert(buyer)
                 .then((result) => {
                   req.buyer = buyer;
                   next();
@@ -94,9 +93,9 @@ module.exports = {
 
   getResponse(req, res, next) {
     const query = {
-      _id: req.params.responseId
+      _id: new ObjectID(req.params.responseId)
     };
-    console.dir(query);
+
     config.mongo.getDB
       .then((db) => {
         return db.collection('vendors').findOne(query);
@@ -153,10 +152,15 @@ module.exports = {
     };
   },
 
-  prepQuestionnaireResponse(req, res, next) {
+  prepCreateQuestionnaireResponse(req, res, next) {
     req.response = Object.assign({}, req.body, {
       buyerId: req.params.buyerId
     });
+    next();
+  },
+
+  prepUpdateQuestionnaireResponse(req, res, next) {
+    req.response = _.omit(req.body, ['_id']);
     next();
   },
 
@@ -174,7 +178,7 @@ module.exports = {
 
     config.mongo.getDB
       .then((db) => {
-        db.collection('vendors').findAndModify(select, [], update, { new: true })
+        return db.collection('vendors').findAndModify(select, [], update, { new: true })
           .then((result) => {
             req.vendor = result.value;
             next();
@@ -188,7 +192,7 @@ module.exports = {
   saveQuestionnaireResponse(req, res, next) {
     config.mongo.getDB
       .then((db) => {
-        db.collection('vendors').insert(req.response)
+        return db.collection('vendors').insert(req.response)
           .then((result) => {
             req.response = result.ops[0];
             next();
@@ -212,13 +216,30 @@ module.exports = {
 
     config.mongo.getDB
       .then((db) => {
-        db.collection('buyers').update(select, update)
+        return db.collection('buyers').update(select, update)
           .then((result) => {
             req.result = result;
             next();
-          })
-          .catch((err) => {
-            next(err);
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  updateQuestionnaireResponse(req, res, next) {
+    const select = {
+      _id: new ObjectID(req.params.responseId)
+    };
+
+    const update = req.response;
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('vendors').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
           });
       })
       .catch((err) => {

@@ -77,19 +77,22 @@ module.exports = function (app) {
   app.post('/api/questionnaires/:buyerId/responses',
     /*isVendor,*/
     parse.json,
-    mongo.prepQuestionnaireResponse,
+    mongo.prepCreateQuestionnaireResponse,
     mongo.saveQuestionnaireResponse,
     mongo.mapQuestionnaireResponse,
     responses.sendReqVar('response'));
 
+  app.put('/api/questionnaires/:buyerId/responses/:responseId',
+    /*isVendor,*/
+    mongo.getResponse,
+    parse.json,
+    mongo.prepUpdateQuestionnaireResponse,
+    mongo.updateQuestionnaireResponse,
+    responses.sendOk());
+
   app.post('/api/questionnaires/:buyerId/responses/:responseId/files',
-    function (req, res, next) { console.log(req.params.buyerId, req.params.responseId); next(); },
-    mongo.getResponse, // mongo.response
-    function (req, res, next) { console.log('hi'); next(); },
-    parse.file, // req.file(s)
-    function (req, res, next) { console.log('file compelete'); next(); },
-    // mongo.prepResponseFileUpdate, // mongo.response.flowers.strains[0].testResults[0] = req.file
-    // mongo.updateResponse, // commit req.response
+    mongo.getResponse,
+    parse.file('file'),
     responses.sendReqVar('file'));
 
   app.get('/api/vendors',
