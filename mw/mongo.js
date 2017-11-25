@@ -36,11 +36,10 @@ module.exports = {
   createVendor(req, res, next) {
     const values = req.body;
 
-    values.products = [];
     values.status = null;
     values.buyerId = req.user.sub;
 
-    if (!values.name || !values.city) {
+    if (!values.company.name || !values.company.city) {
       res.status(400).send({
         error: 'name and city are required'
       });
