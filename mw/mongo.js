@@ -153,6 +153,15 @@ module.exports = {
       req.vendor = req.body;
       req.vendor.buyerId = req.buyer._id;
       req.vendor.status = null;
+
+      ['flowers', 'edibles', 'concentrates'].forEach((key) => {
+        if (!req.vendor[key]) {
+          req.vendor[key] = {
+            products: []
+          };
+        }
+      });
+
       next();
     }
   },
