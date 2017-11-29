@@ -38,7 +38,7 @@ module.exports = {
       });
   },
 
-  getUser: (req, res, next) => {
+  getGoogleToken: (req, res, next) => {
     var options = {
       method: 'GET',
       url: `https://cannabis-vendor-mgmt.auth0.com/api/v2/users/${req.user.sub}`,
@@ -49,22 +49,46 @@ module.exports = {
 
     request(options)
       .then((result) => {
-        req.user = JSON.parse(result);
+        req.gAccessToken = JSON.parse(result).identities[0].access_token;
         next();
       });
   },
 
-  isBuyer: jwtAuthz(['buyer']),
-  isLoggedIn: jwt({
-    secret: jwksRsa.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: config.auth0.jwksUri
-    }),
-    audience: config.auth0.audience,
-    issuer: config.auth0.issuer,
-    algorithms: [config.auth0.algorithm]
-  })
+  isLoggedIn: (function () {
+    const jwtMW = jwt({
+      secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: config.auth0.jwksUri
+      }),
+      audience: config.auth0.audience,
+      issuer: config.auth0.issuer,
+      algorithms: [config.auth0.algorithm]
+    });
+
+    return function (req, res, next) {
+      jwtMW(req, res, function (err) {
+        if (err) {
+          next(err);
+        } else {
+          req.userId = req.user.sub || req.user.user_id;
+          next();
+        }
+      });
+    };
+  })(),
+
+  isUserId: (paramName) => {
+    return (req, res, next) => {
+      if (req.params[paramName] !== req.userId) {
+        const err = new Error('Unauthorized.');
+        err.status = 401;
+        next(err);
+      } else {
+        next();
+      }
+    };
+  }
 
 };

@@ -1,6 +1,5 @@
 const request = require('request-promise');
 const moment = require('moment');
-const GCalendarSpecs = require('../lib/gcalendar/specs');
 
 var gcalendar = module.exports = new class GCalendarService {
   /**
@@ -13,14 +12,12 @@ var gcalendar = module.exports = new class GCalendarService {
   }
   **/
   createCalendar (req, res, next) {
-    let g_access_token = req.user.identities[0].access_token;
-
     var options = {
       method: 'POST',
       url: `https://www.googleapis.com/calendar/v3/calendars`,
       json: true,
       headers: {
-        authorization: `Bearer ${g_access_token}`
+        authorization: `Bearer ${req.gAccessToken}`
       },
       body: {
         summary: req.body.name,
@@ -36,15 +33,17 @@ var gcalendar = module.exports = new class GCalendarService {
       .catch(next);
   }
 
+  /**
+  Inputs: req.gAccessToken, req.buyer, req.event
+  Outputs: req.event
+  **/
   createCalendarEvent (req, res, next) {
-    let g_access_token = req.user.identities[0].access_token;
-
     var options = {
       method: 'POST',
       url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
       json: true,
       headers: {
-        authorization: `Bearer ${g_access_token}`
+        authorization: `Bearer ${req.gAccessToken}`
       },
       body: req.event
     };
@@ -58,13 +57,11 @@ var gcalendar = module.exports = new class GCalendarService {
   }
 
   getCalendarList (req, res, next) {
-    let g_access_token = req.user.identities[0].access_token;
-
     var options = {
       method: 'GET',
       url: `https://www.googleapis.com/calendar/v3/users/me/calendarList`,
       headers: {
-        authorization: `Bearer ${g_access_token}`
+        authorization: `Bearer ${req.gAccessToken}`
       },
       qs: {
         minAccessRole: 'writer',
@@ -81,15 +78,16 @@ var gcalendar = module.exports = new class GCalendarService {
       .catch(next);
   }
 
+  /**
+  Input: req.gAccessToken, req.buyer
+  Output: req.events
+  **/
   getCalendarEvents (req, res, next) {
-    let g_access_token = req.user.identities[0].access_token;
-    let calendarId = req.buyer.gcalendar.id;
-
     var options = {
       method: 'GET',
-      url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`,
+      url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
       headers: {
-        authorization: `Bearer ${g_access_token}`
+        authorization: `Bearer ${req.gAccessToken}`
       },
       qs: {
         minAccessRole: 'writer',
@@ -106,20 +104,26 @@ var gcalendar = module.exports = new class GCalendarService {
       .catch(next);
   }
 
-  mapCalendarList (req, res, next) {
+  prepCalendarListForResponse (req, res, next) {
     req.calendars = req.gcalendarlist.items
-      .filter(GCalendarSpecs.calendarList_validCalendar)
-      .map(GCalendarSpecs.calendar_mapToCommon);
+      .filter((calendar) => {
+        return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
+      })
+      .map((calendar) => {
+        return {
+          type: 'google',
+          id: calendar.id,
+          name: calendar.summary,
+          tz: calendar.timeZone,
+          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
+        };
+      });
 
     next();
   }
 
   mapCalendar (req, res, next) {
     req.calendar = GCalendarSpecs.calendar_mapToCommon(req.calendar);
-    next();
-  }
-
-  mapCalendarEvent (req, res, next) {
     next();
   }
 
@@ -134,6 +138,10 @@ var gcalendar = module.exports = new class GCalendarService {
     }
   }
 
+  /**
+  Input: req.body
+  Output: req.event
+  **/
   prepCalendarEvent (req, res, next) {
     const timeParts = req.body.time.split(':');
     const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);

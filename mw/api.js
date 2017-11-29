@@ -6,119 +6,109 @@ const mongo = require('./mongo');
 const responses = require('./responses');
 
 module.exports = function (app) {
+  /**
+  Get buyer profile
+  **/
   app.get('/api/buyer',
     auth.isLoggedIn,
-    /* auth.isBuyer */
-    mongo.prepBuyerQuery(),
+    mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
-    mongo.cleanBuyer,
     responses.sendReqVar('buyer'));
 
+  /**
+  Set buyer's calendar
+  **/
   app.put('/api/buyer/gcalendar',
-    auth.isLoggedIn,
-    /* auth.isBuyer */
-    auth.getMgr,
-    auth.getUser,
-    parse.json,
-    gcalendar.prepCalendar,
-    mongo.updateCalendar,
-    responses.sendOk());
+    auth.isLoggedIn, // req.user
+    auth.getMgr, // config.mgmt
+    auth.getGoogleToken, // / req.gAccessToken
+    parse.json, // parses req.body
+    gcalendar.prepCalendar, // req.calendar
+    mongo.updateCalendar, // updates buyer, req.buyer
+    responses.sendOk(201));
 
   app.get('/api/calendars',
     auth.isLoggedIn,
-    /* auth.isBuyer */
     auth.getMgr,
-    auth.getUser,
+    auth.getGoogleToken,
     parse.json,
     gcalendar.getCalendarList,
-    gcalendar.mapCalendarList,
+    gcalendar.prepCalendarListForResponse,
     responses.sendReqVar('calendars'));
-
-  app.post('/api/calendar',
-    auth.isLoggedIn,
-    /* auth.isBuyer */
-    auth.getMgr,
-    auth.getUser,
-    parse.json,
-    gcalendar.createCalendar,
-    gcalendar.mapCalendar,
-    responses.sendReqVar('calendar'));
 
   app.get('/api/events',
     auth.isLoggedIn,
-    /* auth.isBuyer */
     auth.getMgr,
-    auth.getUser,
-    mongo.prepBuyerQuery(),
+    auth.getGoogleToken,
+    mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     gcalendar.getCalendarEvents,
     responses.sendReqVar('events'));
 
   app.post('/api/events',
     auth.isLoggedIn,
-    /* auth.isBuyer */
     auth.getMgr,
-    auth.getUser,
-    mongo.prepBuyerQuery(),
+    auth.getGoogleToken,
+    mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,
     gcalendar.prepCalendarEvent,
     gcalendar.createCalendarEvent,
-    gcalendar.mapCalendarEvent,
     responses.sendReqVar('event'));
 
   app.get('/api/questionnaires/:questionnaireId',
-    /*isVendor,*/
-    mongo.prepBuyerQuery(),
-    mongo.getBuyer,
-    mongo.extractQuestionnaire,
+    mongo.prepQuestionnaireQueryById,
+    mongo.getQuestionnaire,
+    mongo.prepQuestionnaireForResponse,
     responses.sendReqVar('questionnaire'));
 
-  app.post('/api/questionnaires/:buyerId/responses',
-    /*isVendor,*/
+  app.post('/api/questionnaires/:questionnaireId/responses',
     parse.json,
-    mongo.prepCreateQuestionnaireResponse,
-    mongo.saveQuestionnaireResponse,
-    mongo.mapQuestionnaireResponse,
-    responses.sendReqVar('response'));
+    mongo.prepQuestionnaireQueryById,
+    mongo.getQuestionnaire,
+    mongo.prepNewVendorFromQuestionnaire,
+    mongo.createVendor,
+    mongo.prepVendorForResponse,
+    responses.sendReqVar('vendor'));
 
-  app.put('/api/questionnaires/:buyerId/responses/:responseId',
-    /*isVendor,*/
-    mongo.getResponse,
+  app.put('/api/questionnaires/:questionnaireId/responses/:responseId',
     parse.json,
-    mongo.prepUpdateQuestionnaireResponse,
+    mongo.prepQuestionnaireResponseForUpdate,
     mongo.updateQuestionnaireResponse,
-    responses.sendOk());
+    responses.sendOk(201));
 
-  app.post('/api/questionnaires/:buyerId/responses/:responseId/files',
-    mongo.getResponse,
+  app.post('/api/questionnaires/:questionnaireId/responses/:responseId/files',
     parse.file('file'),
     responses.sendReqVar('file'));
 
   app.get('/api/vendors',
     auth.isLoggedIn,
-    /* auth.isBuyer */
+    mongo.prepBuyerQueryFromAuth,
+    mongo.getBuyer,
+    mongo.prepVendorQueryFromBuyer,
     mongo.getVendors,
     responses.sendReqVar('vendors'));
 
   app.post('/api/vendors',
     auth.isLoggedIn,
-    /* auth.isBuyer */
+    mongo.prepBuyerQueryFromAuth,
+    mongo.getBuyer,
     parse.json,
+    mongo.prepNewVendor,
     mongo.createVendor,
     responses.sendReqVar('vendor'));
 
   app.put('/api/vendors/:vendorId/approve',
     auth.isLoggedIn,
-    /* auth.isBuyer */
+    mongo.prepBuyerQueryFromAuth,
+    mongo.getBuyer,
     mongo.approveVendor,
-    responses.sendReqVar('vendor')
-    /* TODO: send email... */);
+    responses.sendReqVar('vendor'));
 
   app.put('/api/vendors/:vendorId/reject',
     auth.isLoggedIn,
-    /* auth.isBuyer */
+    mongo.prepBuyerQueryFromAuth,
+    mongo.getBuyer,
     mongo.rejectVendor,
-    responses.sendReqVar('vendor')
-/* TODO: send email... */);
+    responses.sendReqVar('vendor'));
 };
