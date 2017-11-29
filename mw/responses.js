@@ -1,13 +1,15 @@
+const _ = require('lodash');
+
 module.exports = {
   sendReqVar(name) {
     return (req, res) => {
-      res.status(200).send(req[name]);
+      res.status(200).send(_.get(req, name));
     };
   },
 
-  sendOk(msg = 'OK') {
+  sendOk(status = 202 , msg = 'OK') {
     return (req, res) => {
-      res.status(202).send({
+      res.status(status).send({
         status: msg
       });
     };

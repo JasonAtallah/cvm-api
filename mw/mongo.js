@@ -3,10 +3,15 @@ const _ = require('lodash');
 const config = require('../config');
 
 module.exports = {
+
+  /**
+  Inputs: req.params.vendorId, req.buyer
+  Outputs: req.vendor
+  **/
   approveVendor(req, res, next) {
     const select = {
       _id: new ObjectID(req.params.vendorId),
-      buyerId: req.user.sub
+      buyerId: req.buyer._id
     };
 
     const update = {
@@ -28,28 +33,10 @@ module.exports = {
       });
   },
 
-  cleanBuyer(req, res, next) {
-    delete req.buyer._id;
-    next();
-  },
-
   createVendor(req, res, next) {
-    const values = req.body;
-
-    values.products = [];
-    values.status = null;
-    values.buyerId = req.user.sub;
-
-    if (!values.name || !values.city) {
-      res.status(400).send({
-        error: 'name and city are required'
-      });
-      return;
-    }
-
     config.mongo.getDB
       .then((db) => {
-        return db.collection('vendors').insert(values)
+        return db.collection('vendors').insert(req.vendor)
           .then((result) => {
             req.vendor = result.ops[0];
             next();
@@ -60,11 +47,12 @@ module.exports = {
       });
   },
 
-  extractQuestionnaire(req, res, next) {
-    req.questionnaire = req.buyer.questionnaire;
-    next();
-  },
+  /**
+  Get buyer record
 
+  Input: req.buyerQuery
+  Output: req.buyer
+  **/
   getBuyer(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -91,24 +79,20 @@ module.exports = {
       });
   },
 
-  getResponse(req, res, next) {
-    const query = {
-      _id: new ObjectID(req.params.responseId)
-    };
-
+  getQuestionnaire(req, res, next) {
     config.mongo.getDB
       .then((db) => {
-        return db.collection('vendors').findOne(query);
-      })
-      .then((response) => {
-        if (response) {
-          req.response = response;
-          next();
-        } else {
-          const error = new Error('Response not found');
-          error.status = 404;
-          next(error);
-        }
+        return db.collection('questionnaires').findOne(req.questionnaireQuery)
+          .then((questionnaire) => {
+            if (questionnaire) {
+              req.questionnaire = questionnaire;
+              next();
+            } else {
+              const err = new Error('Questionnaire not found.');
+              err.status = 404;
+              next(err);
+            }
+          });
       })
       .catch((err) => {
         next(err);
@@ -116,15 +100,15 @@ module.exports = {
   },
 
   getVendors(req, res, next) {
-    const query = {
-      buyerId: req.user.sub
-    };
-
     config.mongo.getDB
       .then((db) => {
-        db.collection('vendors').find(query).toArray(function (err, vendors) {
-          req.vendors = vendors;
-          next();
+        db.collection('vendors').find(req.vendorQuery).toArray(function (err, vendors) {
+          if (err) {
+            next(err);
+          } else {
+            req.vendors = vendors;
+            next();
+          }
         });
       })
       .catch((err) => {
@@ -132,42 +116,114 @@ module.exports = {
       });
   },
 
-  mapQuestionnaireResponse(req, res, next) {
-    req.response = _.omit(req.response, ['buyerId']);
+  prepQuestionnaireForResponse(req, res, next) {
+    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
     next();
   },
 
-  prepBuyerQuery(type) {
-    return (req, res, next) => {
-      if (req.params.questionnaireId) {
-        req.buyerQuery = {
-          id: req.params.questionnaireId
-        };
-      } else {
-        req.buyerQuery = {
-          id: req.user.sub || req.user.user_id
-        };
-      }
-      next();
+  prepVendorForResponse(req, res, next) {
+    req.vendor = _.omit(req.vendor, ['buyerId']);
+    next();
+  },
+
+  prepBuyerQueryFromAuth(req, res, next) {
+    req.buyerQuery = {
+      id: req.userId
     };
-  },
-
-  prepCreateQuestionnaireResponse(req, res, next) {
-    req.response = Object.assign({}, req.body, {
-      buyerId: req.params.buyerId
-    });
     next();
   },
 
-  prepUpdateQuestionnaireResponse(req, res, next) {
-    req.response = _.omit(req.body, ['_id']);
+  prepBuyerQueryFromQuestionnaire(req, res, next) {
+    req.buyerQuery = {
+      _id: new ObjectID(req.questionnaire.buyerId)
+    };
+    next();
+  },
+
+  /**
+  Inputs: req.body, req.buyer
+  Outputs: req.vendor
+  **/
+  prepNewVendorFromBuyer(req, res, next) {
+    if (!req.body.company.name || !req.body.company.city) {
+      const err = new Error('name and city are required');
+      err.status = 400;
+      next(err);
+    } else {
+      req.vendor = req.body;
+      req.vendor.buyerId = req.buyer._id;
+      req.vendor.status = null;
+
+      ['flowers', 'edibles', 'concentrates'].forEach((key) => {
+        if (!req.vendor[key]) {
+          req.vendor[key] = {
+            products: []
+          };
+        }
+      });
+
+      next();
+    }
+  },
+
+  /**
+  Inputs: req.body, req.questionnaire
+  Outputs: req.vendor
+  **/
+  prepNewVendorFromQuestionnaire(req, res, next) {
+    if (!req.body.company.name || !req.body.company.city) {
+      const err = new Error('name and city are required');
+      err.status = 400;
+      next(err);
+    } else {
+      req.vendor = req.body;
+      req.vendor.buyerId = req.questionnaire.buyerId;
+      req.vendor.status = null;
+      next();
+    }
+  },
+
+  /**
+  Inputs: req.body
+  Outputs: req.response
+  **/
+  prepQuestionnaireResponseForUpdate(req, res, next) {
+    req.response = req.body;
+    req.response._id = new ObjectID(req.params.responseId);
+    next();
+  },
+
+  prepQuestionnaireQueryById(req, res, next) {
+    req.questionnaireQuery = {
+      _id: new ObjectID(req.params.questionnaireId)
+    };
+    next();
+  },
+
+  prepVendorOnQuestionnaire(req, res, next) {
+    if (!req.vendor.questionnaires) {
+      req.vendor.questionnaires = {};
+    }
+
+    req.vendor.questionnaires[req.params.questionnaireId] = req.body;
+    next();
+  },
+
+  /**
+  Inputs: req.buyer
+  Outputs: req.vendorQuery
+  **/
+  prepVendorQueryFromBuyer(req, res, next) {
+    req.vendorQuery = {
+      buyerId: req.buyer._id
+    };
     next();
   },
 
   rejectVendor(req, res, next) {
     const select = {
       _id: new ObjectID(req.params.vendorId),
-      buyerId: req.user.sub
+      buyerId: req.buyer._id
     };
 
     const update = {
@@ -189,23 +245,13 @@ module.exports = {
       });
   },
 
-  saveQuestionnaireResponse(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('vendors').insert(req.response)
-          .then((result) => {
-            req.response = result.ops[0];
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
+  /**
+  Input: req.user, req.calendar
+  Output: req.result
+  **/
   updateCalendar(req, res, next) {
     const select = {
-      id: req.user.sub || req.user.user_id
+      id: req.user.sub
     };
 
     const update = {
@@ -229,7 +275,39 @@ module.exports = {
 
   updateQuestionnaireResponse(req, res, next) {
     const select = {
-      _id: new ObjectID(req.params.responseId)
+      _id: req.response._id
+    };
+
+    const setValues = {};
+
+    Object.keys(req.response)
+      .filter((key) => {
+        return key !== '_id';
+      })
+      .forEach((key) => {
+        setValues[key] = req.response[key];
+      });
+
+    const update = {
+      $set: setValues
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('vendors').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  updateVendor(req, res, next) {
+    const select = {
+      _id: new ObjectID(req.params.vendorId)
     };
 
     const update = req.response;
