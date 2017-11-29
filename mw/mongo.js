@@ -144,8 +144,8 @@ module.exports = {
   Inputs: req.body, req.buyer
   Outputs: req.vendor
   **/
-  prepNewVendor(req, res, next) {
-    if (!req.body.name || !req.body.city) {
+  prepNewVendorFromBuyer(req, res, next) {
+    if (!req.body.company.name || !req.body.company.city) {
       const err = new Error('name and city are required');
       err.status = 400;
       next(err);

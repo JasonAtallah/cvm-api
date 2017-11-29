@@ -94,7 +94,7 @@ module.exports = function (app) {
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,
-    mongo.prepNewVendor,
+    mongo.prepNewVendorFromBuyer,
     mongo.createVendor,
     responses.sendReqVar('vendor'));
 
