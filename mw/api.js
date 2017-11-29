@@ -4,6 +4,7 @@ const parse = require('./parse');
 const gcalendar = require('./gcalendar');
 const mongo = require('./mongo');
 const responses = require('./responses');
+const gmail = require('./gmail');
 
 module.exports = function (app) {
   /**
@@ -107,8 +108,11 @@ module.exports = function (app) {
 
   app.put('/api/vendors/:vendorId/reject',
     auth.isLoggedIn,
+    auth.getMgr,
+    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     mongo.rejectVendor,
+    gmail.sendRejectionEmail,
     responses.sendReqVar('vendor'));
 };
