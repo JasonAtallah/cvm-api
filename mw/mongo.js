@@ -260,6 +260,34 @@ module.exports = {
       });
   },
 
+  updateBuyerEmailTemplate(req, res, next) {
+    const select = {
+      id: req.user.sub
+    };
+    console.log(req.email.status)
+    const update = {
+      $set: {
+        emails: {
+          rejectVendor: {
+            subject: req.email.subject,
+            body: req.email.body
+          }
+        }
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
   /**
   Input: req.user, req.calendar
   Output: req.result

@@ -23,6 +23,14 @@ module.exports = function (app) {
     ]),
     responses.sendReqVar('buyer'));
 
+  app.put('/api/buyer/email',
+    auth.isLoggedIn,
+    auth.getMgr,
+    auth.getGoogleToken,
+    parse.json,
+    gmail.prepEmail,
+    mongo.updateBuyerEmailTemplate,
+    responses.sendOk(200));
   /**
   Set buyer's calendar
   **/

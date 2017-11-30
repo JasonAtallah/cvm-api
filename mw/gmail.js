@@ -1,6 +1,12 @@
 const request = require('request-promise');
 
 var gmail = module.exports = new class GmailService {
+  
+  prepEmail(req, res, next) {
+    console.log(req.body);
+    req.email = req.body.email;
+    next();
+  }
 
   sendApprovalEmailToVendor(req, res, next) {
     var email = '';
