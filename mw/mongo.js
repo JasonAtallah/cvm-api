@@ -264,16 +264,30 @@ module.exports = {
     const select = {
       id: req.user.sub
     };
-    console.log(req.email.status)
-    const update = {
-      $set: {
-        emails: {
-          rejectVendor: {
-            subject: req.email.subject,
-            body: req.email.body
+    console.log(req.email.status);
+    if (req.email.status === 'reject') {
+      var update = {
+        $set: {
+          emails: {
+            rejectVendor: {
+              subject: req.email.subject,
+              body: req.email.body
+            }
           }
         }
-      }
+      };
+    }
+    else if (req.email.status === 'approve') {
+      var update = {
+        $set: {
+          emails: {
+            approveVendor: {
+              subject: req.email.subject,
+              body: req.email.body
+            }
+          }
+        }
+      };
     };
 
     config.mongo.getDB
