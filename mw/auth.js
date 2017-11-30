@@ -38,6 +38,23 @@ module.exports = {
       });
   },
 
+  getGoogleProfile: (req, res, next) => {
+    var options = {
+      method: 'GET',
+      url: `https://cannabis-vendor-mgmt.auth0.com/api/v2/users/${req.user.sub}`,
+      headers: {
+        authorization: `Bearer ${config.mgmt.accessToken}`
+      }
+    };
+
+    request(options)
+      .then((result) => {
+        req.gProfile = JSON.parse(result);
+        req.gAccessToken = req.gProfile.identities[0].access_token;
+        next();
+      });
+  },
+
   getGoogleToken: (req, res, next) => {
     var options = {
       method: 'GET',

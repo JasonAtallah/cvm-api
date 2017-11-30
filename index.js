@@ -13,8 +13,10 @@ const app = express();
 require('./mw/api')(app);
 
 app.use(function (req, res, next) {
-  console.log(req.path + ' not found');
-  res.status(404).send('File not found.');
+  if (!res._headerSent) {
+    console.log(req.path + ' not found');
+    res.status(404).send('File not found.');
+  }
 });
 
 app.use(function (err, req, res, next) {

@@ -7,6 +7,10 @@ const MongoClient = require('mongodb').MongoClient;
 const config = module.exports = {
   load: function () {
     _.extend(config, {
+      app: {
+        email: process.env.APP_EMAIL,
+        host: process.env.APP_HOST
+      },
       auth0: {
         algorithm: process.env.AUTH0_ALGORITHM,
         audience: process.env.AUTH0_AUDIENCE,
@@ -18,22 +22,21 @@ const config = module.exports = {
           secret: process.env.AUTH0_CLIENT_SECRET
         }
       },
+      cors: {
+        whitelist: process.env.CORS_WHITELIST.split(',')
+      },
       mgmt: {
         accessToken: null
       },
-      host: process.env.APP_HOST,
       mongo: {
         uri: process.env.MONGODB_URI
       },
       port: process.env.PORT,
+      sendGrid: {
+        apikey: process.env.SENDGRID_API_KEY
+      },
       webApp: {
         host: process.env.WEB_APP_HOST
-      }
-    });
-
-    _.extend(config, {
-      cors: {
-        whitelist: process.env.CORS_WHITELIST.split(',')
       }
     });
 
