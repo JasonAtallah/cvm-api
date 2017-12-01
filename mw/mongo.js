@@ -36,7 +36,21 @@ module.exports = {
   createBuyer(req, res, next) {
     const buyer = Object.assign({
       gcalendar: null,
-      email: req.gProfile.email
+      email: req.gProfile.email,
+      emails: {
+        approveVendor: {
+          subject: "Congrats",
+          body: "Schedule an appointment"
+        },
+        rejectVendor: {
+          subject: "Sorry",
+          body: "Not interested"
+        },
+        newVendor: {
+          subject: "New vendor applied",
+          body: "Check CVM"
+        }
+      }
     }, req.buyerQuery);
 
     config.mongo.getDB
@@ -264,30 +278,14 @@ module.exports = {
     const select = {
       id: req.user.sub
     };
-    console.log(req.email.status);
-    if (req.email.status === 'reject') {
-      var update = {
-        $set: {
-          emails: {
-            rejectVendor: {
-              subject: req.email.subject,
-              body: req.email.body
-            }
-          }
+
+    var update = {
+      $set: {
+        [`emails.${req.params.templateId}`]: {
+          subject: req.body.subject,
+          body: req.body.body
         }
-      };
-    }
-    else if (req.email.status === 'approve') {
-      var update = {
-        $set: {
-          emails: {
-            approveVendor: {
-              subject: req.email.subject,
-              body: req.email.body
-            }
-          }
-        }
-      };
+      }
     };
 
     config.mongo.getDB

@@ -1,18 +1,13 @@
 const request = require('request-promise');
 
 var gmail = module.exports = new class GmailService {
-  
-  prepEmail(req, res, next) {
-    console.log(req.body);
-    req.email = req.body.email;
-    next();
-  }
 
   sendApprovalEmailToVendor(req, res, next) {
     var email = '';
+    console.log(req.body);
     email += `To: ${req.vendor.contact.email} \r\n`;
-    email += `Subject: ${req.buyer.emails.approveVendor.subject} \r\n`;
-    email += `\r\n ${req.buyer.emails.approveVendor.body}`;
+    email += `Subject: ${req.body.subject} \r\n`;
+    email += `\r\n ${req.body.body}`;
 
     var options = {
       method: 'POST',
@@ -38,8 +33,8 @@ var gmail = module.exports = new class GmailService {
   sendRejectionEmailToVendor(req, res, next) {
     var email = '';
     email += `To: ${req.vendor.contact.email} \r\n`;
-    email += `Subject: ${req.buyer.emails.rejectVendor.subject} \r\n`;
-    email += `\r\n ${req.buyer.emails.rejectVendor.body}`;
+    email += `Subject: ${req.body.subject} \r\n`;
+    email += `\r\n ${req.body.body}`;
 
     var options = {
       method: 'POST',

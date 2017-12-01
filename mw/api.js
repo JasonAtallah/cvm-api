@@ -23,12 +23,9 @@ module.exports = function (app) {
     ]),
     responses.sendReqVar('buyer'));
 
-  app.put('/api/buyer/email',
+  app.put('/api/buyer/emails/:templateId',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
     parse.json,
-    gmail.prepEmail,
     mongo.updateBuyerEmailTemplate,
     responses.sendOk(200));
   /**
@@ -124,6 +121,7 @@ module.exports = function (app) {
     auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    parse.json,        
     mongo.approveVendor,
     gmail.sendApprovalEmailToVendor,
     responses.sendReqVar('vendor'));
@@ -134,6 +132,7 @@ module.exports = function (app) {
     auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    parse.json,    
     mongo.rejectVendor,
     gmail.sendRejectionEmailToVendor,
     // mongo.storeResult store result from rejection with datetime in vendor
