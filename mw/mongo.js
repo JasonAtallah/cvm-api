@@ -124,6 +124,26 @@ module.exports = {
       });
   },
 
+  getVendor(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('vendors').findOne(req.vendorQuery)
+          .then((vendor) => {
+            if (!vendor) {
+              const err = new Error('Vendor not found');
+              err.status = 404;
+              next(err);
+            } else {
+              req.vendor = vendor;
+              next();
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   getVendors(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -245,6 +265,13 @@ module.exports = {
   prepVendorQueryFromBuyer(req, res, next) {
     req.vendorQuery = {
       buyerId: req.buyer._id
+    };
+    next();
+  },
+
+  prepVendorQueryFromUrl(req, res, next) {
+    req.vendorQuery = {
+      _id: new ObjectID(req.params.vendorId)
     };
     next();
   },
