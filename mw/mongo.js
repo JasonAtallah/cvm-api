@@ -33,6 +33,39 @@ module.exports = {
       });
   },
 
+  createBuyer(req, res, next) {
+    const buyer = Object.assign({
+      gcalendar: null,
+      email: req.gProfile.email,
+      emails: {
+        approveVendor: {
+          subject: "Congrats",
+          body: "Schedule an appointment"
+        },
+        rejectVendor: {
+          subject: "Sorry",
+          body: "Not interested"
+        },
+        newVendor: {
+          subject: "New vendor applied",
+          body: "Check CVM"
+        }
+      }
+    }, req.buyerQuery);
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').insert(buyer)
+          .then((result) => {
+            req.buyer = buyer;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   createVendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -62,15 +95,7 @@ module.exports = {
               req.buyer = buyer;
               next();
             } else {
-              let buyer = Object.assign({
-                gcalendar: null
-              }, req.buyerQuery);
-
-              return db.collection('buyers').insert(buyer)
-                .then((result) => {
-                  req.buyer = buyer;
-                  next();
-                });
+              next();
             }
           });
       })
@@ -116,16 +141,6 @@ module.exports = {
       });
   },
 
-  prepQuestionnaireForResponse(req, res, next) {
-    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
-    next();
-  },
-
-  prepVendorForResponse(req, res, next) {
-    req.vendor = _.omit(req.vendor, ['buyerId']);
-    next();
-  },
-
   prepBuyerQueryFromAuth(req, res, next) {
     req.buyerQuery = {
       id: req.userId
@@ -137,6 +152,16 @@ module.exports = {
     req.buyerQuery = {
       _id: new ObjectID(req.questionnaire.buyerId)
     };
+    next();
+  },
+
+  prepQuestionnaireForResponse(req, res, next) {
+    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
+    next();
+  },
+
+  prepVendorForResponse(req, res, next) {
+    req.vendor = _.omit(req.vendor, ['buyerId']);
     next();
   },
 
@@ -209,6 +234,10 @@ module.exports = {
     next();
   },
 
+  // prepVendorQuery(req, res, next) {
+  //   req.vendor
+  // },
+
   /**
   Inputs: req.buyer
   Outputs: req.vendorQuery
@@ -245,6 +274,32 @@ module.exports = {
       });
   },
 
+  updateBuyerEmailTemplate(req, res, next) {
+    const select = {
+      id: req.user.sub
+    };
+
+    var update = {
+      $set: {
+        [`emails.${req.params.templateId}`]: {
+          subject: req.body.subject,
+          body: req.body.body
+        }
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
   /**
   Input: req.user, req.calendar
   Output: req.result

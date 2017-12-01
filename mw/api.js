@@ -1,9 +1,12 @@
 const config = require('../config');
 const auth = require('./auth');
-const parse = require('./parse');
 const gcalendar = require('./gcalendar');
+const gmail = require('./gmail');
+const logic = require('./logic');
 const mongo = require('./mongo');
+const parse = require('./parse');
 const responses = require('./responses');
+const sendGrid = require('./sendGrid');
 
 module.exports = function (app) {
   /**
@@ -13,8 +16,18 @@ module.exports = function (app) {
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    logic.ifNullInReq('buyer', [
+      auth.getMgr,
+      auth.getGoogleProfile,
+      mongo.createBuyer
+    ]),
     responses.sendReqVar('buyer'));
 
+  app.put('/api/buyer/emails/:templateId',
+    auth.isLoggedIn,
+    parse.json,
+    mongo.updateBuyerEmailTemplate,
+    responses.sendOk(200));
   /**
   Set buyer's calendar
   **/
@@ -69,7 +82,11 @@ module.exports = function (app) {
     mongo.prepNewVendorFromQuestionnaire,
     mongo.createVendor,
     mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'));
+    responses.sendReqVar('vendor'),
+    mongo.prepBuyerQueryFromQuestionnaire,
+    mongo.getBuyer,
+    sendGrid.prepNewVendorEmailToBuyer,
+    sendGrid.sendEmail);
 
   app.put('/api/questionnaires/:questionnaireId/responses/:responseId',
     parse.json,
@@ -100,15 +117,24 @@ module.exports = function (app) {
 
   app.put('/api/vendors/:vendorId/approve',
     auth.isLoggedIn,
+    auth.getMgr,
+    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    parse.json,        
     mongo.approveVendor,
+    gmail.sendApprovalEmailToVendor,
     responses.sendReqVar('vendor'));
 
   app.put('/api/vendors/:vendorId/reject',
     auth.isLoggedIn,
+    auth.getMgr,
+    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    parse.json,    
     mongo.rejectVendor,
+    gmail.sendRejectionEmailToVendor,
+    // mongo.storeResult store result from rejection with datetime in vendor
     responses.sendReqVar('vendor'));
 };
