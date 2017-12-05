@@ -81,6 +81,7 @@ module.exports = function (app) {
 
   app.post('/api/questionnaires/:questionnaireId/responses',
     parse.json,
+    mongo.validateQuestionnaire,
     mongo.prepQuestionnaireQueryById,
     mongo.getQuestionnaire,
     mongo.prepNewVendorFromQuestionnaire,

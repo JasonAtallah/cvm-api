@@ -217,16 +217,10 @@ module.exports = {
   Outputs: req.vendor
   **/
   prepNewVendorFromQuestionnaire(req, res, next) {
-    if (!req.body.company.name || !req.body.company.city) {
-      const err = new Error('name and city are required');
-      err.status = 400;
-      next(err);
-    } else {
-      req.vendor = req.body;
-      req.vendor.buyerId = req.questionnaire.buyerId;
-      req.vendor.status = null;
-      next();
-    }
+    req.vendor = req.body;
+    req.vendor.buyerId = req.questionnaire.buyerId;
+    req.vendor.status = null;
+    next();
   },
 
   /**
@@ -431,5 +425,24 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
+  },
+
+  validateQuestionnaire(req, res, next) {
+    let err;
+
+    if (!req.body.company.name) {
+      err = new Error('Company name is required');
+    } else if (!req.body.company.city) {
+      err = new Error('Company city is required');
+    } else if (!req.body.contact.email) {
+      err = new Error('Contact email is required');
+    }
+
+    if (err) {
+      err.status = 400;
+      next(err);
+    } else {
+      next();
+    }
   }
 };
