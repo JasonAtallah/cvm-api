@@ -35,22 +35,23 @@ module.exports = {
 
   createBuyer(req, res, next) {
     const buyer = Object.assign({
-      gcalendar: null,
       email: req.gProfile.email,
       emails: {
         approveVendor: {
-          subject: "Congrats",
-          body: "Schedule an appointment"
+          subject: 'Congrats',
+          body: 'Schedule an appointment'
         },
         rejectVendor: {
-          subject: "Sorry",
-          body: "Not interested"
+          subject: 'Sorry',
+          body: 'Not interested'
         },
         newVendor: {
-          subject: "New vendor applied",
-          body: "Check CVM"
+          subject: 'New vendor applied',
+          body: 'Check CVM'
         }
-      }
+      },
+      gcalendar: null,
+      schedule: []
     }, req.buyerQuery);
 
     config.mongo.getDB
@@ -303,7 +304,7 @@ module.exports = {
 
   updateBuyerEmailTemplate(req, res, next) {
     const select = {
-      id: req.user.sub
+      id: req.userId
     };
 
     var update = {
@@ -327,6 +328,31 @@ module.exports = {
         next(err);
       });
   },
+
+  updateBuyerSchedule(req, res, next) {
+    const select = {
+      id: req.userId
+    };
+
+    var update = {
+      $set: {
+        schedule: req.body
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   /**
   Input: req.user, req.calendar
   Output: req.result

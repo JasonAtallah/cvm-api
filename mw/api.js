@@ -28,17 +28,21 @@ module.exports = function (app) {
     parse.json,
     mongo.updateBuyerEmailTemplate,
     responses.sendOk(200));
-  /**
-  Set buyer's calendar
-  **/
+
   app.put('/api/buyer/gcalendar',
-    auth.isLoggedIn, // req.user
-    auth.getMgr, // config.mgmt
-    auth.getGoogleToken, // / req.gAccessToken
-    parse.json, // parses req.body
-    gcalendar.prepCalendar, // req.calendar
-    mongo.updateCalendar, // updates buyer, req.buyer
+    auth.isLoggedIn,
+    auth.getMgr,
+    auth.getGoogleToken,
+    parse.json,
+    gcalendar.prepCalendar,
+    mongo.updateCalendar,
     responses.sendOk(201));
+
+  app.put('/api/buyer/schedule',
+    auth.isLoggedIn,
+    parse.json,
+    mongo.updateBuyerSchedule,
+    responses.sendOk(204));
 
   app.get('/api/calendars',
     auth.isLoggedIn,
