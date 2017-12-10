@@ -228,6 +228,13 @@ module.exports = {
       });
   },
 
+  prepBuyerForResponse(req, res, next) {
+    req.buyer = Object.assign(_.pick(req.buyer, ['_id', 'emails', 'gcalendar', 'schedule']), {
+      firstName: req.buyer.gProfile.firstName
+    });
+    next();
+  },
+
   prepBuyerQueryFromAuth(req, res, next) {
     req.buyerQuery = {
       _id: new ObjectID(req.userId)
@@ -376,7 +383,7 @@ module.exports = {
 
   updateBuyerEmailTemplate(req, res, next) {
     const select = {
-      id: req.userId
+      _id: new ObjectID(req.userId)
     };
 
     var update = {

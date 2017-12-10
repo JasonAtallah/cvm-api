@@ -1,16 +1,17 @@
 const request = require('request-promise');
+const base64url = require('base64url');
 
 var gmail = module.exports = new class GmailService {
 
   /**
-  Inputs: req.buyer
+  Inputs: req.buyer, req.vendor, req.body
   Outputs: req.result
   **/
   sendApprovalEmailToVendor(req, res, next) {
     var email = '';
     email += `To: ${req.vendor.contact.email} \r\n`;
     email += `Subject: ${req.body.subject} \r\n`;
-    email += `\r\n ${req.body.body}`;
+    email += `\n${req.body.body}\n\nPlease Visit: ${req.body.scheduleUrl} to schedule a time to meet with the buyer.`;
 
     var options = {
       method: 'POST',
@@ -20,7 +21,7 @@ var gmail = module.exports = new class GmailService {
         authorization: `Bearer ${req.buyer.gAuth.accessToken}`
       },
       body: {
-        raw: new Buffer(email).toString('base64')
+        raw: base64url(email)
       }
     };
 

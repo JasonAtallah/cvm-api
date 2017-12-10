@@ -13,6 +13,7 @@ module.exports = function (app) {
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
+    mongo.prepBuyerForResponse,
     responses.sendReqVar('buyer'));
 
   app.get('/api/buyer/token',
