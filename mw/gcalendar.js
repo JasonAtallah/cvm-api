@@ -17,7 +17,7 @@ var gcalendar = module.exports = new class GCalendarService {
       url: `https://www.googleapis.com/calendar/v3/calendars`,
       json: true,
       headers: {
-        authorization: `Bearer ${req.gAccessToken}`
+        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
       },
       body: {
         summary: req.body.name,
@@ -34,7 +34,7 @@ var gcalendar = module.exports = new class GCalendarService {
   }
 
   /**
-  Inputs: req.gAccessToken, req.buyer, req.event
+  Inputs: req.buyer, req.event
   Outputs: req.event
   **/
   createCalendarEvent (req, res, next) {
@@ -43,7 +43,7 @@ var gcalendar = module.exports = new class GCalendarService {
       url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
       json: true,
       headers: {
-        authorization: `Bearer ${req.gAccessToken}`
+        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
       },
       body: req.event
     };
@@ -56,12 +56,16 @@ var gcalendar = module.exports = new class GCalendarService {
       .catch(next);
   }
 
+  /**
+  Inputs: req.buyer
+  Outputs: req.gcalendarlist
+  **/
   getCalendarList (req, res, next) {
     var options = {
       method: 'GET',
       url: `https://www.googleapis.com/calendar/v3/users/me/calendarList`,
       headers: {
-        authorization: `Bearer ${req.gAccessToken}`
+        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
       },
       qs: {
         minAccessRole: 'writer',
@@ -79,7 +83,7 @@ var gcalendar = module.exports = new class GCalendarService {
   }
 
   /**
-  Input: req.gAccessToken, req.buyer
+  Input: req.buyer
   Output: req.events
   **/
   getCalendarEvents (req, res, next) {
@@ -87,7 +91,7 @@ var gcalendar = module.exports = new class GCalendarService {
       method: 'GET',
       url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
       headers: {
-        authorization: `Bearer ${req.gAccessToken}`
+        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
       },
       qs: {
         minAccessRole: 'writer',

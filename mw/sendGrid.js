@@ -7,7 +7,7 @@ var sendGrid = module.exports = new class SendGridService {
 
   prepNewVendorEmailToBuyer(req, res, next) {
     req.sendGridMsg = {
-      to: req.buyer.email,
+      to: req.buyer.gProfile.email,
       from: config.app.email,
       subject: req.buyer.emails.newVendor.subject,
       text: req.buyer.emails.newVendor.body
@@ -15,8 +15,8 @@ var sendGrid = module.exports = new class SendGridService {
     next();
   }
 
-  // inputs: req.sendGridMsg
-  // outputs: req.sendGridResult, req.sendGridErr
+  // Inputs: req.sendGridMsg
+  // Outputs: req.sendGridResult, req.sendGridErr
   sendEmail(req, res, next) {
     sgMail.send(req.sendGridMsg)
       .then((result) => {

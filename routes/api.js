@@ -1,49 +1,48 @@
 const config = require('../config');
-const auth = require('./auth');
-const gcalendar = require('./gcalendar');
-const gmail = require('./gmail');
-const logic = require('./logic');
-const mongo = require('./mongo');
-const parse = require('./parse');
-const responses = require('./responses');
-const sendGrid = require('./sendGrid');
+const auth = require('../mw/auth');
+const gcalendar = require('../mw/gcalendar');
+const gmail = require('../mw/gmail');
+const logic = require('../mw/logic');
+const mongo = require('../mw/mongo');
+const parse = require('../mw/parse');
+const responses = require('../mw/responses');
+const sendGrid = require('../mw/sendGrid');
 
 module.exports = function (app) {
-  /**
-  Get buyer profile
-  **/
   app.get('/api/buyer',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
-    logic.ifNullInReq('buyer', [
-      auth.getMgr,
-      auth.getGoogleProfile,
-      mongo.createBuyer
-    ]),
+    mongo.prepBuyerForResponse,
     responses.sendReqVar('buyer'));
+
+  app.get('/api/buyer/token',
+    mongo.getTokenForCode,
+    responses.sendReqVar('token'));
 
   app.put('/api/buyer/emails/:templateId',
     auth.isLoggedIn,
     parse.json,
     mongo.updateBuyerEmailTemplate,
     responses.sendOk(200));
-  /**
-  Set buyer's calendar
-  **/
+
   app.put('/api/buyer/gcalendar',
-    auth.isLoggedIn, // req.user
-    auth.getMgr, // config.mgmt
-    auth.getGoogleToken, // / req.gAccessToken
-    parse.json, // parses req.body
-    gcalendar.prepCalendar, // req.calendar
-    mongo.updateCalendar, // updates buyer, req.buyer
+    auth.isLoggedIn,
+    parse.json,
+    gcalendar.prepCalendar,
+    mongo.updateCalendar,
     responses.sendOk(201));
+
+  app.put('/api/buyer/schedule',
+    auth.isLoggedIn,
+    parse.json,
+    mongo.updateBuyerSchedule,
+    responses.sendOk(204));
 
   app.get('/api/calendars',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
+    mongo.prepBuyerQueryFromAuth,
+    mongo.getBuyer,
     parse.json,
     gcalendar.getCalendarList,
     gcalendar.prepCalendarListForResponse,
@@ -51,8 +50,6 @@ module.exports = function (app) {
 
   app.get('/api/events',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     gcalendar.getCalendarEvents,
@@ -60,8 +57,6 @@ module.exports = function (app) {
 
   app.post('/api/events',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,
@@ -77,6 +72,7 @@ module.exports = function (app) {
 
   app.post('/api/questionnaires/:questionnaireId/responses',
     parse.json,
+    mongo.validateNewVendor,
     mongo.prepQuestionnaireQueryById,
     mongo.getQuestionnaire,
     mongo.prepNewVendorFromQuestionnaire,
@@ -114,17 +110,16 @@ module.exports = function (app) {
 
   app.post('/api/vendors',
     auth.isLoggedIn,
+    parse.json,
+    mongo.validateNewVendor,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
-    parse.json,
     mongo.prepNewVendorFromBuyer,
     mongo.createVendor,
     responses.sendReqVar('vendor'));
 
   app.put('/api/vendors/:vendorId/approve',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,
@@ -134,8 +129,6 @@ module.exports = function (app) {
 
   app.put('/api/vendors/:vendorId/reject',
     auth.isLoggedIn,
-    auth.getMgr,
-    auth.getGoogleToken,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,

@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const _ = require('lodash');
 const MongoClient = require('mongodb').MongoClient;
@@ -9,34 +7,40 @@ const config = module.exports = {
     _.extend(config, {
       app: {
         email: process.env.APP_EMAIL,
-        host: process.env.APP_HOST
+        host: process.env.APP_HOST,
+        port: process.env.PORT
       },
       auth0: {
         algorithm: process.env.AUTH0_ALGORITHM,
         audience: process.env.AUTH0_AUDIENCE,
-        issuer: process.env.AUTH0_ISSUER,
-        jwksUri: process.env.AUTH0_JWKS_URI,
         client: {
           audience: process.env.AUTH0_CLIENT_AUDIENCE,
           id: process.env.AUTH0_CLIENT_ID,
           secret: process.env.AUTH0_CLIENT_SECRET
-        }
+        },
+        domain: process.env.AUTH0_DOMAIN,
+        issuer: process.env.AUTH0_ISSUER,
+        jwksUri: process.env.AUTH0_JWKS_URI,
+        scope: process.env.AUTH0_SCOPE
       },
       cors: {
         whitelist: process.env.CORS_WHITELIST.split(',')
       },
-      mgmt: {
-        accessToken: null
+      google: {
+        clientId: process.env.GOOGLE_CVM_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CVM_CLIENT_SECRET
+      },
+      jwt: {
+        algorithm: process.env.JWT_ALGORITHM,
+        audience: process.env.JWT_AUDIENCE,
+        expiresIn: process.env.JWT_EXPIRESIN,
+        secret: process.env.JWT_SECRET
       },
       mongo: {
         uri: process.env.MONGODB_URI
       },
-      port: process.env.PORT,
       sendGrid: {
         apikey: process.env.SENDGRID_API_KEY
-      },
-      webApp: {
-        host: process.env.WEB_APP_HOST
       }
     });
 

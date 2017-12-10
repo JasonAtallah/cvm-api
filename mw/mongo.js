@@ -33,31 +33,17 @@ module.exports = {
       });
   },
 
-  createBuyer(req, res, next) {
-    const buyer = Object.assign({
-      gcalendar: null,
-      email: req.gProfile.email,
-      emails: {
-        approveVendor: {
-          subject: "Congrats",
-          body: "Schedule an appointment"
-        },
-        rejectVendor: {
-          subject: "Sorry",
-          body: "Not interested"
-        },
-        newVendor: {
-          subject: "New vendor applied",
-          body: "Check CVM"
-        }
-      }
-    }, req.buyerQuery);
+  createClientCode(req, res, next) {
+    const record = {
+      token: req.clientJWT,
+      code: Math.random().toString().slice(2)
+    };
 
     config.mongo.getDB
       .then((db) => {
-        return db.collection('buyers').insert(buyer)
+        return db.collection('clientCodes').insert(record)
           .then((result) => {
-            req.buyer = buyer;
+            req.clientCode = record.code;
             next();
           });
       })
@@ -124,6 +110,30 @@ module.exports = {
       });
   },
 
+  getTokenForCode(req, res, next) {
+    const query = {
+      code: req.query.code
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('clientCodes').findOneAndDelete(query)
+          .then((result) => {
+            if (result) {
+              req.token = result.value.token;
+              next();
+            } else {
+              const err = new Error('Invalid code');
+              err.status = 400;
+              next(err);
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   getVendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -161,9 +171,73 @@ module.exports = {
       });
   },
 
+  initializeBuyer(req, res, next) {
+    const select = {
+      'gProfile.id': req.gProfile.id
+    };
+
+    const update = {
+      $set: {
+        emails: {
+          approveVendor: {
+            subject: 'Congrats',
+            body: 'Schedule an appointment'
+          },
+          rejectVendor: {
+            subject: 'Sorry',
+            body: 'Not interested'
+          },
+          newVendor: {
+            subject: 'New vendor applied',
+            body: 'Check CVM'
+          }
+        },
+        gcalendar: null,
+        schedule: []
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').findOneAndUpdate(select, update)
+          .then((result) => {
+            req.buyer = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  lookupLoginCallback(req, res, next) {
+    const query = {
+      _id: new ObjectID(req.query.state)
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('logins').findOneAndDelete(query)
+          .then((result) => {
+            req.loginCallback = result.value.callback;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  prepBuyerForResponse(req, res, next) {
+    req.buyer = Object.assign(_.pick(req.buyer, ['_id', 'emails', 'gcalendar', 'schedule']), {
+      firstName: req.buyer.gProfile.firstName
+    });
+    next();
+  },
+
   prepBuyerQueryFromAuth(req, res, next) {
     req.buyerQuery = {
-      id: req.userId
+      _id: new ObjectID(req.userId)
     };
     next();
   },
@@ -190,25 +264,19 @@ module.exports = {
   Outputs: req.vendor
   **/
   prepNewVendorFromBuyer(req, res, next) {
-    if (!req.body.company.name || !req.body.company.city) {
-      const err = new Error('name and city are required');
-      err.status = 400;
-      next(err);
-    } else {
-      req.vendor = req.body;
-      req.vendor.buyerId = req.buyer._id;
-      req.vendor.status = null;
+    req.vendor = req.body;
+    req.vendor.buyerId = req.buyer._id;
+    req.vendor.status = null;
 
-      ['flowers', 'edibles', 'concentrates'].forEach((key) => {
-        if (!req.vendor[key]) {
-          req.vendor[key] = {
-            products: []
-          };
-        }
-      });
+    ['flowers', 'edibles', 'concentrates'].forEach((key) => {
+      if (!req.vendor[key]) {
+        req.vendor[key] = {
+          products: []
+        };
+      }
+    });
 
-      next();
-    }
+    next();
   },
 
   /**
@@ -216,16 +284,10 @@ module.exports = {
   Outputs: req.vendor
   **/
   prepNewVendorFromQuestionnaire(req, res, next) {
-    if (!req.body.company.name || !req.body.company.city) {
-      const err = new Error('name and city are required');
-      err.status = 400;
-      next(err);
-    } else {
-      req.vendor = req.body;
-      req.vendor.buyerId = req.questionnaire.buyerId;
-      req.vendor.status = null;
-      next();
-    }
+    req.vendor = req.body;
+    req.vendor.buyerId = req.questionnaire.buyerId;
+    req.vendor.status = null;
+    next();
   },
 
   /**
@@ -301,9 +363,27 @@ module.exports = {
       });
   },
 
+  saveLoginCallback(req, res, next) {
+    const record = {
+      callback: req.query.callback
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('logins').insert(record)
+          .then((result) => {
+            req.loginCallback = result.ops[0];
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   updateBuyerEmailTemplate(req, res, next) {
     const select = {
-      id: req.user.sub
+      _id: new ObjectID(req.userId)
     };
 
     var update = {
@@ -327,13 +407,38 @@ module.exports = {
         next(err);
       });
   },
+
+  updateBuyerSchedule(req, res, next) {
+    const select = {
+      id: req.userId
+    };
+
+    var update = {
+      $set: {
+        schedule: req.body
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   /**
   Input: req.user, req.calendar
   Output: req.result
   **/
   updateCalendar(req, res, next) {
     const select = {
-      id: req.user.sub
+      _id: new ObjectID(req.userId)
     };
 
     const update = {
@@ -347,6 +452,40 @@ module.exports = {
         return db.collection('buyers').update(select, update)
           .then((result) => {
             req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  /**
+  Inputs: req.gAuth, req.gProfile
+  **/
+  updateGoogleAuthAndProfileForBuyer(req, res, next) {
+    const select = {
+      'gProfile.id': req.gProfile.id
+    };
+
+    const update = {
+      $set: {
+        gProfile: req.gProfile,
+        'gAuth.accessToken': req.gAuth.access_token,
+        'gAuth.tokenType': req.gAuth.token_type,
+        'gAuth.expiryDate': req.gAuth.expiry_date
+      }
+    };
+
+    const options = {
+      upsert: true
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').findOneAndUpdate(select, update, options)
+          .then((result) => {
+            req.buyer = result.value;
             next();
           });
       })
@@ -405,5 +544,24 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
+  },
+
+  validateNewVendor(req, res, next) {
+    let err;
+
+    if (!req.body.company.name) {
+      err = new Error('Company name is required');
+    } else if (!req.body.company.city) {
+      err = new Error('Company city is required');
+    } else if (!req.body.contact.email) {
+      err = new Error('Contact email is required');
+    }
+
+    if (err) {
+      err.status = 400;
+      next(err);
+    } else {
+      next();
+    }
   }
 };
