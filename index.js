@@ -3,14 +3,17 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const path = require('path');
+const morgan = require('morgan');
 const config = require('./config');
 
 dotenv.load();
 config.load();
 
 const app = express();
+app.use(morgan('combined'));
 
-require('./mw/api')(app);
+require('./routes/auth')(app);
+require('./routes/api')(app);
 
 app.use(function (req, res, next) {
   if (!res._headerSent) {
@@ -21,6 +24,7 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
   console.log('error: ' + err.message);
+  console.dir(err);
   if (err.status) {
     err.statusCode = err.status;
   }
@@ -31,6 +35,6 @@ app.use(function (err, req, res, next) {
   }
 });
 
-var server = app.listen(config.port, function () {
-  console.log(`App is running on port ${config.port}`);
+var server = app.listen(config.app.port, function () {
+  console.log(`App is running on port ${config.app.port}`);
 });
