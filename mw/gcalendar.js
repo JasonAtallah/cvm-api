@@ -1,5 +1,6 @@
 const request = require('request-promise');
 const moment = require('moment');
+const momentTimezone = require('moment-timezone');
 
 var gcalendar = module.exports = new class GCalendarService {
   /**
@@ -96,39 +97,17 @@ var gcalendar = module.exports = new class GCalendarService {
       qs: {
         minAccessRole: 'writer',
         showDeleted: false,
-        showHidden: false
+        showHidden: false,
+        timeZone: req.query.timezone
       }
     };
 
     request(options)
       .then((body) => {
-        req.events = JSON.parse(body);
+        req.eventsResponse = JSON.parse(body);
         next();
       })
       .catch(next);
-  }
-
-  prepCalendarListForResponse (req, res, next) {
-    req.calendars = req.gcalendarlist.items
-      .filter((calendar) => {
-        return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
-      })
-      .map((calendar) => {
-        return {
-          type: 'google',
-          id: calendar.id,
-          name: calendar.summary,
-          tz: calendar.timeZone,
-          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
-        };
-      });
-
-    next();
-  }
-
-  mapCalendar (req, res, next) {
-    req.calendar = GCalendarSpecs.calendar_mapToCommon(req.calendar);
-    next();
   }
 
   prepCalendar (req, res, next) {
@@ -146,7 +125,7 @@ var gcalendar = module.exports = new class GCalendarService {
   Input: req.body
   Output: req.event
   **/
-  prepCalendarEvent (req, res, next) {
+  prepCalendarEventForInsert (req, res, next) {
     const timeParts = req.body.time.split(':');
     const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
     req.event = {
@@ -159,6 +138,48 @@ var gcalendar = module.exports = new class GCalendarService {
       summary: req.body.name,
       location: req.body.location
     };
+    next();
+  }
+
+  /**
+  Input: req.eventsResponse
+  Output: req.events
+  **/
+  prepCalendarEventsForResponse (req, res, next) {
+    req.events = req.eventsResponse.items.map((event) => {
+      return {
+        id: event.id,
+        status: event.status,
+        htmlLink: event.htmlLink,
+        created: event.created,
+        updated: event.updated,
+        title: event.summary,
+        startDate: event.start.dateTime,
+        endDate: event.end.dateTime
+      };
+    });
+    next();
+  }
+
+  /**
+  Input: req.gcalendarlist
+  Output: req.calendars
+  **/
+  prepCalendarListForResponse (req, res, next) {
+    req.calendars = req.gcalendarlist.items
+      .filter((calendar) => {
+        return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
+      })
+      .map((calendar) => {
+        return {
+          type: 'google',
+          id: calendar.id,
+          name: calendar.summary,
+          tz: calendar.timeZone,
+          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
+        };
+      });
+
     next();
   }
 };

@@ -53,6 +53,7 @@ module.exports = function (app) {
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     gcalendar.getCalendarEvents,
+    gcalendar.prepCalendarEventsForResponse,
     responses.sendReqVar('events'));
 
   app.post('/api/events',
@@ -60,7 +61,7 @@ module.exports = function (app) {
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     parse.json,
-    gcalendar.prepCalendarEvent,
+    gcalendar.prepCalendarEventForInsert,
     gcalendar.createCalendarEvent,
     responses.sendReqVar('event'));
 
