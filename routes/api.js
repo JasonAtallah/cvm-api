@@ -63,6 +63,7 @@ module.exports = function (app) {
     parse.json,
     gcalendar.prepCalendarEventForInsert,
     gcalendar.createCalendarEvent,
+    gcalendar.prepCalendarEventForResponse,
     responses.sendReqVar('event'));
 
   app.get('/api/questionnaires/:questionnaireId',

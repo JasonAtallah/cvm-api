@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
+const { mapGCalendarEventToEvent } = require('../lib/mappings');
 
 var gcalendar = module.exports = new class GCalendarService {
   /**
@@ -141,23 +142,16 @@ var gcalendar = module.exports = new class GCalendarService {
     next();
   }
 
+  prepCalendarEventForResponse (req, res, next) {
+    req.event = mapGCalendarEventToEvent(req.event);
+  }
+
   /**
   Input: req.eventsResponse
   Output: req.events
   **/
   prepCalendarEventsForResponse (req, res, next) {
-    req.events = req.eventsResponse.items.map((event) => {
-      return {
-        id: event.id,
-        status: event.status,
-        htmlLink: event.htmlLink,
-        created: event.created,
-        updated: event.updated,
-        title: event.summary,
-        startDate: event.start.dateTime,
-        endDate: event.end.dateTime
-      };
-    });
+    req.events = req.eventsResponse.items.map(mapGCalendarEventToEvent);
     next();
   }
 
