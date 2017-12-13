@@ -103,10 +103,19 @@ module.exports = function (app) {
     responses.sendReqVar('vendors'));
 
   app.get('/api/vendors/:vendorId',
-    mongo.prepVendorQueryFromUrl,
+    auth.isLoggedIn,
+    mongo.prepBuyersVendorQueryFromUrl,
     mongo.getVendor,
     mongo.prepVendorForResponse,
     responses.sendReqVar('vendor'));
+
+  app.get('/api/vendors/:vendorId/files/:fileId',
+    auth.isLoggedIn,
+    mongo.prepBuyersVendorQueryFromUrl,
+    mongo.getVendor,
+    mongo.locateFileInVendor,
+    mongo.sendFile
+  );
 
   app.post('/api/vendors',
     auth.isLoggedIn,
