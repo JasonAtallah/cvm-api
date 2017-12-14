@@ -1,3 +1,4 @@
+const express = require('express');
 const config = require('../config');
 const auth = require('../mw/auth');
 const gcalendar = require('../mw/gcalendar');
@@ -9,37 +10,40 @@ const responses = require('../mw/responses');
 const sendGrid = require('../mw/sendGrid');
 
 module.exports = function (app) {
-  app.get('/api/buyer',
+
+  const router = express.Router();
+
+  router.get('/buyer',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
     mongo.prepBuyerForResponse,
     responses.sendReqVar('buyer'));
 
-  app.get('/api/buyer/token',
+  router.get('/buyer/token',
     mongo.getTokenForCode,
     responses.sendReqVar('token'));
 
-  app.put('/api/buyer/emails/:templateId',
+  router.put('/buyer/emails/:templateId',
     auth.isLoggedIn,
     parse.json,
     mongo.updateBuyerEmailTemplate,
     responses.sendOk(200));
 
-  app.put('/api/buyer/gcalendar',
+  router.put('/buyer/gcalendar',
     auth.isLoggedIn,
     parse.json,
     gcalendar.prepCalendar,
     mongo.updateCalendar,
     responses.sendOk(201));
 
-  app.put('/api/buyer/schedule',
+  router.put('/buyer/schedule',
     auth.isLoggedIn,
     parse.json,
     mongo.updateBuyerSchedule,
     responses.sendOk(204));
 
-  app.get('/api/calendars',
+  router.get('/calendars',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -48,7 +52,7 @@ module.exports = function (app) {
     gcalendar.prepCalendarListForResponse,
     responses.sendReqVar('calendars'));
 
-  app.get('/api/events',
+  router.get('/events',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -56,7 +60,7 @@ module.exports = function (app) {
     gcalendar.prepCalendarEventsForResponse,
     responses.sendReqVar('events'));
 
-  app.post('/api/events',
+  router.post('/events',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -66,37 +70,7 @@ module.exports = function (app) {
     gcalendar.prepCalendarEventForResponse,
     responses.sendReqVar('event'));
 
-  app.get('/api/questionnaires/:questionnaireId',
-    mongo.prepQuestionnaireQueryById,
-    mongo.getQuestionnaire,
-    mongo.prepQuestionnaireForResponse,
-    responses.sendReqVar('questionnaire'));
-
-  app.post('/api/questionnaires/:questionnaireId/responses',
-    parse.json,
-    mongo.validateNewVendor,
-    mongo.prepQuestionnaireQueryById,
-    mongo.getQuestionnaire,
-    mongo.prepNewVendorFromQuestionnaire,
-    mongo.createVendor,
-    mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'),
-    mongo.prepBuyerQueryFromQuestionnaire,
-    mongo.getBuyer,
-    sendGrid.prepNewVendorEmailToBuyer,
-    sendGrid.sendEmail);
-
-  app.put('/api/questionnaires/:questionnaireId/responses/:responseId',
-    parse.json,
-    mongo.prepQuestionnaireResponseForUpdate,
-    mongo.updateQuestionnaireResponse,
-    responses.sendOk(201));
-
-  app.post('/api/questionnaires/:questionnaireId/responses/:responseId/files',
-    parse.file('file'),
-    responses.sendReqVar('file'));
-
-  app.get('/api/vendors',
+  router.get('/vendors',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -104,14 +78,14 @@ module.exports = function (app) {
     mongo.getVendors,
     responses.sendReqVar('vendors'));
 
-  app.get('/api/vendors/:vendorId',
+  router.get('/vendors/:vendorId',
     auth.isLoggedIn,
     mongo.prepBuyersVendorQueryFromUrl,
     mongo.getVendor,
     mongo.prepVendorForResponse,
     responses.sendReqVar('vendor'));
 
-  app.get('/api/vendors/:vendorId/files/:fileId',
+  router.get('/vendors/:vendorId/files/:fileId',
     auth.isLoggedIn,
     mongo.prepBuyersVendorQueryFromUrl,
     mongo.getVendor,
@@ -119,7 +93,7 @@ module.exports = function (app) {
     mongo.sendFile
   );
 
-  app.post('/api/vendors',
+  router.post('/vendors',
     auth.isLoggedIn,
     parse.json,
     mongo.validateNewVendor,
@@ -129,7 +103,7 @@ module.exports = function (app) {
     mongo.createVendor,
     responses.sendReqVar('vendor'));
 
-  app.put('/api/vendors/:vendorId/approve',
+  router.put('/vendors/:vendorId/approve',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -138,7 +112,7 @@ module.exports = function (app) {
     gmail.sendApprovalEmailToVendor,
     responses.sendReqVar('vendor'));
 
-  app.put('/api/vendors/:vendorId/reject',
+  router.put('/vendors/:vendorId/reject',
     auth.isLoggedIn,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
@@ -147,4 +121,6 @@ module.exports = function (app) {
     gmail.sendRejectionEmailToVendor,
     // mongo.storeResult store result from rejection with datetime in vendor
     responses.sendReqVar('vendor'));
+
+  return router;
 };
