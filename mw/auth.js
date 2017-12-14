@@ -16,6 +16,7 @@ module.exports = new class AuthMiddleware {
       );
       const scopes = [
         'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/gmail.modify',
         'https://www.googleapis.com/auth/calendar'
       ];
@@ -58,6 +59,7 @@ module.exports = new class AuthMiddleware {
     var options = {
       method: 'GET',
       url: `https://people.googleapis.com/v1/people/me`,
+      json: true,
       headers: {
         authorization: `Bearer ${req.gAuth.access_token}`
       },
@@ -67,12 +69,12 @@ module.exports = new class AuthMiddleware {
     };
 
     request(options)
-      .then((result) => {
-        const profile = JSON.parse(result);
+      .then((profile) => {
         req.gProfile = {
           id: profile.resourceName.split('/').pop(),
           firstName: profile.names[0].givenName,
-          lastName: profile.names[0].familyName
+          lastName: profile.names[0].familyName,
+          email: profile.emailAddresses[0].value
         };
         next();
       });
