@@ -507,6 +507,7 @@ module.exports = {
       $set: {
         gProfile: req.gProfile,
         'gAuth.accessToken': req.gAuth.access_token,
+        'gAuth.refreshToken': req.gAuth.refresh_token,
         'gAuth.tokenType': req.gAuth.token_type,
         'gAuth.expiryDate': req.gAuth.expiry_date
       }

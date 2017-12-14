@@ -10,19 +10,6 @@ const config = module.exports = {
         host: process.env.APP_HOST,
         port: process.env.PORT
       },
-      auth0: {
-        algorithm: process.env.AUTH0_ALGORITHM,
-        audience: process.env.AUTH0_AUDIENCE,
-        client: {
-          audience: process.env.AUTH0_CLIENT_AUDIENCE,
-          id: process.env.AUTH0_CLIENT_ID,
-          secret: process.env.AUTH0_CLIENT_SECRET
-        },
-        domain: process.env.AUTH0_DOMAIN,
-        issuer: process.env.AUTH0_ISSUER,
-        jwksUri: process.env.AUTH0_JWKS_URI,
-        scope: process.env.AUTH0_SCOPE
-      },
       cors: {
         whitelist: process.env.CORS_WHITELIST.split(',')
       },
