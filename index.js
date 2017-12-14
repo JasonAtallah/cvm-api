@@ -13,7 +13,8 @@ const app = express();
 app.use(morgan('combined'));
 
 require('./routes/auth')(app);
-require('./routes/api')(app);
+app.use('/vendor/v1', require('./routes/vendor-router-v1')(app));
+app.use('/buyer/v1', require('./routes/buyer-router-v1')(app));
 
 app.use(function (req, res, next) {
   if (!res._headerSent) {
