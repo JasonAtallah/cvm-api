@@ -1,5 +1,7 @@
 const ObjectID = require('mongodb').ObjectID;
+const GridFSBucket = require('mongodb').GridFSBucket;
 const _ = require('lodash');
+const traverse = require('traverse');
 const config = require('../config');
 
 module.exports = {
@@ -210,6 +212,19 @@ module.exports = {
       });
   },
 
+  /*
+  Inputs: req.vendor, req.params.fileId
+  Outputs: req.file
+  */
+  locateFileInVendor(req, res, next) {
+    traverse(req.vendor).forEach(function (elem) {
+      if (elem && elem.id === req.params.fileId) {
+        req.file = elem;
+      }
+    });
+    next();
+  },
+
   lookupLoginCallback(req, res, next) {
     const query = {
       _id: new ObjectID(req.query.state)
@@ -331,9 +346,10 @@ module.exports = {
     next();
   },
 
-  prepVendorQueryFromUrl(req, res, next) {
+  prepBuyersVendorQueryFromUrl(req, res, next) {
     req.vendorQuery = {
-      _id: new ObjectID(req.params.vendorId)
+      _id: new ObjectID(req.params.vendorId),
+      buyerId: new ObjectID(req.userId)
     };
     next();
   },
@@ -379,6 +395,25 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
+  },
+
+  sendFile(req, res, next) {
+    res.set('Content-Type', req.file.contentType);
+    res.set('Content-Disposition', `attachment; filename="${req.file.originalname}"`);
+
+    config.mongo.getDB
+    .then((db) => {
+      var bucket = new GridFSBucket(db,
+        { bucketName: req.file.bucketName, chunkSizeBytes: req.file.chunkSize });
+      var downloadStream = bucket.openDownloadStream(new ObjectID(req.file.id));
+      downloadStream.on("error", function(err) {
+        next(err);
+      });
+      downloadStream.pipe(res);
+    })
+    .catch((err) => {
+      next(err);
+    });
   },
 
   updateBuyerEmailTemplate(req, res, next) {
