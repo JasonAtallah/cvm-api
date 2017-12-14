@@ -264,13 +264,11 @@ module.exports = {
     next();
   },
 
-  prepQuestionnaireForResponse(req, res, next) {
-    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
-    next();
-  },
-
-  prepVendorForResponse(req, res, next) {
-    req.vendor = _.omit(req.vendor, ['buyerId']);
+  prepBuyersVendorQueryFromUrl(req, res, next) {
+    req.vendorQuery = {
+      _id: new ObjectID(req.params.vendorId),
+      buyerId: new ObjectID(req.userId)
+    };
     next();
   },
 
@@ -305,6 +303,11 @@ module.exports = {
     next();
   },
 
+  prepQuestionnaireForResponse(req, res, next) {
+    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
+    next();
+  },
+
   /**
   Inputs: req.body
   Outputs: req.response
@@ -322,6 +325,11 @@ module.exports = {
     next();
   },
 
+  prepVendorForResponse(req, res, next) {
+    req.vendor = _.omit(req.vendor, ['buyerId']);
+    next();
+  },
+
   prepVendorOnQuestionnaire(req, res, next) {
     if (!req.vendor.questionnaires) {
       req.vendor.questionnaires = {};
@@ -330,10 +338,6 @@ module.exports = {
     req.vendor.questionnaires[req.params.questionnaireId] = req.body;
     next();
   },
-
-  // prepVendorQuery(req, res, next) {
-  //   req.vendor
-  // },
 
   /**
   Inputs: req.buyer
@@ -346,12 +350,8 @@ module.exports = {
     next();
   },
 
-  prepBuyersVendorQueryFromUrl(req, res, next) {
-    req.vendorQuery = {
-      _id: new ObjectID(req.params.vendorId),
-      buyerId: new ObjectID(req.userId)
-    };
-    next();
+  prepVendorQueryFromUrl(req, res, next) {
+    req.vendor
   },
 
   rejectVendor(req, res, next) {
