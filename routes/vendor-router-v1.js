@@ -15,6 +15,7 @@ module.exports = function (app) {
     mongo.prepQuestionnaireForResponse,
     responses.sendReqVar('questionnaire'));
 
+  // router.post('/vendors/:vendorId/submitQuestionnaire');
   router.post('/questionnaires/:questionnaireId/responses',
     parse.json,
     mongo.validateNewVendor,
@@ -28,7 +29,8 @@ module.exports = function (app) {
     mongo.getBuyer,
     sendGrid.prepNewVendorEmailToBuyer,
     sendGrid.sendEmail);
-
+  
+  // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
     parse.json,
     mongo.prepQuestionnaireResponseForUpdate,
@@ -45,5 +47,6 @@ module.exports = function (app) {
     mongo.prepVendorForResponse,
     responses.sendReqVar('vendor'));
 
+  router.post('/vendors/:vendorId/rejectTimes');
   return router;
 };

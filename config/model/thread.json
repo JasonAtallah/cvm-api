@@ -1,0 +1,69 @@
+
+[
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "vendorSubmittedQuestionnaire",
+    "questionnaireId": "",
+  },
+  // currentStatus: buyerNeedsToReviewVendor, because vendor submitted questionnaire
+  // currentActor: buyer
+  // currentView: Scheduler
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "buyerRejectedVendor",
+    "email": {}    
+  },
+  // currentStatus: rejected, because most recent action is rejectVendor
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "buyerApprovedVendor",
+    "email": {}
+  },
+  // currentStatus: buyerNeedsToSendNewTimes
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "buyerSentNewTimes",    
+    "suggestedTimes": [],
+    "rejectedTimes": [],
+    "email": {}
+  },
+  // currentStatus: vendorNeedsToReviewTimes, because buyer sent times
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "vendorRejectedTimes",
+    "message": "",
+    "rejectedTimes": []
+  },
+  // currentStatus: buyerNeedsToSendNewTimes, because the vendor rejected the times
+  // currentActor: buyer
+  // currentView: Scheduler with times greyed out (based on: all suggestedTimes where action === buyerSentNewTimes or buyerApprovedVendor)
+  {
+    "timestamp": "",
+    "buyerId": "",
+    "vendorId": "",
+    "action": "buyerSentNewTimes",    
+    "suggestedTimes": [],
+    "rejectedTimes": [],
+    "email": {}
+  },
+  // currentStatus: vendorNeedsToReviewTimes, because buyer sent times
+  {
+    "buyerId": "",
+    "vendorId": "",
+    "action": "vendorSelectsTime",        
+    "selectedTime": "",
+    "event": {}  // information given by gCalendar
+  },
+  // currentStatus: appointmentScheduled, because vendor selected a time
+  // currentView: scheduled appointment
+]
