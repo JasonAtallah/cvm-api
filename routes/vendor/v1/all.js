@@ -15,25 +15,36 @@ module.exports = function (app) {
   // router.post('/vendors/:vendorId/submitQuestionnaire');
   router.post('/questionnaires/:questionnaireId/responses',
     mw.parse.json,
-    mw.data.incoming.prepNewVendorFromQuestionnaire,
-    mw.data.validation.validateNewVendor,
-    mw.mongo.vendors.insertVendor,
-    mw.data.queries.prepQuestionnaireQueryById,
-    mw.data.incoming.prepNewVendorThread,
-    mw.mongo.vendors.insertThread,
-    mw.data.responses.prepVendorForResponse,
-    mw.responses.sendReqVar('vendor'));
+    mw.compose([
+      mw.data.incoming.prepNewVendorFromQuestionnaire,
+      mw.data.validation.validateNewVendor,
+      mw.mongo.vendors.insertVendor
+    ]),
+    mw.compose([
+      mw.data.incoming.prepNewVendorThread,
+      mw.mongo.vendors.insertThread
+    ]),
+    mw.compose([
+      mw.data.responses.prepVendorForResponse,
+      mw.responses.sendReqVar('vendor')
+    ]));
 
   // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
     mw.parse.json,
-    mw.data.incoming.prepQuestionnaireResponseForUpdate,
-    mw.mongo.vendors.updateQuestionnaireResponse,
-    mw.responses.sendOk(201),
-    mw.data.queries.prepBuyerQueryFromQuestionnaire,
-    mw.mongo.get.buyer,
-    mw.sendGrid.prepNewVendorEmailToBuyer,
-    mw.sendGrid.sendEmail);
+    mw.compose([
+      mw.data.incoming.prepQuestionnaireResponseForUpdate,
+      mw.mongo.vendors.updateQuestionnaireResponse
+    ]),
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromQuestionnaire,
+      mw.mongo.get.buyer
+    ]),
+    mw.compose([
+      mw.sendGrid.prepNewVendorEmailToBuyer,
+      mw.sendGrid.sendEmail
+    ]),
+    mw.responses.sendOk(201));
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     mw.parse.file('file'),
