@@ -28,8 +28,27 @@ module.exports = function (app) {
   router.put('/vendors/:vendorId/approve',
     mw.auth.isLoggedIn,
     mw.parse.json,
-    mw.mongo.vendors.approveVendor,
-    mw.gmail.sendApprovalEmailToVendor,
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.incoming.prepApproveVendorAction,
+      mw.data.incoming.prepNewThreadState,
+      mw.mongo.vendors.updateThreadOnAction
+    ]),
+    mw.compose([
+      mw.data.incoming.prepVendorApprovalEmail,
+      mw.gmail.sendApprovalEmailToVendor
+    ]),
     mw.responses.sendReqVar('vendor'));
 
   router.put('/vendors/:vendorId/reject',
@@ -53,7 +72,7 @@ module.exports = function (app) {
       mw.mongo.vendors.updateThreadOnAction
     ]),
     mw.compose([
-      mw.data.incoming.prepRejectionEmail,
+      mw.data.incoming.prepVendorRejectionEmail,
       mw.gmail.sendRejectionEmailToVendor
     ]),
     mw.compose([

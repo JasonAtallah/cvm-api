@@ -4,6 +4,14 @@ const threads = require('../../lib/threads');
 
 module.exports = {
 
+  prepApproveVendorAction(req, res, next) {
+    req.action = {
+      name: "ApproveVendor",
+      timestamp: new Date().getTime()
+    };
+    next();
+  },
+
   prepNewThreadState(req, res, next) {
     req.state = threads.transition(req.thread, req.action);
     next();
@@ -51,7 +59,20 @@ module.exports = {
     next();
   },
 
-  prepRejectionEmail(req, res, next) {
+  prepVendorApprovalEmail(req, res, next) {
+    var message = '';
+    message += `To: ${req.vendor.contact.email} \r\n`;
+    message += `Subject: ${req.body.subject} \r\n`;
+    message += `\n${req.body.body}\n\nPlease Visit: ${req.body.scheduleUrl} to schedule a time to meet with the buyer.`;
+
+    req.email = {
+      accessToken: req.buyer.gAuth.accessToken,
+      message: message
+    };
+    next();
+  },
+
+  prepVendorRejectionEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
     message += `Subject: ${req.body.subject} \r\n`;
