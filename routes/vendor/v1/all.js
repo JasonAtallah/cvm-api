@@ -1,52 +1,49 @@
 const express = require('express');
 const config = require('../../../config');
-const mongo = require('../../../mw/mongo');
-const parse = require('../../../mw/parse');
-const responses = require('../../../mw/responses');
-const sendGrid = require('../../../mw/sendGrid');
+const mw = require('../../../mw');
 
 module.exports = function (app) {
 
   const router = express.Router();
 
   router.get('/questionnaires/:questionnaireId',
-    mongo.prepQuestionnaireQueryById,
-    mongo.getQuestionnaire,
-    mongo.prepQuestionnaireForResponse,
-    responses.sendReqVar('questionnaire'));
+    mw.data.queries.prepQuestionnaireQueryById,
+    mw.mongo.get.questionnaire,
+    mw.data.responses.prepQuestionnaireForResponse,
+    mw.responses.sendReqVar('questionnaire'));
 
   // router.post('/vendors/:vendorId/submitQuestionnaire');
   router.post('/questionnaires/:questionnaireId/responses',
-    parse.json,
-    mongo.prepNewVendorFromQuestionnaire,
-    mongo.validateNewVendor,
-    mongo.insertVendor,
-    mongo.prepQuestionnaireQueryById,
-    mongo.prepNewVendorThread,
-    mongo.insertThread,
-    mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'));
+    mw.parse.json,
+    mw.data.incoming.prepNewVendorFromQuestionnaire,
+    mw.data.validation.validateNewVendor,
+    mw.mongo.vendors.insertVendor,
+    mw.data.queries.prepQuestionnaireQueryById,
+    mw.data.incoming.prepNewVendorThread,
+    mw.mongo.vendors.insertThread,
+    mw.data.responses.prepVendorForResponse,
+    mw.responses.sendReqVar('vendor'));
 
   // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
-    parse.json,
-    mongo.prepQuestionnaireResponseForUpdate,
-    mongo.updateQuestionnaireResponse,
-    responses.sendOk(201),
-    mongo.prepBuyerQueryFromQuestionnaire,
-    mongo.getBuyer,
-    sendGrid.prepNewVendorEmailToBuyer,
-    sendGrid.sendEmail);
+    mw.parse.json,
+    mw.data.incoming.prepQuestionnaireResponseForUpdate,
+    mw.mongo.vendors.updateQuestionnaireResponse,
+    mw.responses.sendOk(201),
+    mw.data.queries.prepBuyerQueryFromQuestionnaire,
+    mw.mongo.get.buyer,
+    mw.sendGrid.prepNewVendorEmailToBuyer,
+    mw.sendGrid.sendEmail);
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
-    parse.file('file'),
-    responses.sendReqVar('file'));
+    mw.parse.file('file'),
+    mw.responses.sendReqVar('file'));
 
   router.get('/vendors/:vendorId',
-    mongo.prepVendorQueryFromUrl,
-    mongo.getVendor,
-    mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'));
+    mw.data.queries.prepVendorQueryFromUrl,
+    mw.mongo.get.vendor,
+    mw.data.responses.prepVendorForResponse,
+    mw.responses.sendReqVar('vendor'));
 
   router.post('/vendors/:vendorId/rejectTimes');
 

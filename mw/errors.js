@@ -3,9 +3,8 @@ const config = require('../config');
 module.exports = new class ErrorsMiddleware {
 
   status404(req, res, next) {
-    console.log(req.path + ' not found');
-
     if (!res._headerSent) {
+      console.log(req.path + ' not found');
       res.status(404).send('File not found.');
     }
   }

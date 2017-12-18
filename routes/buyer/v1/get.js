@@ -1,66 +1,59 @@
 const express = require('express');
 const config = require('../../../config');
-const auth = require('../../../mw/auth');
-const gcalendar = require('../../../mw/gcalendar');
-const gmail = require('../../../mw/gmail');
-const logic = require('../../../mw/logic');
-const mongo = require('../../../mw/mongo');
-const parse = require('../../../mw/parse');
-const responses = require('../../../mw/responses');
-const sendGrid = require('../../../mw/sendGrid');
+const mw = require('../../../mw');
 
 module.exports = function (app) {
 
   const router = express.Router();
 
   router.get('/buyer',
-    auth.isLoggedIn,
-    mongo.prepBuyerQueryFromAuth,
-    mongo.getBuyer,
-    mongo.prepBuyerForResponse,
-    responses.sendReqVar('buyer'));
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepBuyerQueryFromAuth,
+    mw.mongo.get.buyer,
+    mw.data.responses.prepBuyerForResponse,
+    mw.responses.sendReqVar('buyer'));
 
   router.get('/token',
-    mongo.getTokenForCode,
-    responses.sendReqVar('token'));
+    mw.mongo.auth.getTokenForCode,
+    mw.responses.sendReqVar('token'));
 
   router.get('/calendars',
-    auth.isLoggedIn,
-    mongo.prepBuyerQueryFromAuth,
-    mongo.getBuyer,
-    parse.json,
-    gcalendar.getCalendarList,
-    gcalendar.prepCalendarListForResponse,
-    responses.sendReqVar('calendars'));
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepBuyerQueryFromAuth,
+    mw.mongo.get.buyer,
+    mw.parse.json,
+    mw.gcalendar.getCalendarList,
+    mw.gcalendar.prepCalendarListForResponse,
+    mw.responses.sendReqVar('calendars'));
 
   router.get('/events',
-    auth.isLoggedIn,
-    mongo.prepBuyerQueryFromAuth,
-    mongo.getBuyer,
-    gcalendar.getCalendarEvents,
-    gcalendar.prepCalendarEventsForResponse,
-    responses.sendReqVar('events'));
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepBuyerQueryFromAuth,
+    mw.mongo.get.buyer,
+    mw.gcalendar.getCalendarEvents,
+    mw.gcalendar.prepCalendarEventsForResponse,
+    mw.responses.sendReqVar('events'));
 
   router.get('/vendors',
-    auth.isLoggedIn,
-    mongo.prepVendorListQueryForLoggedInBuyer,
-    mongo.getVendors,
-    mongo.prepVendorListForReponse,
-    responses.sendReqVar('vendors'));
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepVendorListQueryForLoggedInBuyer,
+    mw.mongo.get.vendorList,
+    mw.data.responses.prepVendorListForReponse,
+    mw.responses.sendReqVar('vendors'));
 
   router.get('/vendors/:vendorId',
-    auth.isLoggedIn,
-    mongo.prepVendorQueryFromUrl,
-    mongo.getVendor,
-    mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'));
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepVendorQueryFromUrl,
+    mw.mongo.get.vendor,
+    mw.data.responses.prepVendorForResponse,
+    mw.responses.sendReqVar('vendor'));
 
   router.get('/vendors/:vendorId/files/:fileId',
-    auth.isLoggedIn,
-    mongo.prepVendorQueryFromUrl,
-    mongo.getVendor,
-    mongo.locateFileInVendor,
-    mongo.sendFile
+    mw.auth.isLoggedIn,
+    mw.data.queries.prepVendorQueryFromUrl,
+    mw.mongo.get.vendor,
+    mw.data.utils.locateFileInVendor,
+    mw.mongo.files.stream
   );
 
   return router;
