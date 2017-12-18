@@ -1,9 +1,9 @@
 const express = require('express');
-const config = require('../config');
-const mongo = require('../mw/mongo');
-const parse = require('../mw/parse');
-const responses = require('../mw/responses');
-const sendGrid = require('../mw/sendGrid');
+const config = require('../../../config');
+const mongo = require('../../../mw/mongo');
+const parse = require('../../../mw/parse');
+const responses = require('../../../mw/responses');
+const sendGrid = require('../../../mw/sendGrid');
 
 module.exports = function (app) {
 
@@ -22,20 +22,22 @@ module.exports = function (app) {
     mongo.prepQuestionnaireQueryById,
     mongo.getQuestionnaire,
     mongo.prepNewVendorFromQuestionnaire,
-    mongo.createVendor,
+    mongo.createVendor, // insert vendor
     mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor'),
-    mongo.prepBuyerQueryFromQuestionnaire,
-    mongo.getBuyer,
-    sendGrid.prepNewVendorEmailToBuyer,
-    sendGrid.sendEmail);
-  
+    responses.sendReqVar('vendor')
+    );
+
   // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
     parse.json,
     mongo.prepQuestionnaireResponseForUpdate,
     mongo.updateQuestionnaireResponse,
-    responses.sendOk(201));
+    responses.sendOk(201),
+    mongo.prepBuyerQueryFromQuestionnaire,
+    mongo.getBuyer,
+    sendGrid.prepNewVendorEmailToBuyer,
+    sendGrid.sendEmail,
+  );
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     parse.file('file'),
@@ -48,5 +50,6 @@ module.exports = function (app) {
     responses.sendReqVar('vendor'));
 
   router.post('/vendors/:vendorId/rejectTimes');
+
   return router;
 };
