@@ -34,13 +34,32 @@ module.exports = function (app) {
 
   router.put('/vendors/:vendorId/reject',
     mw.auth.isLoggedIn,
-    mw.data.queries.prepBuyerQueryFromAuth,
-    mw.mongo.get.buyer,
     mw.parse.json,
-    mw.mongo.vendors.rejectVendor,
-    mw.gmail.sendRejectionEmailToVendor,
-    // mongo.storeResult store result from rejection with datetime in vendor
-    mw.responses.sendReqVar('vendor'));
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.incoming.prepRejectVendorAction,
+      mw.data.incoming.prepNewThreadState,
+      mw.mongo.vendors.updateThreadOnAction
+    ]),
+    mw.compose([
+      mw.data.incoming.prepRejectionEmail,
+      mw.gmail.sendRejectionEmailToVendor
+    ]),
+    mw.compose([
+      mw.data.responses.prepThreadForVendorResponse,
+      mw.responses.sendReqVar('vendor')
+    ]));
 
   return router;
 };

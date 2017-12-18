@@ -26,7 +26,7 @@ module.exports = function (app) {
     mw.mongo.get.buyer,
     mw.data.incoming.prepNewVendorThread,
     mw.mongo.vendors.insertThread,
-    mw.data.responses.prepNewThreadForVendorResponse,
+    mw.data.responses.prepThreadForVendorResponse,
     mw.responses.sendReqVar('vendor'));
 
   return router;

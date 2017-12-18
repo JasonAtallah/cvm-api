@@ -11,7 +11,7 @@ module.exports = {
     next();
   },
 
-  prepNewThreadForVendorResponse(req, res, next) {
+  prepThreadForVendorResponse(req, res, next) {
     req.vendor = mappings.mapThreadToVendor(req.thread);
     next();
   },

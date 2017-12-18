@@ -31,6 +31,14 @@ module.exports = {
     next();
   },
 
+  prepThreadQueryForVendorInUrl(req, res, next) {
+    req.threadQuery = {
+      'vendor._id': new ObjectID(req.params.vendorId),
+      'buyer._id': new ObjectID(req.userId)
+    };
+    next();
+  },
+
   prepVendorListQueryForLoggedInBuyer(req, res, next) {
     req.vendorQuery = {
       "buyer._id": new ObjectID(req.userId)

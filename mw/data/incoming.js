@@ -1,7 +1,13 @@
 const ObjectID = require('mongodb').ObjectID;
 const config = require('../../config');
+const threads = require('../../lib/threads');
 
 module.exports = {
+
+  prepNewThreadState(req, res, next) {
+    req.state = threads.transition(req.thread, req.action);
+    next();
+  },
 
   prepNewVendorFromBuyer(req, res, next) {
     req.vendor = req.body;
@@ -29,9 +35,7 @@ module.exports = {
       },
       actions: [],
       states: [],
-      state: {
-        name: "NewVendor"
-      }
+      state: threads.createState('NewVendor')
     };
     next();
   },
@@ -44,6 +48,27 @@ module.exports = {
   prepQuestionnaireResponseForUpdate(req, res, next) {
     req.response = req.body;
     req.response._id = new ObjectID(req.params.responseId);
+    next();
+  },
+
+  prepRejectionEmail(req, res, next) {
+    var message = '';
+    message += `To: ${req.vendor.contact.email} \r\n`;
+    message += `Subject: ${req.body.subject} \r\n`;
+    message += `\r\n ${req.body.body}`;
+
+    req.email = {
+      accessToken: req.buyer.gAuth.accessToken,
+      message: message
+    };
+    next();
+  },
+
+  prepRejectVendorAction(req, res, next) {
+    req.action = {
+      name: "RejectVendor",
+      timestamp: new Date().getTime()
+    };
     next();
   }
 

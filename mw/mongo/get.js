@@ -40,6 +40,26 @@ module.exports = {
       });
   },
 
+  thread(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('threads').findOne(req.threadQuery)
+          .then((thread) => {
+            if (!thread) {
+              const err = new Error('Thread not found');
+              err.status = 404;
+              next(err);
+            } else {
+              req.thread = thread;
+              next();
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   vendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {
