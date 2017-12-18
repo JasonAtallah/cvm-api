@@ -43,22 +43,21 @@ module.exports = function (app) {
 
   router.get('/vendors',
     auth.isLoggedIn,
-    mongo.prepBuyerQueryFromAuth,
-    mongo.getBuyer,
-    mongo.prepVendorQueryFromBuyer,
+    mongo.prepVendorListQueryForLoggedInBuyer,
     mongo.getVendors,
+    mongo.prepVendorListForReponse,
     responses.sendReqVar('vendors'));
 
   router.get('/vendors/:vendorId',
     auth.isLoggedIn,
-    mongo.prepBuyersVendorQueryFromUrl,
+    mongo.prepVendorQueryFromUrlForLoggedInBuyer,
     mongo.getVendor,
     mongo.prepVendorForResponse,
     responses.sendReqVar('vendor'));
 
   router.get('/vendors/:vendorId/files/:fileId',
     auth.isLoggedIn,
-    mongo.prepBuyersVendorQueryFromUrl,
+    mongo.prepVendorQueryFromUrlForLoggedInBuyer,
     mongo.getVendor,
     mongo.locateFileInVendor,
     mongo.sendFile

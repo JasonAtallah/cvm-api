@@ -159,7 +159,7 @@ module.exports = {
   getVendors(req, res, next) {
     config.mongo.getDB
       .then((db) => {
-        db.collection('vendors').find(req.vendorQuery).toArray(function (err, vendors) {
+        db.collection('threads').find(req.vendorQuery).project(req.vendorProjection).toArray(function (err, vendors) {
           if (err) {
             next(err);
           } else {
@@ -264,7 +264,7 @@ module.exports = {
     next();
   },
 
-  prepBuyersVendorQueryFromUrl(req, res, next) {
+  prepVendorQueryFromUrlForLoggedInBuyer(req, res, next) {
     req.vendorQuery = {
       _id: new ObjectID(req.params.vendorId),
       buyerId: new ObjectID(req.userId)
@@ -330,6 +330,15 @@ module.exports = {
     next();
   },
 
+  prepVendorListForReponse(req, res, next) {
+    req.vendors = req.vendors.map((v) => {
+      return Object.assign(v.vendor, {
+        state: v.curState
+      })
+    });
+    next();
+  },
+
   prepVendorOnQuestionnaire(req, res, next) {
     if (!req.vendor.questionnaires) {
       req.vendor.questionnaires = {};
@@ -343,15 +352,39 @@ module.exports = {
   Inputs: req.buyer
   Outputs: req.vendorQuery
   **/
-  prepVendorQueryFromBuyer(req, res, next) {
+  prepVendorListQueryForLoggedInBuyer(req, res, next) {
     req.vendorQuery = {
-      buyerId: req.buyer._id
+      "buyer._id": new ObjectID(req.userId)
     };
+
+    if (req.query.status) {
+      if (req.query.status === 'New') {
+        req.vendorQuery['curState.name'] = 'NewVendor';
+      } else if (req.query.status === 'Rejected') {
+        req.vendorQuery['curState.name'] = 'VendorRejected';
+      } else if (req.query.status === 'Approved') {
+        req.vendorQuery['curState.name'] = {
+          '$in': [
+            'AwaitingBuyerAppointmentTimes',
+            'AwaitingVendorAppointmentTimes'
+          ]
+        };
+      }
+    }
+
+    req.vendorProjection = {
+      "vendor": 1,
+      "curState": 1
+    };
+
     next();
   },
 
   prepVendorQueryFromUrl(req, res, next) {
-    req.vendor
+    req.vendorQuery = {
+      _id: new ObjectID(req.params.vendorId)
+    };
+    next();
   },
 
   rejectVendor(req, res, next) {
