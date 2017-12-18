@@ -144,6 +144,7 @@ var gcalendar = module.exports = new class GCalendarService {
 
   prepCalendarEventForResponse (req, res, next) {
     req.event = mapGCalendarEventToEvent(req.event);
+    next();
   }
 
   /**

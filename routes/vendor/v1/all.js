@@ -18,14 +18,14 @@ module.exports = function (app) {
   // router.post('/vendors/:vendorId/submitQuestionnaire');
   router.post('/questionnaires/:questionnaireId/responses',
     parse.json,
-    mongo.validateNewVendor,
-    mongo.prepQuestionnaireQueryById,
-    mongo.getQuestionnaire,
     mongo.prepNewVendorFromQuestionnaire,
-    mongo.createVendor, // insert vendor
+    mongo.validateNewVendor,
+    mongo.insertVendor,
+    mongo.prepQuestionnaireQueryById,
+    mongo.prepNewVendorThread,
+    mongo.insertThread,
     mongo.prepVendorForResponse,
-    responses.sendReqVar('vendor')
-    );
+    responses.sendReqVar('vendor'));
 
   // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
@@ -36,8 +36,7 @@ module.exports = function (app) {
     mongo.prepBuyerQueryFromQuestionnaire,
     mongo.getBuyer,
     sendGrid.prepNewVendorEmailToBuyer,
-    sendGrid.sendEmail,
-  );
+    sendGrid.sendEmail);
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     parse.file('file'),

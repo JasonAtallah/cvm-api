@@ -3,6 +3,7 @@ const GridFSBucket = require('mongodb').GridFSBucket;
 const _ = require('lodash');
 const traverse = require('traverse');
 const config = require('../config');
+const mappings = require('../lib/mappings');
 
 module.exports = {
 
@@ -46,20 +47,6 @@ module.exports = {
         return db.collection('clientCodes').insert(record)
           .then((result) => {
             req.clientCode = record.code;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
-  createVendor(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('vendors').insert(req.vendor)
-          .then((result) => {
-            req.vendor = result.ops[0];
             next();
           });
       })
@@ -212,6 +199,34 @@ module.exports = {
       });
   },
 
+  insertThread(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('threads').insert(req.thread)
+          .then((result) => {
+            req.thread = result.ops[0];
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  insertVendor(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('vendors').insert(req.vendor)
+          .then((result) => {
+            req.vendor = result.ops[0];
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   /*
   Inputs: req.vendor, req.params.fileId
   Outputs: req.file
@@ -264,22 +279,24 @@ module.exports = {
     next();
   },
 
-  prepVendorQueryFromUrlForLoggedInBuyer(req, res, next) {
+  prepVendorQueryFromUrl(req, res, next) {
     req.vendorQuery = {
-      _id: new ObjectID(req.params.vendorId),
-      buyerId: new ObjectID(req.userId)
+      _id: new ObjectID(req.params.vendorId)
     };
     next();
   },
 
+  prepNewThreadForVendorResponse(req, res, next) {
+    req.vendor = mappings.mapThreadToVendor(req.thread);
+    next();
+  },
+
   /**
-  Inputs: req.body, req.buyer
+  Inputs: req.body
   Outputs: req.vendor
   **/
   prepNewVendorFromBuyer(req, res, next) {
     req.vendor = req.body;
-    req.vendor.buyerId = req.buyer._id;
-    req.vendor.status = null;
 
     ['flowers', 'edibles', 'concentrates'].forEach((key) => {
       if (!req.vendor[key]) {
@@ -293,13 +310,34 @@ module.exports = {
   },
 
   /**
-  Inputs: req.body, req.questionnaire
+  Inputs: req.vendor, req.buyer
+  Outputs: req.thread
+  **/
+  prepNewVendorThread(req, res, next) {
+    req.thread = {
+      buyer: {
+        _id: req.buyer._id,
+        name: req.buyer.name
+      },
+      vendor: {
+        _id: req.vendor._id,
+        name: req.vendor.company.name
+      },
+      actions: [],
+      states: [],
+      state: {
+        name: "New Vendor"
+      }
+    };
+    next();
+  },
+
+  /**
+  Inputs: req.body
   Outputs: req.vendor
   **/
   prepNewVendorFromQuestionnaire(req, res, next) {
     req.vendor = req.body;
-    req.vendor.buyerId = req.questionnaire.buyerId;
-    req.vendor.status = null;
     next();
   },
 
@@ -331,20 +369,7 @@ module.exports = {
   },
 
   prepVendorListForReponse(req, res, next) {
-    req.vendors = req.vendors.map((v) => {
-      return Object.assign(v.vendor, {
-        state: v.curState
-      })
-    });
-    next();
-  },
-
-  prepVendorOnQuestionnaire(req, res, next) {
-    if (!req.vendor.questionnaires) {
-      req.vendor.questionnaires = {};
-    }
-
-    req.vendor.questionnaires[req.params.questionnaireId] = req.body;
+    req.vendors = req.vendors.map(mappings.mapThreadToVendor);
     next();
   },
 
@@ -359,11 +384,11 @@ module.exports = {
 
     if (req.query.status) {
       if (req.query.status === 'New') {
-        req.vendorQuery['curState.name'] = 'NewVendor';
+        req.vendorQuery['state.name'] = 'NewVendor';
       } else if (req.query.status === 'Rejected') {
-        req.vendorQuery['curState.name'] = 'VendorRejected';
+        req.vendorQuery['state.name'] = 'VendorRejected';
       } else if (req.query.status === 'Approved') {
-        req.vendorQuery['curState.name'] = {
+        req.vendorQuery['state.name'] = {
           '$in': [
             'AwaitingBuyerAppointmentTimes',
             'AwaitingVendorAppointmentTimes'
@@ -374,9 +399,18 @@ module.exports = {
 
     req.vendorProjection = {
       "vendor": 1,
-      "curState": 1
+      "state": 1
     };
 
+    next();
+  },
+
+  prepVendorOnQuestionnaire(req, res, next) {
+    if (!req.vendor.questionnaires) {
+      req.vendor.questionnaires = {};
+    }
+
+    req.vendor.questionnaires[req.params.questionnaireId] = req.body;
     next();
   },
 
@@ -618,11 +652,11 @@ module.exports = {
   validateNewVendor(req, res, next) {
     let err;
 
-    if (!req.body.company.name) {
+    if (!req.vendor.company.name) {
       err = new Error('Company name is required');
-    } else if (!req.body.company.city) {
+    } else if (!req.vendor.company.city) {
       err = new Error('Company city is required');
-    } else if (!req.body.contact.email) {
+    } else if (!req.vendor.contact.email) {
       err = new Error('Contact email is required');
     }
 

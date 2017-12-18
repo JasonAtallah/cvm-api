@@ -50,14 +50,14 @@ module.exports = function (app) {
 
   router.get('/vendors/:vendorId',
     auth.isLoggedIn,
-    mongo.prepVendorQueryFromUrlForLoggedInBuyer,
+    mongo.prepVendorQueryFromUrl,
     mongo.getVendor,
     mongo.prepVendorForResponse,
     responses.sendReqVar('vendor'));
 
   router.get('/vendors/:vendorId/files/:fileId',
     auth.isLoggedIn,
-    mongo.prepVendorQueryFromUrlForLoggedInBuyer,
+    mongo.prepVendorQueryFromUrl,
     mongo.getVendor,
     mongo.locateFileInVendor,
     mongo.sendFile

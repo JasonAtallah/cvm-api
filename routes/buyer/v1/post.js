@@ -27,11 +27,14 @@ module.exports = function (app) {
   router.post('/vendors',
     auth.isLoggedIn,
     parse.json,
+    mongo.prepNewVendorFromBuyer,
     mongo.validateNewVendor,
+    mongo.insertVendor,
     mongo.prepBuyerQueryFromAuth,
     mongo.getBuyer,
-    mongo.prepNewVendorFromBuyer,
-    mongo.createVendor,
+    mongo.prepNewVendorThread,
+    mongo.insertThread,
+    mongo.prepNewThreadForVendorResponse,
     responses.sendReqVar('vendor'));
 
   return router;
