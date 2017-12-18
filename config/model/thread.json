@@ -1,69 +1,128 @@
-
-[
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "vendorSubmittedQuestionnaire",
-    "questionnaireId": "",
+{
+  "buyerVendorRelationship": {
+    "buyer": {
+      "_id": "",
+      "name": ""
+    },
+    "vendor": {
+      "_id": "",
+      "company": {
+        "name": ""
+      },
+      "contact": {
+        "name": ""
+      }
+    },
+    "actions": [
+      {
+        "timestamp": "",
+        "action": "vendorSubmittedQuestionnaire",
+        "questionnaireId": "",
+      },
+      {
+        "timestamp": "",
+        "action": "vendorSubmittedFile",
+        "questionnaireId": "",
+      },
+      {
+        "timestamp": "",
+        "action": "vendorFinalizedQuestionnaire",
+        "questionnaireId": "",
+      },
+      {
+        "timestamp": "",
+        "action": "buyerRejectedVendor",
+        "email": {}
+      },
+      {
+        "id": 1,
+        "timestamp": "",
+        "action": "buyerApprovedVendor",
+        "email": {}
+      },
+      {
+        "id": 2,
+        "timestamp": "",
+        "action": "buyerSentNewTimes",
+        "suggestedTimes": ["1/1/2018 1:00PM"]
+      },
+      {
+        "id": 3,
+        "timestamp": "",
+        "action": "vendorRejectedTimes",
+        "message": "",
+        "rejectedTimes": ["1/1/2018 1:00PM"]
+      },
+      {
+        "id": 4,
+        "timestamp": "",
+        "action": "buyerSentNewTimes",
+        "suggestedTimes": ["1/2/2018 1:00PM"]
+      },
+      {
+        "id": 3,
+        "timestamp": "",
+        "action": "vendorRejectedTimes",
+        "message": "",
+        "rejectedTimes": ["1/2/2018 1:00PM"]
+      },
+      {
+        "id": 4,
+        "timestamp": "",
+        "action": "buyerSentNewTimes",
+        "suggestedTimes": ["1/3/2018 1:00PM"]
+      },
+      {
+        "id": 5,
+        "action": "vendorSelectsTime",
+        "selectedTime": "1/3/2018 1:00PM",
+        "event": {}
+      },
+      {
+        "action": "buyerFollowsVendor"
+      },
+      {
+        "action": "vendorUpdateQuestionnaire"
+      }
+    ]
   },
-  // currentStatus: buyerNeedsToReviewVendor, because vendor submitted questionnaire
-  // currentActor: buyer
-  // currentView: Scheduler
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "buyerRejectedVendor",
-    "email": {}    
-  },
-  // currentStatus: rejected, because most recent action is rejectVendor
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "buyerApprovedVendor",
-    "email": {}
-  },
-  // currentStatus: buyerNeedsToSendNewTimes
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "buyerSentNewTimes",    
-    "suggestedTimes": [],
-    "rejectedTimes": [],
-    "email": {}
-  },
-  // currentStatus: vendorNeedsToReviewTimes, because buyer sent times
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "vendorRejectedTimes",
-    "message": "",
-    "rejectedTimes": []
-  },
-  // currentStatus: buyerNeedsToSendNewTimes, because the vendor rejected the times
-  // currentActor: buyer
-  // currentView: Scheduler with times greyed out (based on: all suggestedTimes where action === buyerSentNewTimes or buyerApprovedVendor)
-  {
-    "timestamp": "",
-    "buyerId": "",
-    "vendorId": "",
-    "action": "buyerSentNewTimes",    
-    "suggestedTimes": [],
-    "rejectedTimes": [],
-    "email": {}
-  },
-  // currentStatus: vendorNeedsToReviewTimes, because buyer sent times
-  {
-    "buyerId": "",
-    "vendorId": "",
-    "action": "vendorSelectsTime",        
-    "selectedTime": "",
-    "event": {}  // information given by gCalendar
-  },
-  // currentStatus: appointmentScheduled, because vendor selected a time
-  // currentView: scheduled appointment
-]
+  "states": [
+    {
+      "name": "buyerNeedsToSendTimes",
+    },
+    {
+      "name": "vendorNeedsToReviewTimes",
+      "suggestedTimes": ["1/1/2018 1:00PM"]
+    },
+    {
+      "name": "buyerNeedsToSendTimes",
+      "rejectedTimes": ["1/1/2018 1:00PM"]
+    },
+    {
+      "name": "vendorNeedsToReviewTimes",
+      "suggestedTimes": ["1/2/2018 1:00PM"],
+      "rejectedTimes": ["1/1/2018 1:00PM"]
+    },
+    {
+      "name": "buyerNeedsToSendTimes",
+      "rejectedTimes": ["1/1/2018 1:00PM", "1/2/2018 1:00PM"]
+    },
+    {
+      "name": "vendorNeedsToReviewTimes",
+      "suggestedTimes": ["1/3/2018 1:00PM"],
+      "rejectedTimes": ["1/1/2018 1:00PM", "1/2/2018 1:00PM"]
+    },
+    {
+      "name": "apptScheduled",
+      "scheduleDate": "1/3/2018 1:00PM"
+    },
+    {
+      "name": "buyerNeedsToSendTimes",
+      "rejectedTimes": ["1/1/2018 1:00PM", "1/2/2018 1:00PM", "1/3/2018 1:00PM"]
+    }
+  ],
+  "curState": {
+    "name": "apptScheduled",
+    "scheduleDate": "1/3/2018 1:00PM"
+  }
+}

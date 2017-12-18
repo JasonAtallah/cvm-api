@@ -1,0 +1,62 @@
+{
+  "buyer.getNewVendors": {
+    "query": {
+      "buyer._id": "",
+      "curState.name": "NewVendor"
+    },
+    "projection": {
+      "vendor": 1,
+      "actions": 0,
+      "states": 0,
+      "curState": 1
+    }
+  },
+  "buyer.getRejectedVendors": {
+    "query": {
+      "buyer._id": "",
+      "curState.name": "VendorRejected"
+    },
+    "projection": {
+      "vendor": 1,
+      "actions": 0,
+      "states": 0,
+      "curState": 1
+    }
+  },
+  "buyer.getApprovedVendors": {
+    "query": {
+      "buyer._id": "",
+      "curState.isApprovedState": true
+    },
+    "projection": {
+      "vendor": 1,
+      "actions": 0,
+      "states": 0,
+      "curState": 1
+    }
+  },
+  "buyer.getOnboardedVendors": {
+    "query": {
+      "buyer._id": "",
+      "curState.name": "VendorOnboarded"
+    },
+    "projection": {
+      "vendor": 1,
+      "actions": 0,
+      "states": 0,
+      "curState": 1
+    }
+  },
+  "vendor.getActiveBuyers": {
+    "query": {
+      "vendor._id": "",
+      "curState.name": ""
+    },
+    "projection": {
+      "buyer": 1,
+      "actions": 0,
+      "states": 0,
+      "curState": 1
+    }
+  }
+}
