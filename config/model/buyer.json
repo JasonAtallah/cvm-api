@@ -20,5 +20,9 @@
       "subject": "new vendor applied",
       "body": "check your site"
     }
+  },
+  "profile": {
+    "company": {},
+    "contact": {}
   }
 }
