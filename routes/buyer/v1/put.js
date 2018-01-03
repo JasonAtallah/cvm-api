@@ -80,5 +80,45 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
+    router.put('/vendors/:vendorId/unwatch', 
+    mw.auth.isLoggedIn,
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.mongo.buyer.unwatchVendor,
+      mw.responses.sendReqVar('buyer')    
+    ])
+  );
+
+  router.put('/vendors/:vendorId/watch', 
+    mw.auth.isLoggedIn,
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.mongo.buyer.watchVendor,
+      mw.responses.sendReqVar('buyer')    
+    ])
+  );
+
   return router;
 };

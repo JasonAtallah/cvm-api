@@ -69,6 +69,34 @@ module.exports = {
       });
   },
 
+  /**
+  Input: req.user, req.calendar
+  Output: req.result
+  **/
+  updateCalendar(req, res, next) {
+    const select = {
+      _id: new ObjectID(req.userId)
+    };
+
+    const update = {
+      $set: {
+        gcalendar: req.calendar
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, update)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   updateSchedule(req, res, next) {
     const select = {
       id: req.userId
@@ -93,26 +121,46 @@ module.exports = {
       });
   },
 
-  /**
-  Input: req.user, req.calendar
-  Output: req.result
-  **/
-  updateCalendar(req, res, next) {
+  unwatchVendor(req, res, next) {
     const select = {
-      _id: new ObjectID(req.userId)
+      _id: req.thread._id
     };
 
     const update = {
       $set: {
-        gcalendar: req.calendar
+        ['buyer.watchVendor']: false
       }
     };
 
     config.mongo.getDB
       .then((db) => {
-        return db.collection('buyers').update(select, update)
+        return db.collection('threads').findOneAndUpdate(select, update)
           .then((result) => {
-            req.result = result;
+            req.thread = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  watchVendor(req, res, next) {
+    const select = {
+      _id: req.thread._id
+    };
+
+    const update = {
+      $set: {
+        ['buyer.watchVendor']: true
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('threads').findOneAndUpdate(select, update)
+          .then((result) => {
+            req.thread = result.value;
             next();
           });
       })

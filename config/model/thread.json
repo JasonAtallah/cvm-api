@@ -2,7 +2,8 @@
   "buyerVendorRelationship": {
     "buyer": {
       "_id": "",
-      "name": ""
+      "name": "",
+      "watchVendor": false
     },
     "vendor": {
       "_id": "",
