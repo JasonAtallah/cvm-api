@@ -97,7 +97,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepWatchVendorStatus,
-      mw.mongo.vendors.updateVendorWatchStatusOnThread,
+      mw.mongo.attributes.updateVendorWatchStatusOnThread,
       mw.responses.sendReqVar('thread.buyer')    
     ])
   );

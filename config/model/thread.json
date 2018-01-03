@@ -12,7 +12,9 @@
       "contact": {
         "name": ""
       },
-      "watch": true
+      "attributes": {
+        "watchVendor": true
+      }
     },
     "actions": [
       {
