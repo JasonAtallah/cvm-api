@@ -12,6 +12,16 @@ module.exports = {
     next();
   },
 
+  prepBuyerSentNewTimesAction(req, res, next) {
+    console.log(req.body);
+    req.action = {
+      name: "BuyerSentNewTimes",
+      timestamp: new Date().getTime(),
+      suggestedTimes: req.body.timesSelected // needs to be converted to UTC
+    };
+    next();
+  },
+
   prepNewThreadState(req, res, next) {
     req.state = threads.transition(req.thread, req.action);
     next();

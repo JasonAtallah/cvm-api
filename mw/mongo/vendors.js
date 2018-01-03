@@ -101,30 +101,6 @@ module.exports = {
       });
   },
 
-  updateVendorWatchStatusOnThread(req, res, next) {
-    const select = {
-      _id: req.thread._id
-    };
-
-    const update = {
-      $set: {
-        ['vendor.watch']: req.watchVendorStatus
-      }
-    };
-
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update)
-          .then((result) => {
-            req.thread = result.value;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   updateQuestionnaireResponse(req, res, next) {
     const select = {
       _id: req.response._id
@@ -179,6 +155,30 @@ module.exports = {
     config.mongo.getDB
       .then((db) => {
         return db.collection('threads').findOneAndUpdate(select, update, options)
+          .then((result) => {
+            req.thread = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  updateVendorWatchStatusOnThread(req, res, next) {
+    const select = {
+      _id: req.thread._id
+    };
+
+    const update = {
+      $set: {
+        ['vendor.watch']: req.watchVendorStatus
+      }
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('threads').findOneAndUpdate(select, update)
           .then((result) => {
             req.thread = result.value;
             next();
