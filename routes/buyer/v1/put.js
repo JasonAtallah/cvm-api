@@ -80,8 +80,9 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-    router.put('/vendors/:vendorId/unwatch', 
+  router.put('/vendors/:vendorId/watchVendorStatus', 
     mw.auth.isLoggedIn,
+    mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
       mw.mongo.get.buyer,
@@ -95,28 +96,9 @@ module.exports = function (app) {
       mw.mongo.get.thread,
     ]),
     mw.compose([
-      mw.mongo.buyer.unwatchVendor,
-      mw.responses.sendReqVar('buyer')    
-    ])
-  );
-
-  router.put('/vendors/:vendorId/watch', 
-    mw.auth.isLoggedIn,
-    mw.compose([
-      mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
-    ]),
-    mw.compose([
-      mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor,
-    ]),
-    mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
-    ]),
-    mw.compose([
-      mw.mongo.buyer.watchVendor,
-      mw.responses.sendReqVar('buyer')    
+      mw.data.incoming.prepWatchVendorStatus,
+      mw.mongo.vendors.updateVendorWatchStatusOnThread,
+      mw.responses.sendReqVar('thread.buyer')    
     ])
   );
 

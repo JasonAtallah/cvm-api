@@ -91,6 +91,15 @@ module.exports = {
       timestamp: new Date().getTime()
     };
     next();
+  },
+
+  prepWatchVendorStatus(req, res, next) {
+    if (req.body.value === 'watchVendor') {
+      req.watchVendorStatus = true;
+    } else if (req.body.value === 'unwatchVendor') {
+      req.watchVendorStatus = false;
+    }
+    next();
   }
 
 };

@@ -119,54 +119,6 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
-  },
-
-  unwatchVendor(req, res, next) {
-    const select = {
-      _id: req.thread._id
-    };
-
-    const update = {
-      $set: {
-        ['buyer.watchVendor']: false
-      }
-    };
-
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update)
-          .then((result) => {
-            req.thread = result.value;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
-  watchVendor(req, res, next) {
-    const select = {
-      _id: req.thread._id
-    };
-
-    const update = {
-      $set: {
-        ['buyer.watchVendor']: true
-      }
-    };
-
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update)
-          .then((result) => {
-            req.thread = result.value;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
   }
 
 }
