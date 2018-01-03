@@ -2,14 +2,15 @@ const config = require('../../config');
 
 module.exports = {
 
-  updateVendorWatchStatusOnThread(req, res, next) {
+  updateThreadAttribute(req, res, next) {
+    console.log(req.params);
     const select = {
       _id: req.thread._id
     };
 
     const update = {
       $set: {
-        'attributes.watchVendor': req.watchVendorStatus
+        [`attributes.${req.attribute}`]: req.value
       }
     };
 

@@ -103,11 +103,13 @@ module.exports = {
     next();
   },
 
-  prepWatchVendorStatus(req, res, next) {
-    if (req.body.value === 'watchVendor') {
-      req.watchVendorStatus = true;
-    } else if (req.body.value === 'unwatchVendor') {
-      req.watchVendorStatus = false;
+  prepThreadAttribute(req, res, next) {
+    if (req.params.attribute === 'watchVendor') {
+      req.attribute = 'watchVendor';
+      req.value = true;
+    } else if (req.params.attribute === 'unwatchVendor') {
+      req.attribute = 'watchVendor';
+      req.value = false;
     }
     next();
   }

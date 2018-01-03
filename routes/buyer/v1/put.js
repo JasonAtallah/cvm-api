@@ -80,7 +80,7 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-  router.put('/vendors/:vendorId/watchVendorStatus', 
+  router.put('/vendors/:vendorId/attributes/:attribute', 
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
@@ -96,8 +96,8 @@ module.exports = function (app) {
       mw.mongo.get.thread,
     ]),
     mw.compose([
-      mw.data.incoming.prepWatchVendorStatus,
-      mw.mongo.attributes.updateVendorWatchStatusOnThread,
+      mw.data.incoming.prepThreadAttribute,
+      mw.mongo.threads.updateThreadAttribute,
       mw.responses.sendReqVar('thread.buyer')    
     ])
   );
