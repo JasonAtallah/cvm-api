@@ -97,7 +97,9 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepThreadAttribute,
-      mw.mongo.threads.updateThreadAttribute,
+      mw.logic.ifNotUndefinedInReq('attribute', [
+        mw.mongo.threads.updateThreadAttribute,
+      ]),
       mw.responses.sendReqVar('thread.buyer')    
     ])
   );
