@@ -11,10 +11,10 @@
       },
       "contact": {
         "name": ""
-      },
-      "attributes": {
-        "watchVendor": true
       }
+    },
+    "attributes": {
+      "watchVendor": true
     },
     "actions": [
       {
