@@ -39,7 +39,7 @@ module.exports = function (app) {
       mw.mongo.vendors.insertThread
     ]),
     mw.compose([
-      mw.data.responses.prepThreadForVendorResponse,
+      mw.data.responses.prepThreadAsVendorResponse,
       mw.responses.sendReqVar('vendor')
     ]));
 

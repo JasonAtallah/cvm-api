@@ -44,7 +44,7 @@ module.exports = function (app) {
       mw.mongo.get.vendor,
     ]),
     mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.data.queries.prepThreadQueryForBuyerVendor,
       mw.mongo.get.thread,
     ]),
     mw.compose([
@@ -56,7 +56,7 @@ module.exports = function (app) {
       ])
     ]),
     mw.compose([
-      mw.data.responses.prepThreadForVendorResponse,
+      mw.data.responses.prepThreadAsVendorResponse,
       mw.responses.sendReqVar('vendor')
     ]));
 

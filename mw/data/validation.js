@@ -10,7 +10,7 @@ module.exports = {
     } else {
       next();
     }
-  }
+  },
 
   validateNewVendor(req, res, next) {
     let err;

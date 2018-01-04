@@ -79,6 +79,11 @@ module.exports = {
     next();
   },
 
+  prepVendorAction(req, res, next) {
+    req.action = threads.createAction(req.params.action, req);
+    next();
+  },
+
   prepVendorApprovalEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;

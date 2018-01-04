@@ -38,7 +38,12 @@ module.exports = {
     next();
   },
 
-  prepThreadForVendorResponse(req, res, next) {
+  prepThreadAsBuyerResponse(req, res, next) {
+    req.buyer = mappings.mapThreadToBuyer(req.thread);
+    next();
+  },
+
+  prepThreadAsVendorResponse(req, res, next) {
     req.vendor = mappings.mapThreadToVendor(req.thread);
     next();
   },
