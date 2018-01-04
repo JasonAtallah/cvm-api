@@ -22,7 +22,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,
-      mw.mongo.vendors.insertThread
+      mw.mongo.threads.insert
     ]),
     mw.compose([
       mw.data.responses.prepVendorForResponse,

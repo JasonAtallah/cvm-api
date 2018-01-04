@@ -28,20 +28,6 @@ module.exports = {
       });
   },
 
-  insertThread(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').insert(req.thread)
-          .then((result) => {
-            req.thread = result.ops[0];
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   insertVendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -131,38 +117,6 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
-  },
-
-  updateThreadOnAction(req, res, next) {
-    const select = {
-      _id: req.thread._id
-    };
-
-    const update = {
-      $push: {
-        states: req.thread.state,
-        actions: req.action
-      },
-      $set: {
-        state: req.state
-      }
-    };
-
-    const options = {
-      returnOriginal: false
-    };
-
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update, options)
-          .then((result) => {
-            req.thread = result.value;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
   }
-
+  
 };

@@ -43,7 +43,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.incoming.prepApproveVendorAction,
       mw.data.incoming.prepNewThreadState,
-      mw.mongo.vendors.updateThreadOnAction
+      mw.mongo.threads.updateOnAction
     ]),
     mw.compose([
       mw.data.incoming.prepVendorApprovalEmail,
@@ -69,7 +69,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.incoming.prepRejectVendorAction,
       mw.data.incoming.prepNewThreadState,
-      mw.mongo.vendors.updateThreadOnAction
+      mw.mongo.threads.updateOnAction
     ]),
     mw.compose([
       mw.data.incoming.prepVendorRejectionEmail,
@@ -98,7 +98,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.incoming.prepThreadAttribute,
       mw.logic.ifNotUndefinedInReq('attribute', [
-        mw.mongo.threads.updateThreadAttribute,
+        mw.mongo.threads.updateAttribute,
       ]),
       mw.responses.sendReqVar('thread.buyer')    
     ])

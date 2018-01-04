@@ -24,7 +24,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.incoming.prepBuyerSentNewTimesAction,
       mw.data.incoming.prepNewThreadState,
-      mw.mongo.vendors.updateThreadOnAction
+      mw.mongo.threads.updateOnAction
     ]),
     mw.responses.sendReqVar('thread')
   );
@@ -59,7 +59,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,
-      mw.mongo.vendors.insertThread
+      mw.mongo.threads.insert
     ]),
     mw.compose([
       mw.data.responses.prepThreadForVendorResponse,
