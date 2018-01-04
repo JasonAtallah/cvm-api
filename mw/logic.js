@@ -1,25 +1,45 @@
 const compose = require('compose-middleware').compose;
 
-module.exports = new class LogicMiddleware {
+const logic = module.exports = new class LogicMiddleware {
 
-  ifNullInReq(reqVarName, mwArr) {
-    return (req, res, next) => {
-      if (!req[reqVarName]) {
-        const mwComposed = compose(mwArr);
-        mwComposed(req, res, next);
-      } else {
-        next();
-      }
+  ifNullInReq(reqVarName, ...args) {
+    const testFn = function(req) {
+      return _.get(req, reqVarName) === null;
     };
+
+    return logic.runMWIfElse(testFn, ...args);
   }
 
-  ifTrueInReq(reqVarName, mwArr) {
+  ifTrueInReq(reqVarName, ...args) {
+    const testFn = function(req) {
+      return _.get(req, reqVarName) === true;
+    };
+
+    return logic.runMWIfElse(testFn, ...args);
+  }
+
+  ifTruthyInReq(reqVarName, ...args) {
+    const testFn = function(req) {
+      return !!_.get(req, reqVarName);
+    };
+
+    return logic.runMWIfElse(testFn, ...args);
+  }
+
+  runMWIfElse(testFn, mwArrTrue, mwArrFalse) {
     return (req, res, next) => {
-      if (req[reqVarName] === true) {
-        const mwComposed = compose(mwArr);
+      const result = testFn(req);
+
+      if (result === true) {
+        const mwComposed = compose(mwArrTrue);
         mwComposed(req, res, next);
       } else {
-        next();
+        if (mwArrFalse !== undefined) {
+          const mwComposed = compose(mwArrFalse);
+          mwComposed(req, res, next);
+        } else {
+          next();
+        }
       }
     };
   }

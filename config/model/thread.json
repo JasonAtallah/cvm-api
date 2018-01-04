@@ -1,0 +1,27 @@
+{
+  "buyer": {
+    "_id": "",
+    "name": ""
+  },
+  "vendor": {
+    "_id": "",
+    "company": {
+      "name": ""
+    },
+    "contact": {
+      "name": ""
+    }
+  },
+  "attributes": {
+    "watch": true
+  },
+  "actions": [
+
+  ],
+  "states": [
+
+  ],
+  "state": {
+    "name": "NewVendor"
+  }
+}

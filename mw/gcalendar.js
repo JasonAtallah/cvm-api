@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
-const { mapGCalendarEventToEvent } = require('../lib/mappings');
+const mappings = require('../lib/mappings');
 
 var gcalendar = module.exports = new class GCalendarService {
   /**
@@ -109,71 +109,5 @@ var gcalendar = module.exports = new class GCalendarService {
         next();
       })
       .catch(next);
-  }
-
-  prepCalendar (req, res, next) {
-    if (req.body.id) {
-      req.calendar = req.body;
-      next();
-    } else if (req.body.name) {
-      gcalendar.createCalendar(req, res, next);
-    } else {
-      next(new Error('no calendar provided'));
-    }
-  }
-
-  /**
-  Input: req.body
-  Output: req.event
-  **/
-  prepCalendarEventForInsert (req, res, next) {
-    const timeParts = req.body.time.split(':');
-    const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
-    req.event = {
-      start: {
-        dateTime: startM.toDate()
-      },
-      end: {
-        dateTime: startM.add(req.body.duration, 'minutes').toDate()
-      },
-      summary: req.body.name,
-      location: req.body.location
-    };
-    next();
-  }
-
-  prepCalendarEventForResponse (req, res, next) {
-    req.event = mapGCalendarEventToEvent(req.event);
-  }
-
-  /**
-  Input: req.eventsResponse
-  Output: req.events
-  **/
-  prepCalendarEventsForResponse (req, res, next) {
-    req.events = req.eventsResponse.items.map(mapGCalendarEventToEvent);
-    next();
-  }
-
-  /**
-  Input: req.gcalendarlist
-  Output: req.calendars
-  **/
-  prepCalendarListForResponse (req, res, next) {
-    req.calendars = req.gcalendarlist.items
-      .filter((calendar) => {
-        return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
-      })
-      .map((calendar) => {
-        return {
-          type: 'google',
-          id: calendar.id,
-          name: calendar.summary,
-          tz: calendar.timeZone,
-          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
-        };
-      });
-
-    next();
   }
 };
