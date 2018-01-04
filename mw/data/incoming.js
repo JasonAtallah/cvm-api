@@ -8,7 +8,7 @@ module.exports = {
     req.action = threads.createAction(req.params.action, req);
     next();
   },
-
+  
   prepCalendar(req, res, next) {
     req.calendar = req.body;
     next();
@@ -69,6 +69,17 @@ module.exports = {
   prepQuestionnaireResponseForUpdate(req, res, next) {
     req.response = req.body;
     req.response._id = new ObjectID(req.params.responseId);
+    next();
+  },
+  
+  prepThreadAttribute(req, res, next) {
+    if (req.params.attribute === 'watchVendor') {
+      req.attribute = 'watchVendor';
+      req.value = true;
+    } else if (req.params.attribute === 'unwatchVendor') {
+      req.attribute = 'watchVendor';
+      req.value = false;
+    }
     next();
   },
 

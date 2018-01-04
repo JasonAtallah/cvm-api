@@ -5,7 +5,7 @@ const mappings = require('../../lib/mappings');
 module.exports = {
 
   prepBuyerForResponse(req, res, next) {
-    req.buyer = Object.assign(_.pick(req.buyer, ['_id', 'emails', 'gcalendar', 'schedule']), {
+    req.buyer = Object.assign(_.pick(req.buyer, ['_id', 'profile', 'emails', 'gcalendar', 'gProfile', 'schedule']), {
       firstName: req.buyer.gProfile.firstName
     });
     next();

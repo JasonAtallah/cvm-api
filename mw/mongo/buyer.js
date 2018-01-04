@@ -69,14 +69,18 @@ module.exports = {
       });
   },
 
-  updateSchedule(req, res, next) {
+  /**
+  Input: req.user, req.calendar
+  Output: req.result
+  **/
+  updateCalendar(req, res, next) {
     const select = {
-      id: req.userId
+      _id: new ObjectID(req.userId)
     };
 
-    var update = {
+    const update = {
       $set: {
-        schedule: req.body
+        gcalendar: req.calendar
       }
     };
 
@@ -93,18 +97,14 @@ module.exports = {
       });
   },
 
-  /**
-  Input: req.user, req.calendar
-  Output: req.result
-  **/
-  updateCalendar(req, res, next) {
+  updateSchedule(req, res, next) {
     const select = {
-      _id: new ObjectID(req.userId)
+      id: req.userId
     };
 
-    const update = {
+    var update = {
       $set: {
-        gcalendar: req.calendar
+        schedule: req.body
       }
     };
 

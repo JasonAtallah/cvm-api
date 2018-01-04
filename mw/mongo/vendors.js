@@ -28,20 +28,6 @@ module.exports = {
       });
   },
 
-  insertThread(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').insert(req.thread)
-          .then((result) => {
-            req.thread = result.ops[0];
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   insertVendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -164,5 +150,5 @@ module.exports = {
         next(err);
       });
   }
-
+  
 };

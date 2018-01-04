@@ -2,6 +2,14 @@ const compose = require('compose-middleware').compose;
 
 const logic = module.exports = new class LogicMiddleware {
 
+  ifNotUndefinedInReq(reqVarName, mwArr) {
+    const testFn = function(req) {
+      return _.get(req, reqVarName) !== undefined;
+    };
+
+    return logic.runMWIfElse(testFn, ...args);
+  }
+  
   ifNullInReq(reqVarName, ...args) {
     const testFn = function(req) {
       return _.get(req, reqVarName) === null;

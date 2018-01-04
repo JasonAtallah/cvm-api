@@ -20,5 +20,20 @@
       "subject": "new vendor applied",
       "body": "check your site"
     }
+  },
+  "profile": {
+    "company": {
+      "name": "",
+      "address": "",
+      "zip": "",
+      "city": "",
+      "state": ""
+    },
+    "contact": {
+      "firstName": "",
+      "lastName": "",
+      "phone": "",
+      "email": ""
+    }
   }
 }

@@ -60,5 +60,29 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
+  router.put('/vendors/:vendorId/attributes/:attribute', 
+    mw.auth.isLoggedIn,
+    mw.parse.json,
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.incoming.prepThreadAttribute,
+      mw.logic.ifNotUndefinedInReq('attribute', [
+        mw.mongo.threads.updateAttribute,
+      ]),
+      mw.responses.sendReqVar('thread.buyer')    
+    ])
+  );
+
   return router;
 };
