@@ -23,5 +23,14 @@ module.exports = function (app) {
     mw.auth.redirectToClient
   );
 
+  if (config.env === 'development') {
+    router.post('/buyer/token',
+      mw.parse.json,
+      mw.data.queries.prepBuyerQueryFromBody,
+      mw.mongo.get.buyer,
+      mw.auth.generateClientJWT,
+      mw.responses.sendReqVar('clientJWT'))
+  }
+
   return router;
 };

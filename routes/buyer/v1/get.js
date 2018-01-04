@@ -28,7 +28,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.gcalendar.getCalendarList,
-      mw.gcalendar.prepCalendarListForResponse,
+      mw.data.responses.prepCalendarListForResponse,
       mw.responses.sendReqVar('calendars')
     ]));
 
@@ -40,7 +40,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.gcalendar.getCalendarEvents,
-      mw.gcalendar.prepCalendarEventsForResponse,
+      mw.data.responses.prepCalendarEventsForResponse,
       mw.responses.sendReqVar('events')
     ]));
 

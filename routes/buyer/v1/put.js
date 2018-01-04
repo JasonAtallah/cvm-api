@@ -15,7 +15,14 @@ module.exports = function (app) {
   router.put('/gcalendar',
     mw.auth.isLoggedIn,
     mw.parse.json,
-    mw.gcalendar.prepCalendar,
+    mw.logic.ifTruthyInReq('body.id',
+      [
+        mw.data.incoming.prepCalendar
+      ],
+      [
+        mw.data.validation.validateNewCalendar,
+        mw.gcalendar.createCalendar
+      ]),
     mw.mongo.buyer.updateCalendar,
     mw.responses.sendOk(201));
 
@@ -25,7 +32,7 @@ module.exports = function (app) {
     mw.mongo.buyer.updateSchedule,
     mw.responses.sendOk(204));
 
-  router.put('/vendors/:vendorId/approve',
+  router.put('/vendors/:vendorId/actions/:action',
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
@@ -37,46 +44,19 @@ module.exports = function (app) {
       mw.mongo.get.vendor,
     ]),
     mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.data.queries.prepThreadQueryForBuyerVendor,
       mw.mongo.get.thread,
     ]),
     mw.compose([
-      mw.data.incoming.prepApproveVendorAction,
-      mw.data.incoming.prepNewThreadState,
-      mw.mongo.threads.updateOnAction
+      mw.data.incoming.prepBuyerAction,
+      mw.data.incoming.prepThreadState,
+      mw.logic.ifTrueInReq('stateChanged', [
+        mw.mongo.vendors.updateThread,
+        mw.threads.performActionFollowup
+      ])
     ]),
     mw.compose([
-      mw.data.incoming.prepVendorApprovalEmail,
-      mw.gmail.sendApprovalEmailToVendor
-    ]),
-    mw.responses.sendReqVar('vendor'));
-
-  router.put('/vendors/:vendorId/reject',
-    mw.auth.isLoggedIn,
-    mw.parse.json,
-    mw.compose([
-      mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
-    ]),
-    mw.compose([
-      mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor,
-    ]),
-    mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
-    ]),
-    mw.compose([
-      mw.data.incoming.prepRejectVendorAction,
-      mw.data.incoming.prepNewThreadState,
-      mw.mongo.threads.updateOnAction
-    ]),
-    mw.compose([
-      mw.data.incoming.prepVendorRejectionEmail,
-      mw.gmail.sendRejectionEmailToVendor
-    ]),
-    mw.compose([
-      mw.data.responses.prepThreadForVendorResponse,
+      mw.data.responses.prepThreadAsVendorResponse,
       mw.responses.sendReqVar('vendor')
     ]));
 

@@ -17,6 +17,20 @@ module.exports = {
     next();
   },
 
+  prepBuyerQueryFromBody(req, res, next) {
+    req.buyerQuery = {
+      _id: new ObjectID(req.body.buyerId)
+    };
+    next();
+  },
+
+  prepBuyerQueryFromThread(req, res, next) {
+    req.buyerQuery = {
+      _id: req.thread.buyer._id
+    };
+    next();
+  },
+
   prepVendorQueryFromUrl(req, res, next) {
     req.vendorQuery = {
       _id: new ObjectID(req.params.vendorId)
@@ -31,10 +45,17 @@ module.exports = {
     next();
   },
 
+  prepThreadQueryForBuyerVendor(req, res, next) {
+    req.threadQuery = {
+      'vendor._id': req.buyer._id,
+      'buyer._id': req.vendor._id
+    };
+    next();
+  },
+
   prepThreadQueryForVendorInUrl(req, res, next) {
     req.threadQuery = {
-      'vendor._id': new ObjectID(req.params.vendorId),
-      'buyer._id': new ObjectID(req.userId)
+      'vendor._id': new ObjectID(req.params.vendorId)
     };
     next();
   },

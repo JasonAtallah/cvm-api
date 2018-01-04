@@ -51,12 +51,41 @@ module.exports = function (app) {
     mw.responses.sendReqVar('file'));
 
   router.get('/vendors/:vendorId',
-    mw.data.queries.prepVendorQueryFromUrl,
-    mw.mongo.get.vendor,
-    mw.data.responses.prepVendorForResponse,
-    mw.responses.sendReqVar('vendor'));
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor
+    ]),
+    mw.compose([
+      mw.data.responses.prepVendorForResponse,
+      mw.responses.sendReqVar('vendor')
+    ]));
 
-  router.post('/vendors/:vendorId/rejectTimes');
+  router.put('/vendors/:vendorId/actions/:action',
+    mw.parse.json,
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromThread,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.incoming.prepVendorAction,
+      mw.data.incoming.prepThreadState,
+      mw.logic.ifTrueInReq('stateChanged', [
+        mw.mongo.vendors.updateThread,
+        mw.threads.performActionFollowup
+      ])
+    ]),
+    mw.compose([
+      mw.data.responses.prepThreadAsBuyerResponse,
+      mw.responses.sendReqVar('vendor')
+    ]));
 
   return router;
 };
