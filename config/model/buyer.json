@@ -22,7 +22,18 @@
     }
   },
   "profile": {
-    "company": {},
-    "contact": {}
+    "company": {
+      "name": "",
+      "address": "",
+      "zip": "",
+      "city": "",
+      "state": ""
+    },
+    "contact": {
+      "firstName": "",
+      "lastName": "",
+      "phone": "",
+      "email": ""
+    }
   }
 }
