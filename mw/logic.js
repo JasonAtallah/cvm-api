@@ -4,7 +4,7 @@ module.exports = new class LogicMiddleware {
 
   ifNullInReq(reqVarName, mwArr) {
     return (req, res, next) => {
-      if (!req[reqVarName]) {
+      if (req[reqVarName] === null) {
         const mwComposed = compose(mwArr);
         mwComposed(req, res, next);
       } else {

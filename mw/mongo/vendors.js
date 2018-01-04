@@ -133,7 +133,7 @@ module.exports = {
       });
   },
 
-  updateThreadOnAction(req, res, next) {
+  updateThread(req, res, next) {
     const select = {
       _id: req.thread._id
     };
@@ -141,10 +141,10 @@ module.exports = {
     const update = {
       $push: {
         states: req.thread.state,
-        actions: req.action
+        actions: req.action.toObject()
       },
       $set: {
-        state: req.state
+        state: req.state.toObject()
       }
     };
 

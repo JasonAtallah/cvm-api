@@ -17,6 +17,13 @@ module.exports = {
     next();
   },
 
+  prepBuyerQueryFromBody(req, res, next) {
+    req.buyerQuery = {
+      _id: new ObjectID(req.body.buyerId)
+    };
+    next();
+  },
+
   prepVendorQueryFromUrl(req, res, next) {
     req.vendorQuery = {
       _id: new ObjectID(req.params.vendorId)

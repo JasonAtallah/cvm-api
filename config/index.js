@@ -13,6 +13,7 @@ const config = module.exports = {
       cors: {
         whitelist: process.env.CORS_WHITELIST.split(',')
       },
+      env: process.env.NODE_ENV,
       google: {
         clientId: process.env.GOOGLE_CVM_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CVM_CLIENT_SECRET

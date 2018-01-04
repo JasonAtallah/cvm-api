@@ -4,16 +4,8 @@ const threads = require('../../lib/threads');
 
 module.exports = {
 
-  prepApproveVendorAction(req, res, next) {
-    req.action = {
-      name: "ApproveVendor",
-      timestamp: new Date().getTime()
-    };
-    next();
-  },
-
-  prepNewThreadState(req, res, next) {
-    req.state = threads.transition(req.thread, req.action);
+  prepBuyerAction(req, res, next) {
+    req.action = threads.createAction(req.params.action, req);
     next();
   },
 
@@ -43,7 +35,7 @@ module.exports = {
       },
       actions: [],
       states: [],
-      state: threads.createState('NewVendor')
+      state: threads.createState('NewVendor').toObject()
     };
     next();
   },
@@ -56,6 +48,13 @@ module.exports = {
   prepQuestionnaireResponseForUpdate(req, res, next) {
     req.response = req.body;
     req.response._id = new ObjectID(req.params.responseId);
+    next();
+  },
+
+  prepThreadState(req, res, next) {
+    const result = threads.transition(req.thread, req.action);
+    req.state = result.newState;
+    req.stateChanged = (result.newState !== result.oldState);
     next();
   },
 
@@ -81,14 +80,6 @@ module.exports = {
     req.email = {
       accessToken: req.buyer.gAuth.accessToken,
       message: message
-    };
-    next();
-  },
-
-  prepRejectVendorAction(req, res, next) {
-    req.action = {
-      name: "RejectVendor",
-      timestamp: new Date().getTime()
     };
     next();
   }
