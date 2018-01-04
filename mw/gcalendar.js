@@ -111,17 +111,6 @@ var gcalendar = module.exports = new class GCalendarService {
       .catch(next);
   }
 
-  prepCalendar (req, res, next) {
-    if (req.body.id) {
-      req.calendar = req.body;
-      next();
-    } else if (req.body.name) {
-      gcalendar.createCalendar(req, res, next);
-    } else {
-      next(new Error('no calendar provided'));
-    }
-  }
-
   /**
   Input: req.body
   Output: req.event

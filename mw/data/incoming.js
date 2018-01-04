@@ -9,6 +9,11 @@ module.exports = {
     next();
   },
 
+  prepCalendar(req, res, next) {
+    req.calendar = req.body;
+    next();
+  },
+
   prepNewVendorFromBuyer(req, res, next) {
     req.vendor = req.body;
 

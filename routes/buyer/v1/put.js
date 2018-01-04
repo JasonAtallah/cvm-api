@@ -15,7 +15,14 @@ module.exports = function (app) {
   router.put('/gcalendar',
     mw.auth.isLoggedIn,
     mw.parse.json,
-    mw.gcalendar.prepCalendar,
+    mw.logic.ifTruthyInReq('body.id',
+      [
+        mw.data.incoming.prepCalendar
+      ],
+      [
+        mw.data.validation.validateNewCalendar,
+        mw.gcalendar.createCalendar
+      ]),
     mw.mongo.buyer.updateCalendar,
     mw.responses.sendOk(201));
 

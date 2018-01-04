@@ -2,6 +2,16 @@ const config = require('../../config');
 
 module.exports = {
 
+  validateNewCalendar(req, res, next) {
+    if (!req.body.name) {
+      const err = new Error('name is required for new calendars');
+      err.status = 400;
+      next(err);
+    } else {
+      next();
+    }
+  }
+
   validateNewVendor(req, res, next) {
     let err;
 
