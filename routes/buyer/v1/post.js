@@ -14,11 +14,11 @@ module.exports = function (app) {
       mw.mongo.get.buyer
     ]),
     mw.compose([
-      mw.gcalendar.prepCalendarEventForInsert,
+      mw.data.incoming.prepCalendarEventForInsert,
       mw.gcalendar.createCalendarEvent
     ]),
     mw.compose([
-      mw.gcalendar.prepCalendarEventForResponse,
+      mw.data.responses.prepCalendarEventForResponse,
       mw.responses.sendReqVar('event')
     ]));
 

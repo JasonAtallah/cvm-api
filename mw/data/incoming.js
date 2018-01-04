@@ -14,6 +14,22 @@ module.exports = {
     next();
   },
 
+  prepCalendarEventForInsert (req, res, next) {
+    const timeParts = req.body.time.split(':');
+    const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
+    req.event = {
+      start: {
+        dateTime: startM.toDate()
+      },
+      end: {
+        dateTime: startM.add(req.body.duration, 'minutes').toDate()
+      },
+      summary: req.body.name,
+      location: req.body.location
+    };
+    next();
+  },
+
   prepNewVendorFromBuyer(req, res, next) {
     req.vendor = req.body;
 

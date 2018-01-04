@@ -11,6 +11,33 @@ module.exports = {
     next();
   },
 
+  prepCalendarEventForResponse (req, res, next) {
+    req.event = mappings.mapGCalendarEventToEvent(req.event);
+    next();
+  },
+
+  prepCalendarEventsForResponse (req, res, next) {
+    req.events = req.eventsResponse.items.map(mappings.mapGCalendarEventToEvent);
+    next();
+  },
+
+  prepCalendarListForResponse (req, res, next) {
+    req.calendars = req.gcalendarlist.items
+      .filter((calendar) => {
+        return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
+      })
+      .map((calendar) => {
+        return {
+          type: 'google',
+          id: calendar.id,
+          name: calendar.summary,
+          tz: calendar.timeZone,
+          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
+        };
+      });
+    next();
+  },
+
   prepThreadForVendorResponse(req, res, next) {
     req.vendor = mappings.mapThreadToVendor(req.thread);
     next();
