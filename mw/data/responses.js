@@ -58,7 +58,7 @@ module.exports = {
     next();
   },
 
-  prepVendorListForReponse(req, res, next) {
+  prepVendorListForResponse(req, res, next) {
     req.vendors = req.vendors.map(mappings.mapThreadToVendor);
     next();
   }

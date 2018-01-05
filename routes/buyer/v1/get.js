@@ -49,7 +49,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.queries.prepVendorListQueryForLoggedInBuyer,
       mw.mongo.get.vendorList,
-      mw.data.responses.prepVendorListForReponse,
+      mw.data.responses.prepVendorListForResponse,
       mw.responses.sendReqVar('vendors')
     ]));
 
