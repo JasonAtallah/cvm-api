@@ -8,7 +8,16 @@ module.exports = {
     req.action = threads.createAction(req.params.action, req);
     next();
   },
-  
+
+  prepBuyerProfileUpdate(req, res, next) {
+    req.buyerUpdate = {
+      $set: {
+        profile: req.body
+      }
+    };
+    next();
+  },
+
   prepCalendar(req, res, next) {
     req.calendar = req.body;
     next();
@@ -71,7 +80,7 @@ module.exports = {
     req.response._id = new ObjectID(req.params.responseId);
     next();
   },
-  
+
   prepThreadAttribute(req, res, next) {
     if (req.params.attribute === 'watchVendor') {
       req.attribute = 'watchVendor';

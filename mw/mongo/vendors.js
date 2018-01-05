@@ -117,38 +117,6 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
-  },
-
-  updateThread(req, res, next) {
-    const select = {
-      _id: req.thread._id
-    };
-
-    const update = {
-      $push: {
-        states: req.thread.state,
-        actions: req.action.toObject()
-      },
-      $set: {
-        state: req.state.toObject()
-      }
-    };
-
-    const options = {
-      returnOriginal: false
-    };
-
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update, options)
-          .then((result) => {
-            req.thread = result.value;
-            next();
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
   }
-  
+
 };

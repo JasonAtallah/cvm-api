@@ -97,6 +97,24 @@ module.exports = {
       });
   },
 
+  updateLoggedInBuyer(req, res, next) {
+    const select = {
+      _id: new ObjectID(req.userId)
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(select, req.buyerUpdate)
+          .then((result) => {
+            req.result = result;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   updateSchedule(req, res, next) {
     const select = {
       id: req.userId

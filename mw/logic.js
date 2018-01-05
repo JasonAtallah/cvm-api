@@ -1,15 +1,16 @@
 const compose = require('compose-middleware').compose;
+const _ = require('lodash');
 
 const logic = module.exports = new class LogicMiddleware {
 
-  ifNotUndefinedInReq(reqVarName, mwArr) {
+  ifNotUndefinedInReq(reqVarName, ...args) {
     const testFn = function(req) {
       return _.get(req, reqVarName) !== undefined;
     };
 
     return logic.runMWIfElse(testFn, ...args);
   }
-  
+
   ifNullInReq(reqVarName, ...args) {
     const testFn = function(req) {
       return _.get(req, reqVarName) === null;

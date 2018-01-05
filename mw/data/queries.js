@@ -31,13 +31,6 @@ module.exports = {
     next();
   },
 
-  prepVendorQueryFromUrl(req, res, next) {
-    req.vendorQuery = {
-      _id: new ObjectID(req.params.vendorId)
-    };
-    next();
-  },
-
   prepQuestionnaireQueryById(req, res, next) {
     req.questionnaireQuery = {
       _id: new ObjectID(req.params.questionnaireId)
@@ -47,8 +40,8 @@ module.exports = {
 
   prepThreadQueryForBuyerVendor(req, res, next) {
     req.threadQuery = {
-      'vendor._id': req.buyer._id,
-      'buyer._id': req.vendor._id
+      'vendor._id': req.vendor._id,
+      'buyer._id': req.buyer._id
     };
     next();
   },

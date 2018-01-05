@@ -26,6 +26,13 @@ module.exports = function (app) {
     mw.mongo.buyer.updateCalendar,
     mw.responses.sendOk(201));
 
+  router.put('/profile',
+    mw.auth.isLoggedIn,
+    mw.parse.json,
+    mw.data.incoming.prepBuyerProfileUpdate,
+    mw.mongo.buyer.updateLoggedInBuyer,
+    mw.responses.sendOk(204));
+
   router.put('/schedule',
     mw.auth.isLoggedIn,
     mw.parse.json,
@@ -51,7 +58,7 @@ module.exports = function (app) {
       mw.data.incoming.prepBuyerAction,
       mw.data.incoming.prepThreadState,
       mw.logic.ifTrueInReq('stateChanged', [
-        mw.mongo.vendors.updateThread,
+        mw.mongo.threads.update,
         mw.threads.performActionFollowup
       ])
     ]),
@@ -60,7 +67,7 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-  router.put('/vendors/:vendorId/attributes/:attribute', 
+  router.put('/vendors/:vendorId/attributes/:attribute',
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
@@ -80,7 +87,7 @@ module.exports = function (app) {
       mw.logic.ifNotUndefinedInReq('attribute', [
         mw.mongo.threads.updateAttribute,
       ]),
-      mw.responses.sendReqVar('thread.buyer')    
+      mw.responses.sendReqVar('thread.buyer')
     ])
   );
 

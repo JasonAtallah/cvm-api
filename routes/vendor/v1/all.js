@@ -78,7 +78,7 @@ module.exports = function (app) {
       mw.data.incoming.prepVendorAction,
       mw.data.incoming.prepThreadState,
       mw.logic.ifTrueInReq('stateChanged', [
-        mw.mongo.vendors.updateThread,
+        mw.mongo.threads.update,
         mw.threads.performActionFollowup
       ])
     ]),
