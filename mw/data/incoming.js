@@ -4,11 +4,6 @@ const threads = require('../../lib/threads');
 
 module.exports = {
 
-  prepBuyerAction(req, res, next) {
-    req.action = threads.createAction(req.params.action, req);
-    next();
-  },
-
   prepBuyerProfileUpdate(req, res, next) {
     req.buyerUpdate = {
       $set: {
@@ -89,18 +84,6 @@ module.exports = {
       req.attribute = 'watchVendor';
       req.value = false;
     }
-    next();
-  },
-
-  prepThreadState(req, res, next) {
-    const result = threads.transition(req.thread, req.action);
-    req.state = result.newState;
-    req.stateChanged = (result.newState !== result.oldState);
-    next();
-  },
-
-  prepVendorAction(req, res, next) {
-    req.action = threads.createAction(req.params.action, req);
     next();
   },
 

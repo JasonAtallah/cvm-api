@@ -75,8 +75,8 @@ module.exports = function (app) {
       mw.mongo.get.buyer,
     ]),
     mw.compose([
-      mw.data.incoming.prepVendorAction,
-      mw.data.incoming.prepThreadState,
+      mw.threads.createVendorAction,
+      mw.threads.transitionThreadState,
       mw.logic.ifTrueInReq('stateChanged', [
         mw.mongo.threads.update,
         mw.threads.performActionFollowup
@@ -86,6 +86,29 @@ module.exports = function (app) {
       mw.data.responses.prepThreadAsBuyerResponse,
       mw.responses.sendReqVar('vendor')
     ]));
+
+  router.put('/vendors/:vendorId/attributes/:attribute',
+    mw.parse.json,
+    mw.compose([
+      mw.data.queries.prepVendorQueryFromUrl,
+      mw.mongo.get.vendor,
+    ]),
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromThread,
+      mw.mongo.get.buyer,
+    ]),
+    mw.compose([
+      mw.data.incoming.prepThreadAttribute,
+      mw.logic.ifNotUndefinedInReq('attribute', [
+        mw.mongo.threads.updateAttribute,
+      ]),
+      mw.responses.sendReqVar('thread.vendor')
+    ])
+  );
 
   return router;
 };
