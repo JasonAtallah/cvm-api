@@ -107,8 +107,8 @@ module.exports = {
   prepVendorApprovalEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
-    message += `Subject: ${req.body.subject} \r\n`;
-    message += `\n${req.body.body}\n\nPlease Visit: ${req.body.scheduleUrl} to schedule a time to meet with the buyer.`;
+    message += `Subject: ${req.body.email.subject} \r\n`;
+    message += `\n${req.body.email.body}\n\nPlease Visit: ${req.body.email.scheduleUrl} to schedule a time to meet with the buyer.`;
 
     req.email = {
       accessToken: req.buyer.gAuth.accessToken,
@@ -120,8 +120,8 @@ module.exports = {
   prepVendorRejectionEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
-    message += `Subject: ${req.body.subject} \r\n`;
-    message += `\r\n ${req.body.body}`;
+    message += `Subject: ${req.body.email.subject} \r\n`;
+    message += `\r\n ${req.body.email.body}`;
 
     req.email = {
       accessToken: req.buyer.gAuth.accessToken,
