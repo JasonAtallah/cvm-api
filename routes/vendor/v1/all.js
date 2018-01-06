@@ -94,7 +94,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsBuyerResponse,
-      mw.responses.sendReqVar('vendor')
+      mw.responses.sendReqVar('buyer')
     ]));
 
   return router;
