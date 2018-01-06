@@ -5,7 +5,7 @@ const mw = require('../../../mw');
 module.exports = function (app) {
 
   const router = express.Router();
-  console.dir(mw.threads);
+  
   router.put('/emails/:templateId',
     mw.auth.isLoggedIn,
     mw.parse.json,
