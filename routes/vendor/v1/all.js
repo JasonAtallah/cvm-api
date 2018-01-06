@@ -60,6 +60,16 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
+  router.get('/vendors/:vendorId/buyer',
+    mw.compose([
+      mw.data.queries.prepThreadQueryForVendorInUrl,
+      mw.mongo.get.thread,
+    ]),
+    mw.compose([
+      mw.data.responses.prepThreadAsBuyerResponse,
+      mw.responses.sendReqVar('buyer')
+    ]));
+
   router.put('/vendors/:vendorId/actions/:action',
     mw.parse.json,
     mw.compose([
@@ -84,7 +94,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsBuyerResponse,
-      mw.responses.sendReqVar('vendor')
+      mw.responses.sendReqVar('buyer')
     ]));
 
   router.put('/vendors/:vendorId/attributes/:attribute',
