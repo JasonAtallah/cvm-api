@@ -60,7 +60,7 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-  router.get('/vendors/:vendorId/threads',
+  router.get('/vendors/:vendorId/buyer',
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
       mw.mongo.get.thread,
