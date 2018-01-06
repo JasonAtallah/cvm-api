@@ -28,7 +28,7 @@ module.exports = function (app) {
         mw.gcalendar.createCalendar
       ]),
     mw.mongo.buyer.updateCalendar,
-    mw.responses.sendOk(201));
+    mw.responses.sendReqVar('calendar'));
 
   router.put('/profile',
     mw.auth.isLoggedIn,
