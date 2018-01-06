@@ -1,6 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
 const MongoClient = require('mongodb').MongoClient;
+const google = require('googleapis');
 
 const config = module.exports = {
   load: function () {
@@ -15,8 +16,19 @@ const config = module.exports = {
       },
       env: process.env.NODE_ENV,
       google: {
-        clientId: process.env.GOOGLE_CVM_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CVM_CLIENT_SECRET
+        get client() {
+          return new google.auth.OAuth2(
+            process.env.GOOGLE_CVM_CLIENT_ID,
+            process.env.GOOGLE_CVM_CLIENT_SECRET,
+            `${process.env.APP_HOST}/buyer/callback`
+          );
+        },
+        scopes: [
+          'https://www.googleapis.com/auth/userinfo.profile',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/gmail.modify',
+          'https://www.googleapis.com/auth/calendar'
+        ]
       },
       jwt: {
         algorithm: process.env.JWT_ALGORITHM,

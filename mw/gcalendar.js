@@ -1,113 +1,86 @@
-const request = require('request-promise');
+const gcalendar = require('googleapis').calendar('v3');
 const moment = require('moment');
 const momentTimezone = require('moment-timezone');
+const config = require('../config');
 const mappings = require('../lib/mappings');
 
-var gcalendar = module.exports = new class GCalendarService {
-  /**
-  {
-   "kind": "calendar#calendar",
-   "etag": "\"BKjXnZpXR6E5ueFWG3UJk-2POYg/Eb3cjYfRPkXgpV5bwOsWP9nbrjc\"",
-   "id": "5pa0qjf972g5cnir7fvpash98k@group.calendar.google.com",
-   "summary": "Api Calendar 2",
-   "timeZone": "America/Los_Angeles"
-  }
-  **/
+module.exports = new class GCalendarService {
+
   createCalendar (req, res, next) {
-    var options = {
-      method: 'POST',
-      url: `https://www.googleapis.com/calendar/v3/calendars`,
-      json: true,
-      headers: {
-        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
-      },
-      body: {
+    const auth = config.google.client;
+    auth.credentials = req.buyer.gAuth;
+
+    gcalendar.calendars.insert({
+      auth,
+      resource: {
         summary: req.body.name,
         timeZone: req.body.timezone || 'America/Los_Angeles'
       }
-    };
-
-    request(options)
-      .then((calendar) => {
-        req.calendar = calendar;
+    }, function (err, response) {
+      if (err) {
+        next(err);
+      } else {
+        req.calendar = response;
         next();
-      })
-      .catch(next);
+      }
+    });
   }
 
-  /**
-  Inputs: req.buyer, req.event
-  Outputs: req.event
-  **/
   createCalendarEvent (req, res, next) {
-    var options = {
-      method: 'POST',
-      url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
-      json: true,
-      headers: {
-        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
-      },
-      body: req.event
-    };
+    const auth = config.google.client;
+    auth.credentials = req.buyer.gAuth;
 
-    request(options)
-      .then((event) => {
-        req.event = event;
+    gcalendar.events.insert({
+      auth,
+      calendarId: req.buyer.gcalendar.id,
+      resource: req.event
+    }, function (err, response) {
+      if (err) {
+        next(err);
+      } else {
+        req.event = response;
         next();
-      })
-      .catch(next);
+      }
+    });
   }
 
-  /**
-  Inputs: req.buyer
-  Outputs: req.gcalendarlist
-  **/
   getCalendarList (req, res, next) {
-    var options = {
-      method: 'GET',
-      url: `https://www.googleapis.com/calendar/v3/users/me/calendarList`,
-      headers: {
-        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
-      },
-      qs: {
-        minAccessRole: 'writer',
-        showDeleted: false,
-        showHidden: false
-      }
-    };
+    const auth = config.google.client;
+    auth.credentials = req.buyer.gAuth;
 
-    request(options)
-      .then((body) => {
-        req.gcalendarlist = JSON.parse(body);
+    gcalendar.calendarList.list({
+      auth,
+      minAccessRole: 'writer',
+      showDeleted: false,
+      showHidden: false
+    }, function (err, response) {
+      if (err) {
+        next(err);
+      } else {
+        req.gcalendarlist = response;
         next();
-      })
-      .catch(next);
+      }
+    });
   }
 
-  /**
-  Input: req.buyer
-  Output: req.events
-  **/
   getCalendarEvents (req, res, next) {
-    var options = {
-      method: 'GET',
-      url: `https://www.googleapis.com/calendar/v3/calendars/${req.buyer.gcalendar.id}/events`,
-      headers: {
-        authorization: `Bearer ${req.buyer.gAuth.accessToken}`
-      },
-      qs: {
-        minAccessRole: 'writer',
-        showDeleted: false,
-        showHidden: false,
-        timeZone: req.query.timezone
-      }
-    };
+    const auth = config.google.client;
+    auth.credentials = req.buyer.gAuth;
 
-    request(options)
-      .then((body) => {
-        req.eventsResponse = JSON.parse(body);
+    gcalendar.events.list({
+      auth,
+      calendarId: req.buyer.gcalendar.id,
+      minAccessRole: 'writer',
+      showDeleted: false,
+      showHidden: false,
+      timeZone: req.query.timezone
+    }, function (err, response) {
+      if (err) {
+        next(err);
+      } else {
+        req.eventsResponse = response;
         next();
-      })
-      .catch(next);
+      }
+    });
   }
 };

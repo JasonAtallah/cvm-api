@@ -82,9 +82,6 @@ module.exports = {
       });
   },
 
-  /**
-  Inputs: req.gAuth, req.gProfile
-  **/
   updateGoogleAuthAndProfileForBuyer(req, res, next) {
     const select = {
       'gProfile.id': req.gProfile.id
@@ -93,10 +90,7 @@ module.exports = {
     const update = {
       $set: {
         gProfile: req.gProfile,
-        'gAuth.accessToken': req.gAuth.access_token,
-        'gAuth.refreshToken': req.gAuth.refresh_token,
-        'gAuth.tokenType': req.gAuth.token_type,
-        'gAuth.expiryDate': req.gAuth.expiry_date
+        gAuth: req.gAuth
       }
     };
 

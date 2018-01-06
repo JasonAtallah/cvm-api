@@ -8,11 +8,11 @@ module.exports = function (app) {
 
   router.get('/buyer/login',
     mw.mongo.auth.saveLoginCallback,
-    mw.auth.authenticateGoogle(`${config.app.host}/buyer/callback`));
+    mw.auth.authenticateGoogle);
 
   router.get('/buyer/callback',
     mw.mongo.auth.lookupLoginCallback,
-    mw.auth.convertGoogleCode(`${config.app.host}/buyer/callback`),
+    mw.auth.convertGoogleCode,
     mw.auth.getGoogleProfile,
     mw.mongo.auth.updateGoogleAuthAndProfileForBuyer,
     mw.logic.ifNullInReq('buyer', [

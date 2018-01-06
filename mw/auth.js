@@ -1,4 +1,3 @@
-const google = require('googleapis');
 const moment = require('moment');
 const jwksRsa = require('jwks-rsa');
 const request = require('request-promise');
@@ -7,45 +6,24 @@ const jwt = require('../services/jwt');
 
 module.exports = new class AuthMiddleware {
 
-  authenticateGoogle (callbackUrl) {
-    return (req, res, next) => {
-      const client = new google.auth.OAuth2(
-        config.google.clientId,
-        config.google.clientSecret,
-        callbackUrl
-      );
-      const scopes = [
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/gmail.modify',
-        'https://www.googleapis.com/auth/calendar'
-      ];
-      const url = client.generateAuthUrl({
-        access_type: 'offline',
-        scope: scopes,
-        state: req.loginCallback._id.toString()
-      });
-      res.redirect(url);
-    };
+  authenticateGoogle (req, res, next) {
+    const url = config.google.client.generateAuthUrl({
+      access_type: 'offline',
+      scope: config.google.scopes,
+      state: req.loginCallback._id.toString()
+    });
+    res.redirect(url);
   }
 
-  convertGoogleCode (callbackUrl) {
-    return (req, res, next) => {
-      const client = new google.auth.OAuth2(
-        config.google.clientId,
-        config.google.clientSecret,
-        callbackUrl
-      );
-
-      client.getToken(req.query.code, function (err, auth) {
-        if (err) {
-          next(err);
-        } else {
-          req.gAuth = auth;
-          next();
-        }
-      });
-    };
+  convertGoogleCode (req, res, next) {
+    config.google.client.getToken(req.query.code, function (err, auth) {
+      if (err) {
+        next(err);
+      } else {
+        req.gAuth = auth;
+        next();
+      }
+    });
   }
 
   generateClientJWT (req, res, next) {

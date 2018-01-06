@@ -1,27 +1,28 @@
-const request = require('request-promise');
+const gmail = require('googleapis').gmail('v1');
 const base64url = require('base64url');
+const config = require('../config');
 
-var gmail = module.exports = new class GmailService {
+module.exports = new class GmailService {
 
   sendEmail(req, res, next) {
-    var options = {
-      method: 'POST',
-      url: `https://www.googleapis.com/gmail/v1/users/me/messages/send`,
-      json: true,
-      headers: {
-        authorization: `Bearer ${req.email.accessToken}`
-      },
-      body: {
+
+    const auth = config.google.client;
+    auth.credentials = req.buyer.gAuth;
+
+    gmail.users.messages.send({
+      auth,
+      userId: 'me',
+      resource: {
         raw: base64url(req.email.message)
       }
-    };
-
-    request(options)
-      .then((result) => {
-        req.result = result;
+    }, function (err, response) {
+      if (err) {
+        next(err);
+      } else {
+        req.result = response;
         next();
-      })
-      .catch(next);
+      }
+    });
   }
 
 }

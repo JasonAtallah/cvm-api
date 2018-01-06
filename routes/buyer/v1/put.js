@@ -5,7 +5,7 @@ const mw = require('../../../mw');
 module.exports = function (app) {
 
   const router = express.Router();
-  
+
   router.put('/emails/:templateId',
     mw.auth.isLoggedIn,
     mw.parse.json,
@@ -15,6 +15,10 @@ module.exports = function (app) {
   router.put('/gcalendar',
     mw.auth.isLoggedIn,
     mw.parse.json,
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer,
+    ]),
     mw.logic.ifTruthyInReq('body.id',
       [
         mw.data.incoming.prepCalendar
