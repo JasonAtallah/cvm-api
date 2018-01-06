@@ -1,3 +1,5 @@
+const threads = require('../lib/threads');
+
 module.exports = {
 
   createBuyerAction(req, res, next) {

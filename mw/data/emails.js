@@ -4,8 +4,8 @@ module.exports = {
   prepApproveVendorEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
-    message += `Subject: ${req.state.data.email.subject} \r\n`;
-    message += `\n${req.state.data.email.body}\n\nPlease visit ${req.state.data.scheduleUrl} to schedule a time to meet with the buyer.`;
+    message += `Subject: ${req.action.data.email.subject} \r\n`;
+    message += `\n${req.action.data.email.body}\n\nPlease visit ${req.action.data.scheduleUrl} to schedule a time to meet with the buyer.`;
 
     req.email = {
       message: message
@@ -29,7 +29,7 @@ module.exports = {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
     message += `Subject: ${req.buyer.profile.company.name} has sent you times to meet \r\n`;
-    message += `${req.buyer.profile.company.name} has proposed times to meet. Visit ${req.state.data.vendorUrl} to select a time that works for you.`;
+    message += `${req.buyer.profile.company.name} has proposed times to meet. Visit ${req.action.data.vendorUrl} to select a time that works for you.`;
 
     req.email = {
       message: message
@@ -40,8 +40,8 @@ module.exports = {
   prepRejectVendorEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
-    message += `Subject: ${req.state.data.email.subject} \r\n`;
-    message += `\r\n ${req.state.data.email.body}`;
+    message += `Subject: ${req.action.data.email.subject} \r\n`;
+    message += `\r\n ${req.action.data.email.body}`;
 
     req.email = {
       message: message
@@ -65,7 +65,7 @@ module.exports = {
     var message = '';
     message += `To: ${req.buyer.gProfile.email} \r\n`;
     message += `Subject: Vendor chose a time \r\n`;
-    message += `${req.vendor.company.name} selected ${req.state.data.selectedTime.startDate} ${req.state.data.selectedTime.startTime} at ${req.state.data.selectedTime.location} for ${req.state.data.selectedTime.name}. It has been added to your calendar.`;
+    message += `${req.vendor.company.name} selected ${req.action.data.selectedTime.startDate} ${req.action.data.selectedTime.startTime} at ${req.action.data.selectedTime.location} for ${req.action.data.selectedTime.name}. It has been added to your calendar.`;
 
     req.email = {
       message: message
