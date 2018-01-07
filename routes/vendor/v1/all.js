@@ -16,6 +16,14 @@ module.exports = function (app) {
   router.post('/questionnaires/:questionnaireId/responses',
     mw.parse.json,
     mw.compose([
+      mw.data.queries.prepQuestionnaireQueryById,
+      mw.mongo.get.questionnaire
+    ]),
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromQuestionnaire,
+      mw.mongo.get.buyer
+    ]),
+    mw.compose([
       mw.data.incoming.prepNewVendorFromQuestionnaire,
       mw.data.validation.validateNewVendor,
       mw.mongo.vendors.insertVendor
@@ -33,12 +41,16 @@ module.exports = function (app) {
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
     mw.parse.json,
     mw.compose([
-      mw.data.incoming.prepQuestionnaireResponseForUpdate,
-      mw.mongo.vendors.updateQuestionnaireResponse
+      mw.data.queries.prepQuestionnaireQueryById,
+      mw.mongo.get.questionnaire
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromQuestionnaire,
       mw.mongo.get.buyer
+    ]),
+    mw.compose([
+      mw.data.incoming.prepQuestionnaireResponseForUpdate,
+      mw.mongo.vendors.updateQuestionnaireResponse
     ]),
     mw.compose([
       mw.sendGrid.prepNewVendorEmailToBuyer,
@@ -63,7 +75,7 @@ module.exports = function (app) {
   router.get('/vendors/:vendorId/buyer',
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
+      mw.mongo.get.thread
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsBuyerResponse,
@@ -74,15 +86,15 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor,
+      mw.mongo.get.vendor
     ]),
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
+      mw.mongo.get.thread
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.get.buyer,
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.threads.createVendorAction,
@@ -101,20 +113,20 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor,
+      mw.mongo.get.vendor
     ]),
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
+      mw.mongo.get.thread
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.get.buyer,
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.incoming.prepThreadAttribute,
       mw.logic.ifNotUndefinedInReq('attribute', [
-        mw.mongo.threads.updateAttribute,
+        mw.mongo.threads.updateAttribute
       ]),
       mw.responses.sendReqVar('thread.vendor')
     ])

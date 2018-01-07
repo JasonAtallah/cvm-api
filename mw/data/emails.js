@@ -17,7 +17,7 @@ module.exports = {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;
     message += `Subject: ${req.buyer.profile.company.name} cancelled your appointment \r\n`;
-    message += `${req.buyer.profile.company.name} cancelled your appointment on ${req.prevState.selectedTime.startDate} ${req.prevState.selectedTime.startTime}.`;
+    message += `${req.buyer.profile.company.name} cancelled your appointment on ${req.prevState.data.selectedTime.startDate} ${req.prevState.data.selectedTime.startTime}.`;
 
     req.email = {
       message: message
