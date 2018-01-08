@@ -27,7 +27,7 @@ module.exports = function (app) {
     router.post('/buyer/token',
       mw.parse.json,
       mw.data.queries.prepBuyerQueryFromBody,
-      mw.mongo.get.buyer,
+      mw.mongo.buyer.get,
       mw.auth.generateClientJWT,
       mw.responses.sendReqVar('clientJWT'))
   }

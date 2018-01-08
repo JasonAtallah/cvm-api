@@ -2,24 +2,6 @@ const config = require('../../config');
 
 module.exports = {
 
-  buyer(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('buyers').findOne(req.buyerQuery)
-          .then((buyer) => {
-            if (buyer) {
-              req.buyer = buyer;
-              next();
-            } else {
-              next();
-            }
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   questionnaire(req, res, next) {
     config.mongo.getDB
       .then((db) => {

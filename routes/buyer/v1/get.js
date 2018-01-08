@@ -10,7 +10,7 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
+      mw.mongo.buyer.get,
       mw.data.responses.prepBuyerForResponse,
       mw.responses.sendReqVar('buyer')
     ]));
@@ -24,7 +24,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.gcalendar.getCalendarList,
@@ -36,7 +36,7 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.gcalendar.getCalendarEvents,

@@ -34,6 +34,11 @@ module.exports = {
     next();
   },
 
+  prepNewBuyerLocation(req, res, next) {
+    req.location = req.body;
+    next();
+  },
+
   prepNewVendorFromBuyer(req, res, next) {
     req.vendor = req.body;
 

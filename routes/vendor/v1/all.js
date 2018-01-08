@@ -21,7 +21,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromQuestionnaire,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorFromQuestionnaire,
@@ -46,7 +46,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromQuestionnaire,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.data.incoming.prepQuestionnaireResponseForUpdate,
@@ -94,7 +94,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.threads.createVendorAction,
@@ -121,7 +121,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.data.incoming.prepThreadAttribute,

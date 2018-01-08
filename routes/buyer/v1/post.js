@@ -11,7 +11,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.data.incoming.prepCalendarEventForInsert,
@@ -20,6 +20,18 @@ module.exports = function (app) {
     mw.compose([
       mw.data.responses.prepCalendarEventForResponse,
       mw.responses.sendReqVar('event')
+    ]));
+
+  router.post('/locations',
+    mw.auth.isLoggedIn,
+    mw.parse.json,
+    mw.compose([
+      mw.data.incoming.prepNewBuyerLocation,
+      mw.data.queries.prepBuyerLocationInsert,
+      mw.mongo.buyer.update
+    ]),
+    mw.compose([
+      mw.responses.sendReqVar('location')
     ]));
 
   router.post('/vendors',
@@ -32,7 +44,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer
+      mw.mongo.buyer.get
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,

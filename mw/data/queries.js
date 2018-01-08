@@ -3,6 +3,20 @@ const config = require('../../config');
 
 module.exports = {
 
+  prepBuyerLocationInsert(req, res, next) {
+    req.buyerUpdate = {
+      query: {
+        _id: new ObjectID(req.userId)
+      },
+      update: {
+        $push: {
+          locations: req.location
+        }
+      }
+    };
+    next();
+  },
+
   prepBuyerQueryFromAuth(req, res, next) {
     req.buyerQuery = {
       _id: new ObjectID(req.userId)
@@ -55,7 +69,7 @@ module.exports = {
 
   prepVendorListQueryForLoggedInBuyer(req, res, next) {
     req.vendorQuery = {
-      "buyer._id": new ObjectID(req.userId)
+      'buyer._id': new ObjectID(req.userId)
     };
 
     if (req.query.status) {
@@ -74,8 +88,9 @@ module.exports = {
     }
 
     req.vendorProjection = {
-      "vendor": 1,
-      "state": 1
+      vendor: 1,
+      state: 1,
+      attributes: 1
     };
 
     next();

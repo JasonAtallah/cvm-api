@@ -3,6 +3,24 @@ const config = require('../../config');
 
 module.exports = {
 
+  get(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').findOne(req.buyerQuery)
+          .then((buyer) => {
+            if (buyer) {
+              req.buyer = buyer;
+              next();
+            } else {
+              next();
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   initialize(req, res, next) {
     const select = {
       'gProfile.id': req.gProfile.id
@@ -34,6 +52,20 @@ module.exports = {
         return db.collection('buyers').findOneAndUpdate(select, update)
           .then((result) => {
             req.buyer = result.value;
+            next();
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  update(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').update(req.buyerUpdate.query, req.buyerUpdate.update)
+          .then((result) => {
+            req.result = result;
             next();
           });
       })

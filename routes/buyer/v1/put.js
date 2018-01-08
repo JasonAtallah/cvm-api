@@ -17,7 +17,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
+      mw.mongo.buyer.get,
     ]),
     mw.logic.ifTruthyInReq('body.id',
       [
@@ -48,7 +48,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
+      mw.mongo.buyer.get,
     ]),
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
@@ -76,7 +76,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
+      mw.mongo.buyer.get,
     ]),
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
