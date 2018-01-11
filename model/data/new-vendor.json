@@ -1,0 +1,16 @@
+{
+  "company": {
+    "name": "Sample Vendor",
+    "city": "San Francisco",
+    "email": "vendor@cvm.com"
+  },
+  "flowers": {
+    "products": []
+  },
+  "edibles": {
+    "products": []
+  },
+  "concentrates": {
+    "products": []
+  }
+}

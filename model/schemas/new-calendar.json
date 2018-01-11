@@ -1,0 +1,14 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/new-vendor.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "timezone": {
+      "type": "string"
+    }
+  },
+  "required": ["name", "timezone"],
+  "additionalProperties": false
+}

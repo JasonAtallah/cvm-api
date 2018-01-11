@@ -1,18 +1,16 @@
+const debug = require('debug')('cvm-api.mw.errors');
 const config = require('../config');
 
 module.exports = new class ErrorsMiddleware {
 
   status404(req, res, next) {
     if (!res._headerSent) {
-      console.log(req.path + ' not found');
+      debug(`${req.path} not found`);
       res.status(404).send('File not found.');
     }
   }
 
   serverError(err, req, res, next) {
-    console.log('error: ' + err.message);
-    console.dir(err);
-
     let status;
 
     if (err.status) {
@@ -21,6 +19,11 @@ module.exports = new class ErrorsMiddleware {
       status = err.statusCode;
     } else {
       status = 500;
+    }
+
+    if (status >= 500) {
+      debug(`${status} error: ${err.message}`);
+      debug(err);
     }
 
     if (!res._headerSent) {

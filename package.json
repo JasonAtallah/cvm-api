@@ -5,14 +5,17 @@
   "author": "Ariel Jakobovits <arieljake@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "DEBUG=cvm-api* nodemon index.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
+    "ajv": "^6.0.0",
     "base64url": "^2.0.0",
     "body-parser": "^1.18.2",
     "compose-middleware": "^3.0.0",
     "cors": "^2.8.4",
+    "debug": "^3.1.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-jwt": "^5.3.0",

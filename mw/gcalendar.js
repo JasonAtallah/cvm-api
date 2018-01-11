@@ -14,7 +14,7 @@ module.exports = new class GCalendarService {
       auth,
       resource: {
         summary: req.body.name,
-        timeZone: req.body.timezone || 'America/Los_Angeles'
+        timeZone: req.body.timezone
       }
     }, function (err, response) {
       if (err) {
