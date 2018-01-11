@@ -1,5 +1,5 @@
 {
-  "$id": "http://cannabisvendormgmt.com/schemas/new-vendor.json",
+  "$id": "http://cannabisvendormgmt.com/schemas/new-calendar.json",
   "type": "object",
   "properties": {
     "name": {

@@ -1,26 +1,45 @@
+const _ = require('lodash');
 const Ajv = require('ajv');
 const debug = require('debug')('cvm-api.mw.data.validation');
 const { ValidationError } = require('../../errors');
 const config = require('../../config');
 
-const schemas = {
-  newCalendar: require('../../model/schemas/new-calendar.json'),
-  newVendor: require('../../model/schemas/new-vendor.json')
-};
-
-const validators = {
-  newCalendar: new Ajv().compile(schemas.newCalendar),
-  newVendor: new Ajv().compile(schemas.newVendor)
-};
+const ajv = new Ajv({
+  schemas: _.values(require('../../model/schemas'))
+});
 
 module.exports = {
 
   validateNewCalendar(req, res, next) {
     debug('validateNewCalendar');
-    var valid = validators.newCalendar(req.body);
+    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-calendar.json');
+    const valid = validate(req.body);
 
     if (!valid) {
-      next(new ValidationError(validators.newCalendar, req.body));
+      next(new ValidationError(validate.newCalendar, req.body));
+    } else {
+      next();
+    }
+  },
+
+  validateNewEvent(req, res, next) {
+    debug('validateNewEvent');
+    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-event.json');
+    const valid = validate(req.body);
+
+    if(!valid) {
+      next(new ValidationError(validate.errors, req.body));
+    } else {
+      next();
+    }
+  },
+
+  validateNewLocation(req, res, next) {
+    debug('validateNewLocation');
+    var valid = validators.newLocation(req.body);
+
+    if (!valid) {
+      next(new ValidationError(validators.newLocation, req.body));
     } else {
       next();
     }
@@ -28,10 +47,23 @@ module.exports = {
 
   validateNewVendor(req, res, next) {
     debug('validateNewVendor');
-    var valid = validators.newVendor(req.vendor);
+    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-vendor.json');
+    const valid = validate(req.body);
 
     if (!valid) {
-      next(new ValidationError(validators.newVendor, req.vendor));
+      next(new ValidationError(validate.errors, req.body));
+    } else {
+      next();
+    }
+  },
+
+  validateVendor(req, res, next) {
+    debug('validateVendor');
+    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/vendor.json');
+    const valid = validate(req.vendor);
+
+    if (!valid) {
+      next(new ValidationError(validate.errors, req.vendor));
     } else {
       next();
     }

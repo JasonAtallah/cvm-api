@@ -1,5 +1,5 @@
 {
-  "$id": "http://cannabisvendormgmt.com/schemas/new-vendor.json",
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor.json",
   "type": "object",
   "properties": {
     "company": {
@@ -18,5 +18,5 @@
       "$ref": "vendor-concentrates.json" 
     }
   },
-  "required": ["company", "contact"]
+  "required": ["company", "contact", "flowers", "edibles", "concentrates"]
 }

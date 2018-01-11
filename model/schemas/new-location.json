@@ -1,0 +1,23 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/new-location.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string",
+      "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$"
+    }
+  },
+  "required": ["name", "address", "city", "state", "zip"]  
+}

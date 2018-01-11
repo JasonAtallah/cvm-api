@@ -1,0 +1,9 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-concentrates.json",
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array"
+    }
+  }
+}
