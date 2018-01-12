@@ -14,12 +14,13 @@ module.exports = function (app) {
       mw.mongo.buyer.get
     ]),
     mw.compose([
-      mw.data.validation.validateNewEvent,
+      mw.data.validation.validateReqVar('body', 'new-event'),
       mw.data.incoming.prepCalendarEventForInsert,
       mw.gcalendar.createCalendarEvent
     ]),
     mw.compose([
       mw.data.responses.prepCalendarEventForResponse,
+      mw.data.validation.validateReqVar('event', 'event'),
       mw.responses.sendReqVar('event')
     ]));
 
@@ -27,12 +28,13 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
+      mw.data.validation.validateReqVar('body', 'location'),
       mw.data.incoming.prepNewBuyerLocation,
       mw.data.queries.prepBuyerLocationInsert,
-      mw.data.validation.validateNewLocation,
       mw.mongo.buyer.update
     ]),
     mw.compose([
+      mw.data.validation.validateReqVar('location', 'location'),
       mw.responses.sendReqVar('location')
     ]));
 
@@ -40,9 +42,9 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
-      mw.data.validation.validateNewVendor,
+      mw.data.validation.validateReqVar('body', 'new-vendor'),
       mw.data.incoming.prepNewVendorFromBuyer,
-      mw.data.validation.validateVendor,
+      mw.data.validation.validateReqVar('vendor', 'vendor'),
       mw.mongo.vendors.insertVendor
     ]),
     mw.compose([
@@ -51,10 +53,12 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,
+      mw.data.validation.validateReqVar('thread', 'thread'),
       mw.mongo.threads.insert
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsVendorResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor-item'),
       mw.responses.sendReqVar('vendor')
     ]));
 

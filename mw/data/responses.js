@@ -55,7 +55,6 @@ module.exports = {
   },
 
   prepVendorForResponse(req, res, next) {
-    req.vendor = _.omit(req.vendor, ['buyerId']);
     next();
   },
 

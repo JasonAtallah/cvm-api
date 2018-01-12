@@ -1,0 +1,59 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/file-object.json",
+  "type": "object",
+  "properties": {
+    "fieldname": {
+      "type": "string"
+    },
+    "originalname": {
+      "type": "string"
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "mimetype": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "bucketName": {
+      "type": "string"
+    },
+    "chunkSize": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "integer"
+    },
+    "md5": {
+      "type": "string"
+    },
+    "uploadDate": {
+      "type": "string"
+    },
+    "contentType": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "fieldname",
+    "originalname",
+    "encoding",
+    "mimetype",
+    "id",
+    "filename",
+    "metadata",
+    "bucketName",
+    "chunkSize",
+    "size",
+    "md5",
+    "uploadDate",
+    "contentType"]
+}

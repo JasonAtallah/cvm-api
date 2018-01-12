@@ -10,63 +10,20 @@ const ajv = new Ajv({
 
 module.exports = {
 
-  validateNewCalendar(req, res, next) {
-    debug('validateNewCalendar');
-    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-calendar.json');
-    const valid = validate(req.body);
+  validateReqVar(reqVarName, schemaName) {
+    return (req, res, next) => {
+      debug(`validate req[${reqVarName}] with ${schemaName}`);
+      const schemaPath = `http://cannabisvendormgmt.com/schemas/${schemaName}.json`;
+      const validate = ajv.getSchema(schemaPath);
+      const data = _.get(req, reqVarName);
+      const valid = validate(data);
 
-    if (!valid) {
-      next(new ValidationError(validate.newCalendar, req.body));
-    } else {
-      next();
-    }
-  },
-
-  validateNewEvent(req, res, next) {
-    debug('validateNewEvent');
-    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-event.json');
-    const valid = validate(req.body);
-
-    if(!valid) {
-      next(new ValidationError(validate.errors, req.body));
-    } else {
-      next();
-    }
-  },
-
-  validateNewLocation(req, res, next) {
-    debug('validateNewLocation');
-    var valid = validators.newLocation(req.body);
-
-    if (!valid) {
-      next(new ValidationError(validators.newLocation, req.body));
-    } else {
-      next();
-    }
-  },
-
-  validateNewVendor(req, res, next) {
-    debug('validateNewVendor');
-    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/new-vendor.json');
-    const valid = validate(req.body);
-
-    if (!valid) {
-      next(new ValidationError(validate.errors, req.body));
-    } else {
-      next();
-    }
-  },
-
-  validateVendor(req, res, next) {
-    debug('validateVendor');
-    const validate = ajv.getSchema('http://cannabisvendormgmt.com/schemas/vendor.json');
-    const valid = validate(req.vendor);
-
-    if (!valid) {
-      next(new ValidationError(validate.errors, req.vendor));
-    } else {
-      next();
-    }
+      if (!valid) {
+        next(new ValidationError(validate.errors, data));
+      } else {
+        next();
+      }
+    };
   }
 
 };

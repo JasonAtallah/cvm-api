@@ -1,0 +1,10 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-record.json",
+  "$ref": "vendor.json",
+  "properties": {
+    "_id": {
+      "type": "object"
+    }
+  },
+  "required": ["_id"]
+}

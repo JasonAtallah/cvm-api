@@ -1,0 +1,20 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/calendar.json",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "tz": {
+      "type": "string"
+    }
+  },
+  "required": ["type", "id", "name", "tz"],
+  "additionalProperties": false
+}

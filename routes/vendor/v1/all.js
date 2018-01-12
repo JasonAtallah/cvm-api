@@ -10,6 +10,7 @@ module.exports = function (app) {
     mw.data.queries.prepQuestionnaireQueryById,
     mw.mongo.get.questionnaire,
     mw.data.responses.prepQuestionnaireForResponse,
+    mw.data.validation.validateReqVar('questionnaire', 'questionnaire'),
     mw.responses.sendReqVar('questionnaire'));
 
   // router.post('/vendors/:vendorId/submitQuestionnaire');
@@ -25,15 +26,17 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorFromQuestionnaire,
-      mw.data.validation.validateNewVendor,
+      mw.data.validation.validateReqVar('body', 'new-vendor'),
       mw.mongo.vendors.insertVendor
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,
+      mw.data.validation.validateReqVar('thread', 'thread'),
       mw.mongo.threads.insert
     ]),
     mw.compose([
       mw.data.responses.prepVendorForResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor'),
       mw.responses.sendReqVar('vendor')
     ]));
 
@@ -50,16 +53,19 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepQuestionnaireResponseForUpdate,
+      mw.data.validation.validateReqVar('response', 'questionnaire-record'),
       mw.mongo.vendors.updateQuestionnaireResponse
     ]),
     mw.compose([
       mw.sendGrid.prepNewVendorEmailToBuyer,
+      mw.data.validation.validateReqVar('sendGridMsg', 'sendgrid-email'),
       mw.sendGrid.sendEmail
     ]),
     mw.responses.sendOk(201));
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     mw.parse.file('file'),
+    mw.data.validation.validateReqVar('file', 'file-object'),
     mw.responses.sendReqVar('file'));
 
   router.get('/vendors/:vendorId',
@@ -69,6 +75,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepVendorForResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor-record'),
       mw.responses.sendReqVar('vendor')
     ]));
 
@@ -79,6 +86,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsBuyerResponse,
+      mw.data.validation.validateReqVar('buyer', 'buyer-item'),
       mw.responses.sendReqVar('buyer')
     ]));
 
@@ -106,31 +114,9 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsBuyerResponse,
+      mw.data.validation.validateReqVar('buyer', 'buyer-item'),
       mw.responses.sendReqVar('buyer')
     ]));
-
-  router.put('/vendors/:vendorId/attributes/:attribute',
-    mw.parse.json,
-    mw.compose([
-      mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor
-    ]),
-    mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread
-    ]),
-    mw.compose([
-      mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.buyer.get
-    ]),
-    mw.compose([
-      mw.data.incoming.prepThreadAttribute,
-      mw.logic.ifNotUndefinedInReq('attribute', [
-        mw.mongo.threads.updateAttribute
-      ]),
-      mw.responses.sendReqVar('thread.vendor')
-    ])
-  );
 
   return router;
 };
