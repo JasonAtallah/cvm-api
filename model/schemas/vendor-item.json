@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "_id": {
-      "type": "string"
+      "type": "object"
     },
     "name": {
       "type": "string"
