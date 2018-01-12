@@ -4,10 +4,9 @@ const utils = require('./utils');
 
 module.exports = class Request
 {
-  constructor(config, params)
+  constructor(config)
   {
     this.config = config;
-    this.params = params;
   }
 
   getMethod(params)
@@ -60,8 +59,7 @@ module.exports = class Request
   }
 
   execute(params) {
-    const finalParams = Object.assign({}, this.params, params);
-    const options = this.getOptions(finalParams);
+    const options = this.getOptions(params);
 
     return request(options)
       .then((response) => {
