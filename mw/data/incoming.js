@@ -58,7 +58,7 @@ module.exports = {
     req.thread = {
       buyer: {
         _id: req.buyer._id,
-        name: req.buyer.name
+        name: req.buyer.profile.company.name
       },
       vendor: {
         _id: req.vendor._id,
