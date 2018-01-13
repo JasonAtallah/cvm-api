@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "buyerId": {
-      "type": "string"
+      "type": "object"
     },
     "pages": {
       "type": "array",

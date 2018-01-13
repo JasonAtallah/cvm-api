@@ -5,7 +5,38 @@
     "products": {
       "type": "array",
       "items": {
-        "$ref": "product.json"
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "unitsAvailable": {
+            "type": "number"
+          },
+          "thc": {
+            "type": "number"
+          },
+          "cbd": {
+            "type": "number"
+          },
+          "shelfReady": {
+            "type": "boolean"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          },
+          "testResults": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          }
+        }
       }
     }
   }

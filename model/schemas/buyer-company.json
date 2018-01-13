@@ -20,5 +20,5 @@
       "type": "string"
     }
   },
-  "required": ["email"]
+  "required": ["name"]
 }
