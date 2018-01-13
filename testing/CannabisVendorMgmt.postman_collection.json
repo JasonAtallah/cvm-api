@@ -1,0 +1,1130 @@
+{
+	"info": {
+		"name": "CannabisVendorMgmt",
+		"_postman_id": "a51938b7-1d1f-1658-f13a-a36bf6ba00e0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API Tests",
+			"description": "",
+			"item": [
+				{
+					"name": "States",
+					"description": "",
+					"item": [
+						{
+							"name": "Reject Vendor",
+							"description": "",
+							"item": [
+								{
+									"name": "Vendor GET buyer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('VendorRejected');",
+													"});"
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "{{API_HOST}}/vendor/v1/vendors/{{VENDOR_ID}}/buyer",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"vendor",
+												"v1",
+												"vendors",
+												"{{VENDOR_ID}}",
+												"buyer"
+											]
+										},
+										"description": null
+									},
+									"response": []
+								},
+								{
+									"name": "CreateVendorSuccess",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"var res = pm.response.json();",
+													"var req = JSON.parse(pm.request.body.raw);",
+													"",
+													"pm.test('has status 200 OK', function () {",
+													"    pm.response.to.be.ok;",
+													"});",
+													"",
+													"pm.test('has right name', function () {",
+													"    pm.expect(res.name).to.equal(req.company.name);",
+													"});",
+													"",
+													"pm.test('has right state', function () {",
+													"    pm.expect(res.state.name).to.equal('NewVendor');",
+													"});",
+													"",
+													"pm.environment.set(\"VENDOR_ID\", res._id);",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"company\": {\n      \"name\": \"{{vendor.company.name}}\",\n      \"city\": \"{{vendor.company.city}}\"\n    },\n    \"contact\": {\n      \"firstName\": \"{{vendor.contact.firstName}}\",\n      \"email\": \"{{vendor.contact.email}}\"\n    }\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/vendors",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"vendors"
+											]
+										},
+										"description": null
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Approve Vendor",
+							"description": "",
+							"item": [
+								{
+									"name": "Vendor Approved (success)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('BuyerNeedsToSendTimes');",
+													"});",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "http://localhost:8080"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\" : {\n    \"subject\": \"Congrats\",\n    \"body\": \"We'd like to set up a meeting\"\n  },\n  \"scheduleUrl\": \"http://localhost:8080/?vid=5a5830b7525e5614140737c1#\"\n}"
+										},
+										"url": {
+											"raw": "http://localhost:8081/buyer/v1/vendors/5a5830b7525e5614140737c1/actions/ApproveVendor",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"5a5830b7525e5614140737c1",
+												"actions",
+												"ApproveVendor"
+											]
+										},
+										"description": null
+									},
+									"response": []
+								},
+								{
+									"name": "Buyer Sends Times (success)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"",
+													"",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('VendorNeedsToReviewTimes');",
+													"});",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "http://localhost:8080"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"suggestedTimes\": [\n    {\n      \"location\": {\n        \"address\": \"111 main street\",\n        \"city\": \"San Mateo\",\n        \"state\": \"CA\",\n        \"zip\": \"94401\"\n      },\n      \"startDate\": \"Thu Jan 11 2018 07:30:12 GMT-0800 (PST)\",\n      \"duration\": 30\n      },\n      {\n      \"location\": {\n        \"address\": \"11 main street\",\n        \"city\": \"San Mateo\",\n        \"state\": \"CA\",\n        \"zip\": \"94401\"\n      },\n      \"startDate\": \"Thu Jan 11 2017 07:30:12 GMT-0800 (PST)\",\n      \"duration\": 30\n      }\n    ],\n    \"vendorUrl\": \"http://localhost:8080/?vid=5a582f43525e5614140737bd#\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/vendors/5a582f43525e5614140737bd/actions/BuyerSendsTimes",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"5a582f43525e5614140737bd",
+												"actions",
+												"BuyerSendsTimes"
+											]
+										},
+										"description": null
+									},
+									"response": []
+								},
+								{
+									"name": "VendorRejectsAllTimes (success)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('BuyerNeedsToSendTimes');",
+													"});"
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "http://localhost:8080"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:8081/buyer/v1/vendors/5a582f43525e5614140737bd/actions/VendorRejectsAllTimes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"5a582f43525e5614140737bd",
+												"actions",
+												"VendorRejectsAllTimes"
+											]
+										},
+										"description": null
+									},
+									"response": []
+								},
+								{
+									"name": "BuyerCancelsAppt (success)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('BuyerNeedsToSendTimes');",
+													"});"
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "http://localhost:8080"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:8081/buyer/v1/vendors/5a554d9ab2388edeb3973b7a/actions/BuyerCancelsAppt",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"5a554d9ab2388edeb3973b7a",
+												"actions",
+												"BuyerCancelsAppt"
+											]
+										},
+										"description": "Tests for correct new state and status code 200 is returned"
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "RejectVendor (success)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('Has correct new state', function () {",
+											"    pm.expect(pm.response.json().state.name).to.equal('VendorRejected');",
+											"});",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{BUYER_TOKEN}}"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:8080"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": {\n    \"subject\": \"Sorry\",\n    \"body\": \"Not interested\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/RejectVendor",
+									"host": [
+										"{{API_HOST}}"
+									],
+									"path": [
+										"buyer",
+										"v1",
+										"vendors",
+										"{{VENDOR_ID}}",
+										"actions",
+										"RejectVendor"
+									]
+								},
+								"description": null
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GetBuyerToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ae3a8dcd-7f67-451f-8a4f-580036be43e7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Body is a jwt token\", function () {",
+									"    pm.expect(pm.response.text()).to.match(/^[\\w\\.\\_]{100,}$/);",
+									"});",
+									"",
+									"pm.environment.set('BUYER_TOKEN', pm.response.text());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"buyerId\": \"{{BUYER_ID}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"token"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "ApproveVendor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/ApproveVendor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"ApproveVendor"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "BuyerSendsTimes",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"suggestedTimes\": [\"1/1/2018 13:00\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/BuyerSendsTimes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"BuyerSendsTimes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "VendorRejectsAllTimes",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/VendorRejectsAllTimes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"VendorRejectsAllTimes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "BuyerSendsTimes 2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"suggestedTimes\": [\"1/2/2018 13:00\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/BuyerSendsTimes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"BuyerSendsTimes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "VendorRejectsAllTimes 2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/VendorRejectsAllTimes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"VendorRejectsAllTimes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "BuyerSendsTimes 3",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"suggestedTimes\": [\"1/3/2018 13:00\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/BuyerSendsTimes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"BuyerSendsTimes"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "VendorChoosesTime",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"selectedTime\": \"1/3/2018 13:00\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors/5a31efcb6a65d9086ab8f10a/actions/VendorChoosesTime",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors",
+								"5a31efcb6a65d9086ab8f10a",
+								"actions",
+								"VendorChoosesTime"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Vendor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"company\": {\n    \"name\": \"pot\",\n    \"city\": \"Rohnert Park\"  \n  },\n  \"contact\": {\n    \"email\": \"jason.atallah@gmail.com\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors"
+							]
+						},
+						"description": "Test create vendor"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event (success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"moment = require('moment');",
+									"",
+									"var res = pm.response.json();",
+									"var req = JSON.parse(pm.request.body.raw);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has correct title\", function () {",
+									"     pm.expect(res.title).to.eql(req.name);",
+									"});",
+									"",
+									"pm.test(\"Duration added correctly\", function () {",
+									"    pm.expect(moment(res.endDate).format()).to.eql(moment(res.startDate).add(req.duration, 'm').format());",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Meeting\",\n  \"location\": \"11 Main Street\",\n  \"date\": \"1/21/2018\",\n  \"time\": \"8:00\",\n  \"duration\": \"30\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"events"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API Test Short",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Buyer Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Body is a jwt token\", function () {",
+									"    pm.expect(pm.response.text()).to.match(/^[\\w\\.\\_]{100,}$/);",
+									"});",
+									"",
+									"pm.environment.set('BUYER_TOKEN', pm.response.text());"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"buyerId\": \"5a2c69d8585301cfcb28255a\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"token"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Vendor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/vendors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"vendors"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation Tests",
+			"description": "",
+			"item": [
+				{
+					"name": "New Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"{",
+									"  \"name\": \"jason\"",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"HQ\",\n  \"address\": \"111 Main Street\",\n  \"city\": \"San Mateo\",\n  \"state\": \"CA\",\n  \"zip\": \"94401\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"locations"
+							]
+						},
+						"description": "Buyer adding a new location"
+					},
+					"response": []
+				},
+				{
+					"name": "New Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BUYER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"meeting\",\n  \"date\": \"1-4-2018\",\n  \"time\": \"8:00\",\n  \"location\": \"111 Main Street\",\n  \"duration\": \"40\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/buyer/v1/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"buyer",
+								"v1",
+								"events"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Events",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://cannabis-vendor-mgmt.herokuapp.com"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{MGMT_API_HOST}}/api/events",
+					"host": [
+						"{{MGMT_API_HOST}}"
+					],
+					"path": [
+						"api",
+						"events"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Vendors (Local)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "http://localhost:8080"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTJjNjlkODU4NTMwMWNmY2IyODI1NWEiLCJpYXQiOjE1MTQ5NjAyODAsImV4cCI6MTUxNjE2OTg4MCwiYXVkIjoiY3ZtIn0.HdnXnGp7wduQxT_PEAxuLD9vhVszJ5CHUWeq5t8DSgo"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/buyer/v1/vendors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"buyer",
+						"v1",
+						"vendors"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Google Calendars",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "http://localhost:8080"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer ya29.GlwIBVV9vCfk3mD13yev6GiL1iAp5VT7EPvk7_taMqoIokeupcc2u6VFrUME194DwUSuLtRh0Os7QFg99csVZfyDsB2n1idS3_Q6b_wHKvUuaDFYVwY4yN7rS0nL0g"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://www.googleapis.com/calendar/v3/users/me/calendarList",
+					"protocol": "https",
+					"host": [
+						"www",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"calendar",
+						"v3",
+						"users",
+						"me",
+						"calendarList"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

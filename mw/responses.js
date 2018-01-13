@@ -2,9 +2,9 @@ const _ = require('lodash');
 
 module.exports = {
 
-  sendReqVar(name) {
+  sendReqVar(name, status = 200) {
     return (req, res, next) => {
-      res.status(200).send(_.get(req, name));
+      res.status(status).send(_.get(req, name));
       next();
     };
   },

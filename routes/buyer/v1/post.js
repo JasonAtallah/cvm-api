@@ -59,7 +59,7 @@ module.exports = function (app) {
     mw.compose([
       mw.data.responses.prepThreadAsVendorResponse,
       mw.data.validation.validateReqVar('vendor', 'vendor-item'),
-      mw.responses.sendReqVar('vendor')
+      mw.responses.sendReqVar('vendor', 201)
     ]));
 
   return router;
