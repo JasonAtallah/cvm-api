@@ -8,7 +8,7 @@ const requests = new Requests(collection, env);
 describe('buyer/v1', function() {
   describe('get buyer token', function() {
     it('should return jwt token', function() {
-      return requests.run('GetBuyerToken')
+      return requests.run('post-token-success')
         .then((response) => {
           expect(response.statusCode).to.equal(200);
           expect(response.body).to.match(/^[\w\W]{100,}$/);
@@ -19,7 +19,7 @@ describe('buyer/v1', function() {
 
   describe('create vendor', function() {
     it('should return vendor with right values', function() {
-      return requests.run('CreateVendorSuccess', { vendor: env.vendor1 })
+      return requests.run('post-vendor-success', { vendor: env.vendor1 })
         .then((response) => {
           expect(response.statusCode).to.equal(201);
           expect(response.body.name).to.equal(env.vendor1.company.name);

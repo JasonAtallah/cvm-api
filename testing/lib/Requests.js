@@ -8,7 +8,8 @@ module.exports = class Requests
     this.env = env;
     this.requests = traverse(collection).reduce((memo, node) => {
       if (node && node.hasOwnProperty('request')) {
-        memo[node.name] = new Request(node.request);
+        const requestName = `${node.request.method.toLowerCase()}-${node.name}`;
+        memo[requestName] = new Request(node.request);
       }
       return memo;
     }, {});
