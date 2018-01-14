@@ -27,7 +27,8 @@ module.exports = function (app) {
       ],
       [
         mw.data.validation.validateReqVar('body', 'new-calendar'),
-        mw.gcalendar.createCalendar
+        mw.gcalendar.createCalendar,
+        mw.data.responses.prepCalendarResponse
       ]),
     mw.mongo.buyer.updateCalendar,
     mw.data.validation.validateReqVar('calendar', 'calendar'),

@@ -22,20 +22,17 @@ module.exports = {
     next();
   },
 
+  prepCalendarResponse(req, res, next) {
+    req.calendar = mappings.mapGCalendarToCalendar(req.calendar);
+    next();
+  },
+
   prepCalendarListForResponse (req, res, next) {
     req.calendars = req.gcalendarlist.items
       .filter((calendar) => {
         return ['owner', 'writer'].indexOf(calendar.accessRole) >= 0 && calendar.primary !== true;
       })
-      .map((calendar) => {
-        return {
-          type: 'google',
-          id: calendar.id,
-          name: calendar.summary,
-          tz: calendar.timeZone,
-          notifications: calendar.notificationSettings ? calendar.notificationSettings.notifications : []
-        };
-      });
+      .map(mappings.mapGCalendarToCalendar);
     next();
   },
 
