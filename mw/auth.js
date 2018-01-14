@@ -1,4 +1,5 @@
 const moment = require('moment');
+const request = require('request-promise-native');
 const jwksRsa = require('jwks-rsa');
 const config = require('../config');
 const jwt = require('../services/jwt');
