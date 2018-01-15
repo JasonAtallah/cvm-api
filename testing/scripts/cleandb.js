@@ -10,4 +10,8 @@ config.mongo.getDB
       db.collection('threads').remove({ 'vendor.name': { $regex: '^Test', $options: 'i' }}),
       db.collection('vendors').remove({ 'company.name': { $regex: '^Test', $options: 'i' }})
     ])
+  })
+  .then(() => {
+    console.log('Complete');
+    process.exit();
   });

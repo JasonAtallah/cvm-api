@@ -39,7 +39,6 @@ module.exports = class Request
       let raw = utils.replaceVars(this.config.body.raw, params);
       data = JSON.parse(raw);
     } catch (err) {
-      console.dir(err);
       data = {};
     }
 

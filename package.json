@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "DEBUG=cvm-api* nodemon index.js",
-    "test": "./node_modules/mocha/bin/mocha testing/tests.js"
+    "test": "./node_modules/mocha/bin/mocha testing/tests/**/*.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",

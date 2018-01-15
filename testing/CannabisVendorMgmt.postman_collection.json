@@ -512,7 +512,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"email\": {\n\t\t\"subject\": \"Sorry\",\n\t\t\"body\": \"Not interested\"\n\t}\n}"
+											"raw": "{\n\t\"email\": {\n\t\t\"subject\": \"{{email.subject}}\",\n\t\t\"body\": \"{{email.body}}\"\n\t}\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/RejectVendor",
@@ -727,6 +727,20 @@
 								},
 								{
 									"name": "profile-success",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "fd8d9072-9448-42ec-9a4f-52118f1198c9",
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												]
+											}
+										}
+									],
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -741,7 +755,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"company\": {\n\t\t\"name\": \"new company\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"Ja\",\n\t\t\"email\": \"jason.atallah@gmail.com\"\n\t}\n}"
+											"raw": "{\n\t\"company\": {\n\t\t\"name\": \"new company\",\n\t\t\"city\": \"Rohnert Park\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"Jason\",\n\t\t\"email\": \"jason.atallah@gmail.com\"\n\t}\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/profile",
@@ -824,6 +838,43 @@
 												"{{VENDOR_ID}}",
 												"attributes",
 												"unwatchVendor"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "calendars-success",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "origin",
+												"value": "{{BUYER_HOST}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"name\": \"{{gcalendar.name}}\",\n\t\"timezone\": \"{{gcalendar.timezone}}\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/gcalendar",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"gcalendar"
 											]
 										},
 										"description": ""
