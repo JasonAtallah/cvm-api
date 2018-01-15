@@ -3,7 +3,7 @@ const context = require('../../../lib/context');
 describe('Set calendar to new gCalendar', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-calendars-success')
+    return context.requests.run('put-calendars')
       .catch((err) => {
         context.expect(err.statusCode).to.equal(401);
       });
@@ -11,10 +11,10 @@ describe('Set calendar to new gCalendar', function () {
 
   it('should return new calendar', function () {
     this.timeout(10000);
-    return context.requests.run('post-token-success')
+    return context.requests.run('post-token')
       .then((response) => {
-        let token = response.body;
-        return context.requests.run('put-calendars-success', { BUYER_TOKEN: token })
+        context.env.BUYER_TOKEN = response.body
+        return context.requests.run('put-calendars')
           .then((response) => {
             context.expect(response.statusCode).to.equal(202);
           });

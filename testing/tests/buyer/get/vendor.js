@@ -1,28 +1,28 @@
 const context = require('../../../lib/context');
 
-describe('reject vendor', function () {
+describe('get a vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-vendorRejected', { vendor: context.env.vendor1 })
+    return context.requests.run('get-vendor')
       .catch((err) => {
         context.expect(err.statusCode).to.equal(401);
       });
   });
 
-  it('should return vendor with updated state', function () {
+  it('should return a vendors', function () {
     return context.requests.run('post-token')
       .then((response) => {
         context.env.BUYER_TOKEN = response.body
         return context.requests.run('post-vendor', { vendor: context.env.vendor1 })
           .then((response) => {
             context.env.VENDOR_ID = response.body._id;
-            return context.requests.run('put-vendorRejected', { email: context.env.rejectionEmail })
+            return context.requests.run('get-vendors')
               .then((response) => {
                 context.expect(response.statusCode).to.equal(200);
-                context.expect(response.body.state).to.deep.include({ name: 'VendorRejected' });
+                context.expect(response.body).to.be.an('array');
               });
           });
       });
   });
-  
+
 });

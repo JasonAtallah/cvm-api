@@ -8,21 +8,21 @@ module.exports = describe('Reject vendor test', function () {
 
   describe('Create and reject vendor', function() {
     it('should create and reject a vendor', function() {
-      return requests.run('post-token-success')
+      return requests.run('post-token')
         .then((response) => {
           env.BUYER_TOKEN = response.body;
-          return requests.run('post-vendor-success', { vendor: env.vendor1 })
+          return requests.run('post-vendor', { vendor: env.vendor1 })
         })
         .then((response) => {      
           env.VENDOR_ID = response.body._id;
-          return requests.run('put-vendorRejected-success', { email: env.rejectionEmail })
+          return requests.run('put-vendorRejected', { email: env.rejectionEmail })
         });
     })
   });
 
   describe('Watch Vendor', function() {
     it('should watch vendor', function() {
-      return requests.run('put-watchVendor-success')
+      return requests.run('put-watchVendor')
         .then((response) => {
           expect(response.statusCode).to.equal(201);
         });
@@ -31,7 +31,7 @@ module.exports = describe('Reject vendor test', function () {
 
   describe('Unwatch Vendor', function() {
     it('should unwatch vendor', function() {
-      return requests.run('put-unwatchVendor-success')
+      return requests.run('put-unwatchVendor')
         .then((response) => {
           expect(response.statusCode).to.equal(201);
         });

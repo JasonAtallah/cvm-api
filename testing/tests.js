@@ -6,16 +6,16 @@ const env = require('./env');
 const requests = new Requests(collection, env);
 
 const watchUnwatchVendor = require('./watchUnwatchVendorTest');
-// const getBuyerToken = require('./tests/buyer/post/token-success');
-// const createVendor = require('./tests/buyer/post/vendor-success');
-// const rejectVendor = require('./tests/buyer/put/vendorRejected-success');
+// const getBuyerToken = require('./tests/buyer/post/token');
+// const createVendor = require('./tests/buyer/post/vendor');
+// const rejectVendor = require('./tests/buyer/put/vendorRejected');
 watchUnwatchVendor;
 
 // getBuyerToken;`
 
 // describe('approve vendor', function() {
 //   it('should return vendor with updated state', function() {
-//         return requests.run('put-vendorApproved-success', { email: env.approvalEmail })
+//         return requests.run('put-vendorApproved', { email: env.approvalEmail })
 //           .then((response) => {            
 //             expect(response.statusCode).to.equal(200);
 //             expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes'})
@@ -25,7 +25,7 @@ watchUnwatchVendor;
 
 // describe('buyer sends times', function() {
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-buyerSendsTimes-success')
+//     return requests.run('put-buyerSendsTimes')
 //       .then((response) => {
 //         console.log(env.suggestedTimes);
 //         expect(response.statusCode).to.equal(200);
@@ -37,7 +37,7 @@ watchUnwatchVendor;
 
 // describe('vendor rejects all times', function() {
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-vendorRejectsAllTimes-success')
+//     return requests.run('put-vendorRejectsAllTimes')
 //       .then((response) => {
 //         expect(response.statusCode).to.equal(200);
 //         expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes'});     
@@ -48,7 +48,7 @@ watchUnwatchVendor;
 
 // describe('buyer sends new times', function() {
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-buyerSendsTimes-success')
+//     return requests.run('put-buyerSendsTimes')
 //       .then((response) => {
 //         expect(response.statusCode).to.equal(200);
 //         expect(response.body.state).to.deep.include({ name: 'VendorNeedsToReviewTimes'});
@@ -60,7 +60,7 @@ watchUnwatchVendor;
 
 // describe('vendor chooses time', function() {
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-vendorChoosesTime-success')
+//     return requests.run('put-vendorChoosesTime')
 //       .then((response) => {
 //         expect(response.statusCode).to.equal(200);
 //         expect(response.body.state).to.deep.include({ name: 'ApptScheduled'});
@@ -73,7 +73,7 @@ watchUnwatchVendor;
 
 // describe('buyer cancels appt', function() {
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-buyerCancelsAppt-success')
+//     return requests.run('put-buyerCancelsAppt')
 //       .then((response) => {
 //         expect(response.statusCode).to.equal(200);
 //         expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });        
@@ -84,7 +84,7 @@ watchUnwatchVendor;
 
 // describe('vendor cancels appt', function() {  
 //   it('should return vendor with updated state', function() {
-//     return requests.run('put-vendorCancelsAppt-success')
+//     return requests.run('put-vendorCancelsAppt')
 //       .then((response) => {
 //         expect(response.statusCode).to.equal(200);
 //         expect(response.body.state).to.deep.include({ name: 'buyerNeedsToSendTimes' });

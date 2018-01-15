@@ -19,7 +19,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "buyer-success",
+									"name": "buyer",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -56,7 +56,7 @@
 									"response": []
 								},
 								{
-									"name": "calendars-success",
+									"name": "calendars",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -93,7 +93,7 @@
 									"response": []
 								},
 								{
-									"name": "events-success",
+									"name": "events",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -130,7 +130,7 @@
 									"response": []
 								},
 								{
-									"name": "vendors-success",
+									"name": "vendors",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -167,7 +167,7 @@
 									"response": []
 								},
 								{
-									"name": "vendor-success",
+									"name": "vendor",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -212,7 +212,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "token-success",
+									"name": "token",
 									"event": [
 										{
 											"listen": "test",
@@ -255,7 +255,7 @@
 									"response": []
 								},
 								{
-									"name": "vendor-success",
+									"name": "vendor",
 									"event": [
 										{
 											"listen": "test",
@@ -315,7 +315,7 @@
 									"response": []
 								},
 								{
-									"name": "event-success",
+									"name": "event",
 									"event": [
 										{
 											"listen": "test",
@@ -357,7 +357,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"name\": \"New Meeting\",\n\t\"location\": \"11 Main Street\",\n\t\"date\": \"1/21/2018\",\n\t\"time\": \"8:00\",\n\t\"duration\": \"30\"\n}"
+											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": \"{{event.duration}}\"\n}"
 										},
 										"url": {
 											"raw": "http://localhost:8081/buyer/v1/events",
@@ -377,7 +377,7 @@
 									"response": []
 								},
 								{
-									"name": "location-success",
+									"name": "location",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -392,7 +392,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"name\": \"HQ\",\n\t\"address\": \"111 Main Street\",\n\t\"city\": \"Santa Rosa\",\n\t\"state\": \"CA\",\n\t\"zip\": \"94928\"\n}"
+											"raw": "{\n\t\"name\": \"{{location.name}}\",\n\t\"address\": \"{{location.address}}\",\n\t\"city\": \"{{location.city}}\",\n\t\"state\": \"{{location.state}}\",\n\t\"zip\": \"{{location.zip}}\"\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/locations",
@@ -417,65 +417,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "vendorApproved-success",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"type": "text/javascript",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"",
-													"pm.test('Has correct new state', function () {",
-													"    pm.expect(pm.response.json().state.name).to.equal('BuyerNeedsToSendTimes');",
-													"});",
-													""
-												]
-											}
-										}
-									],
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
-												"key": "Origin",
-												"value": "{{BUYER_HOST}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\t\"email\" : {\n\t\t\"subject\": \"Congrats\",\n\t\t\"body\": \"We'd like to set up a meeting\"\n\t},\n\t\"scheduleUrl\": \"http://localhost:8080/?vid=5a5830b7525e5614140737c1#\"\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/ApproveVendor",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"buyer",
-												"v1",
-												"vendors",
-												"{{VENDOR_ID}}",
-												"actions",
-												"ApproveVendor"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								},
-								{
-									"name": "vendorRejected-success",
+									"name": "vendorRejected",
 									"event": [
 										{
 											"listen": "test",
@@ -533,7 +475,201 @@
 									"response": []
 								},
 								{
-									"name": "buyerCancelsAppt-success",
+									"name": "vendorRejectedEmail",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "{{BUYER_HOST}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"subject\": \"Sorry\",\n\t\"body\": \"buzz off\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/emails/rejectVendor",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"emails",
+												"rejectVendor"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "vendorApproved",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('BuyerNeedsToSendTimes');",
+													"});",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "{{BUYER_HOST}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"email\" : {\n\t\t\"subject\": \"{{email.subject}}\",\n\t\t\"body\": \"{{email.body}}\"\n\t},\n\t\"scheduleUrl\": \"{{email.scheduleUrl}}\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/ApproveVendor",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"{{VENDOR_ID}}",
+												"actions",
+												"ApproveVendor"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "vendorApprovedEmail",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Origin",
+												"value": "{{BUYER_HOST}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"subject\": \"Congrats\",\n\t\"body\": \"We'd like to set up a meeting\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/emails/approveVendor",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"emails",
+												"approveVendor"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "buyerSendsTimes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"",
+													"",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test('Has correct new state', function () {",
+													"    pm.expect(pm.response.json().state.name).to.equal('VendorNeedsToReviewTimes');",
+													"});",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{BUYER_HOST}}"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"suggestedTimes\": [\n    {\n      \"location\": {\n        \"address\": \"{{suggestedTimes.location1.address}}\",\n        \"city\": \"{{suggestedTimes.location1.city}}\",\n        \"state\": \"{{suggestedTimes.location1.state}}\",\n        \"zip\": \"{{suggestedTimes.location1.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.startDate1}}\",\n      \"duration\": \"{{suggestedTimes.duration1}}\"\n    },\n    {\n      \"location\": {\n        \"address\": \"{{suggestedTimes.location2.address}}\",\n        \"city\": \"{{suggestedTimes.location2.city}}\",\n        \"state\": \"{{suggestedTimes.location2.state}}\",\n        \"zip\": \"{{suggestedTimes.location2.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.startDate2}}\",\n      \"duration\": \"{{suggestedTimes.duration2}}\"\n    }\n  ],\n  \"vendorUrl\": \"{{vendorUrl}}\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/BuyerSendsTimes",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"vendors",
+												"{{VENDOR_ID}}",
+												"actions",
+												"BuyerSendsTimes"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
+									"name": "buyerCancelsAppt",
 									"event": [
 										{
 											"listen": "test",
@@ -590,143 +726,7 @@
 									"response": []
 								},
 								{
-									"name": "buyerSendsTimes-success",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"type": "text/javascript",
-												"exec": [
-													"",
-													"",
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"",
-													"pm.test('Has correct new state', function () {",
-													"    pm.expect(pm.response.json().state.name).to.equal('VendorNeedsToReviewTimes');",
-													"});",
-													""
-												]
-											}
-										}
-									],
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Origin",
-												"value": "{{BUYER_HOST}}"
-											},
-											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"suggestedTimes\": [\n  \t{\n  \t\t\"location\": {\n  \t\t\t\"address\": \"111 main street\",\n  \t\t\t\"city\": \"San Mateo\",\n  \t\t\t\"state\": \"CA\",\n  \t\t\t\"zip\": \"94401\"\n  \t\t},\n  \t\t\"startDate\": \"Thu Jan 11 2018 07:30:12 GMT-0800 (PST)\",\n  \t\t\"duration\": 30\n  \t  },\n  \t  {\n  \t\t\"location\": {\n  \t\t\t\"address\": \"11 main street\",\n  \t\t\t\"city\": \"San Mateo\",\n  \t\t\t\"state\": \"CA\",\n  \t\t\t\"zip\": \"94401\"\n  \t\t},\n  \t\t\"startDate\": \"Thu Jan 11 2017 07:30:12 GMT-0800 (PST)\",\n  \t\t\"duration\": 30\n  \t  }\n  \t],\n  \t\"vendorUrl\": \"http://localhost:8080/?vid=5a582f43525e5614140737bd#\"\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/BuyerSendsTimes",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"buyer",
-												"v1",
-												"vendors",
-												"{{VENDOR_ID}}",
-												"actions",
-												"BuyerSendsTimes"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								},
-								{
-									"name": "vendorApprovedEmail-success",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
-												"key": "Origin",
-												"value": "{{BUYER_HOST}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\t\"subject\": \"Congrats\",\n\t\"body\": \"We'd like to set up a meeting\"\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/buyer/v1/emails/approveVendor",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"buyer",
-												"v1",
-												"emails",
-												"approveVendor"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								},
-								{
-									"name": "vendorRejectedEmail-success",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
-												"key": "Origin",
-												"value": "{{BUYER_HOST}}"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\t\"subject\": \"Sorry\",\n\t\"body\": \"buzz off\"\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/buyer/v1/emails/rejectVendor",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"buyer",
-												"v1",
-												"emails",
-												"rejectVendor"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								},
-								{
-									"name": "profile-success",
+									"name": "profile",
 									"event": [
 										{
 											"listen": "test",
@@ -755,7 +755,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"company\": {\n\t\t\"name\": \"new company\",\n\t\t\"city\": \"Rohnert Park\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"Jason\",\n\t\t\"email\": \"jason.atallah@gmail.com\"\n\t}\n}"
+											"raw": "{\n\t\"company\": {\n\t\t\"name\": \"{{profile.company.name}}\",\n\t\t\"city\": \"{{profile.company.city}}\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"{{profile.contact.firstName}}\",\n\t\t\"email\": \"{{profile.contact.email}}\"\n\t}\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/profile",
@@ -773,7 +773,7 @@
 									"response": []
 								},
 								{
-									"name": "watchVendor-success",
+									"name": "watchVendor",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -809,7 +809,7 @@
 									"response": []
 								},
 								{
-									"name": "unwatchVendor-success",
+									"name": "unwatchVendor",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -845,7 +845,7 @@
 									"response": []
 								},
 								{
-									"name": "calendars-success",
+									"name": "calendars",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -896,7 +896,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "buyer-success",
+									"name": "buyer",
 									"event": [
 										{
 											"listen": "test",
@@ -936,7 +936,7 @@
 									"response": []
 								},
 								{
-									"name": "vendor-success",
+									"name": "vendor",
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -958,7 +958,7 @@
 									"response": []
 								},
 								{
-									"name": "questionnaire-success",
+									"name": "questionnaire",
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -990,7 +990,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "vendorRejectsAllTimes-success",
+									"name": "vendorRejectsAllTimes",
 									"event": [
 										{
 											"listen": "test",
@@ -1047,7 +1047,7 @@
 									"response": []
 								},
 								{
-									"name": "vendorChoosesTime-success",
+									"name": "vendorChoosesTime",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -1083,7 +1083,7 @@
 									"response": []
 								},
 								{
-									"name": "vendorCancelsAppt-success",
+									"name": "vendorCancelsAppt",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -1126,7 +1126,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "questionnaireResponses-success",
+									"name": "questionnaireResponses",
 									"request": {
 										"method": "POST",
 										"header": [
