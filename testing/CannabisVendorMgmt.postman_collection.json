@@ -726,6 +726,43 @@
 									"response": []
 								},
 								{
+									"name": "calendars",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{BUYER_TOKEN}}"
+											},
+											{
+												"key": "origin",
+												"value": "{{BUYER_HOST}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"name\": \"{{gcalendar.name}}\",\n\t\"timezone\": \"{{gcalendar.timezone}}\"\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/buyer/v1/gcalendar",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"buyer",
+												"v1",
+												"gcalendar"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								},
+								{
 									"name": "profile",
 									"event": [
 										{
@@ -843,43 +880,6 @@
 										"description": ""
 									},
 									"response": []
-								},
-								{
-									"name": "calendars",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
-												"key": "origin",
-												"value": "{{BUYER_HOST}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\t\"name\": \"{{gcalendar.name}}\",\n\t\"timezone\": \"{{gcalendar.timezone}}\"\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/buyer/v1/gcalendar",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"buyer",
-												"v1",
-												"gcalendar"
-											]
-										},
-										"description": ""
-									},
-									"response": []
 								}
 							],
 							"_postman_isSubFolder": true
@@ -986,6 +986,44 @@
 							"_postman_isSubFolder": true
 						},
 						{
+							"name": "POST",
+							"description": "",
+							"item": [
+								{
+									"name": "questionnaireResponse",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"company\": {\n    \"name\": \"{{questionnaireResponse.company.name}}\",\n    \"city\": \"{{questionnaireResponse.company.city}}\"\n  },\n  \"contact\": {\n    \"firstName\": \"{{questionnaireResponse.contact.firstName}}\",\n    \"email\": \"{{questionnaireResponse.contact.email}}\"\n  },\n  \"flowers\": {\n    \"products\": [\n      {\n        \"name\": \"{{questionnaireResponse.flowers1.name}}\",\n        \"weightAvailable\": {{questionnaireResponse.flowers1.weightAvailable}},\n        \"thc\": {{questionnaireResponse.flowers1.thc}}\n      }\n    ]\n  },\n  \"edibles\": {\n    \"products\": []\n  },\n  \"concentrates\": {\n    \"products\": []\n  }\n}"
+										},
+										"url": {
+											"raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}/responses",
+											"host": [
+												"{{API_HOST}}"
+											],
+											"path": [
+												"vendor",
+												"v1",
+												"questionnaires",
+												"{{QID}}",
+												"responses"
+											]
+										},
+										"description": ""
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
 							"name": "PUT",
 							"description": "",
 							"item": [
@@ -1062,7 +1100,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"Jason Atallah\",\n\t        \"address\": \"860 prospect row\",\n\t        \"zip\": \"94401\",\n\t        \"city\": \"San Mateo\",\n\t        \"state\": \"CA\"\n\t    },\n\t    \"duration\": 30,\n\t    \"startDate\": \"2018-01-11T15:15:12.637Z\"\n\t}\n}"
+											"raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"{{selectedTime.location.name}}\",\n\t        \"address\": \"{{selectedTime.location.address}}\",\n\t        \"zip\": \"{{selectedTime.location.zip}}\",\n\t        \"city\": \"{{selectedTime.location.city}}\",\n\t        \"state\": \"{{selectedTime.location.state}}\"\n\t    },\n\t    \"duration\": {{selectedTime.duration}},\n\t    \"startDate\": \"{{selectedTime.startDate}}\"\n\t}\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/VendorChoosesTime",
@@ -1098,7 +1136,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"Jason Atallah\",\n\t        \"address\": \"860 prospect row\",\n\t        \"zip\": \"94401\",\n\t        \"city\": \"San Mateo\",\n\t        \"state\": \"CA\"\n\t    },\n\t    \"duration\": 30,\n\t    \"startDate\": \"2018-01-11T15:15:12.637Z\"\n\t}\n}"
+											"raw": ""
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/VendorCancelsAppt",
@@ -1112,44 +1150,6 @@
 												"{{VENDOR_ID}}",
 												"actions",
 												"VendorCancelsAppt"
-											]
-										},
-										"description": ""
-									},
-									"response": []
-								}
-							],
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "POST",
-							"description": "",
-							"item": [
-								{
-									"name": "questionnaireResponses",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\t\"company\": {\n\t\t\"name\": \"tesat\",\n\t\t\"city\": \"SF\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"jason\",\n\t\t\"email\": \"jason.atallah@gmail.com\"\n\t},\n\t\"flowers\": {\n\t\t\"products\": [\n\t\t\t{\n\t\t\t\t\"name\": \"paris og\",\n\t\t\t\t\"weightAvailable\": 10,\n\t\t\t\t\"thc\": 10\n\t\t\t}\n\t\t]\n\t},\n\t\"edibles\": {\n\t\t\"products\": []\n\t},\n\t\"concentrates\": {\n\t\t\"products\": []\n\t}\n}"
-										},
-										"url": {
-											"raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}/responses",
-											"host": [
-												"{{API_HOST}}"
-											],
-											"path": [
-												"vendor",
-												"v1",
-												"questionnaires",
-												"{{QID}}",
-												"responses"
 											]
 										},
 										"description": ""
