@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const context = require('../../../lib/context');
 
 describe('add a new location', function () {
@@ -9,21 +10,109 @@ describe('add a new location', function () {
       });
   });
 
+  describe('missing fields', function () {
+
+    it('should return a 400 missing name field', function () {
+      
+      const localEnv = {
+        location: _.omit(context.data.location, 'name')
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        'post-location'
+      ];
+
+      return context.requests.runAll(requestList, localEnv)
+        .catch((err) => {
+          context.expect(err.statusCode).to.equal(400);
+        });
+    });
+
+    it('should return a 400 missing address field', function () {
+      
+      const localEnv = {
+        location: _.omit(context.data.location, 'address')
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        'post-location'
+      ];
+
+      return context.requests.runAll(requestList, localEnv)
+        .catch((err) => {
+          context.expect(err.statusCode).to.equal(400);
+        });
+    });
+
+    it('should return a 400 missing city field', function () {
+      
+      const localEnv = {
+        location: _.omit(context.data.location, 'city')
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        'post-location'
+      ];
+
+      return context.requests.runAll(requestList, localEnv)
+        .catch((err) => {
+          context.expect(err.statusCode).to.equal(400);
+        });
+    });
+
+    it('should return a 400 missing state field', function () {
+      
+      const localEnv = {
+        location: _.omit(context.data.location, 'state')
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        'post-location'
+      ];
+
+      return context.requests.runAll(requestList, localEnv)
+        .catch((err) => {
+          context.expect(err.statusCode).to.equal(400);
+        });
+    });
+
+    it('should return a 400 missing zip field', function () {
+      
+      const localEnv = {
+        location: _.omit(context.data.location, 'zip')
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        'post-location'
+      ];
+
+      return context.requests.runAll(requestList, localEnv)
+        .catch((err) => {
+          context.expect(err.statusCode).to.equal(400);
+        });
+    });
+
+
+  });
+
   it('should return the new location', function () {
-    return context.requests.run('post-token')
+    const localEnv = {
+      location: context.data.location
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      'post-location'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('post-location', { location: context.data.location })
-          .then((response) => {
-            context.expect(response.statusCode).to.equal(200);      
-            context.expect(response.body).to.deep.include({ 
-              name: context.data.location.name,
-              address: context.data.location.address,
-              city: context.data.location.city,
-              state: context.data.location.state,
-              zip: context.data.location.zip
-            });                          
-          });
+        context.expect(response.statusCode).to.equal(200);
       });
   });
 

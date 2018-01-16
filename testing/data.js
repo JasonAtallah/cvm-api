@@ -31,7 +31,7 @@ module.exports = {
     location: '11 Main Street',
     date: '1/21/2018',
     time: '8:00',
-    duration: '30'
+    duration: 30
   },
 
   location: {

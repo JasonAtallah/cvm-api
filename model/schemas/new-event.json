@@ -15,7 +15,7 @@
       "type": "string"
     },
     "duration": {
-      "type": "string"
+      "type": "number"
     }
   },
   "required": ["name", "location", "time", "date", "duration"]

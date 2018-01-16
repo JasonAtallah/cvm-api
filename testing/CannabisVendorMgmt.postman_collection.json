@@ -357,7 +357,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": \"{{event.duration}}\"\n}"
+											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": {{event.duration}}\n}"
 										},
 										"url": {
 											"raw": "http://localhost:8081/buyer/v1/events",
