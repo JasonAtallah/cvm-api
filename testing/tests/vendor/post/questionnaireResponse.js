@@ -4,17 +4,27 @@ const context = require('../../../lib/context');
 describe('submit questionnaire response', function () {
 
   it('should return response and vendorId', function () {
-    return context.requests.run('post-questionnaireResponse', { questionnaireResponse: context.env.questionnaireResponse })
+
+    localEnv = {
+      QID: context.data.QID,
+      questionnaireResponse: context.data.questionnaireResponse
+    };
+
+    reqList = [
+      'post-questionnaireResponse'
+    ];
+
+    return context.requests.runAll(reqList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.deep.include({
           company: {
-            name: context.env.questionnaireResponse.company.name,
-            city: context.env.questionnaireResponse.company.city
+            name: localEnv.questionnaireResponse.company.name,
+            city: localEnv.questionnaireResponse.company.city
           },
           contact: {
-            firstName: context.env.questionnaireResponse.contact.firstName,
-            email: context.env.questionnaireResponse.contact.email
+            firstName: localEnv.questionnaireResponse.contact.firstName,
+            email: localEnv.questionnaireResponse.contact.email
           }
         });
       });

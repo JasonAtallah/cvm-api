@@ -13,7 +13,7 @@ describe('update buyer profile', function () {
     return context.requests.run('post-token')
       .then((response) => {
         context.env.BUYER_TOKEN = response.body
-        return context.requests.run('put-profile', { profile: context.env.profile })
+        return context.requests.run('put-profile', { profile: context.data.profile })
           .then((response) => {
             context.expect(response.statusCode).to.equal(204);           
           });

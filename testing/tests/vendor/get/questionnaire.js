@@ -2,11 +2,19 @@ const context = require('../../../lib/context');
 
 describe('get questionnaire', function () {
 
-  it('should return questionnaire', function () {
-    return context.requests.run('get-questionnaire')
+  it('should return the questionnaire', function () {
+    const localEnv = {
+      QID: context.data.QID
+    };
+
+    const requestList = [      
+      'get-questionnaire'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
-        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');        
-      });
+        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');        })
   });
+
 });

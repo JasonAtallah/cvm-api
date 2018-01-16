@@ -10,15 +10,19 @@ describe('get vendors', function () {
   });
 
   it('should return all vendors', function () {
-    return context.requests.run('post-token')
-      .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('get-vendors')
-          .then((response) => {
-            context.expect(response.statusCode).to.equal(200);
-            context.expect(response.body).to.be.an('array');
-          });
-      });
-  });
+    const localEnv = {};
 
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      'get-vendors'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('array');
+      })
+
+  });
+  
 });

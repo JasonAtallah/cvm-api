@@ -1,7 +1,7 @@
 
 
 module.exports = {
-  VENDOR_ID: '5a5c39c078f76030cb9feb0f',
+  VENDOR_ID: '5a5da934e85e6a1bc020f40f',
   QID: '5a1f7dcc8b9908d71f25e56d',
 
   vendor1: {

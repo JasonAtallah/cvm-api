@@ -2,6 +2,18 @@ const context = require('../../../lib/context');
 
 describe('buyer cancels appt', function () {
 
+  it('should return 401 Unauthorized without buyer token', function () {
+
+    const localEnv = {
+      VENDOR_ID: context.data.VENDOR_ID
+    };
+
+    return context.requests.run('put-buyerCancelsAppt', { VENDOR_ID: localEnv.VENDOR_ID })
+      .catch((err) => {
+        context.expect(err.statusCode).to.equal(401);
+      });
+  });
+
   it('should return vendor with updated state', function () {
     const localEnv = {
       vendor: context.data.vendor1,

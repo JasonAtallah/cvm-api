@@ -3,27 +3,28 @@ const context = require('../../../lib/context');
 describe('vendor cancels appt', function () {
 
   it('should return vendor with updated state', function () {
-    return context.requests.run('post-token')
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.approvalEmail,
+      suggestedTimes: context.data.suggestedTimes,
+      selectedTime: context.data.suggestedTimes[0]
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorApproved',
+      'put-buyerSendsTimes',
+      'put-vendorChoosesTime',
+      'put-vendorCancelsAppt'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('post-vendor', { vendor: context.env.vendor1 })
-          .then((response) => {
-            context.env.VENDOR_ID = response.body._id;
-            return context.requests.run('put-vendorApproved', { email: context.env.approvalEmail })
-              .then(() => {                
-                return context.requests.run('put-buyerSendsTimes', { suggestedTimes: context.env.suggestedTimes })
-                  .then(() => {
-                    return context.requests.run('put-vendorChoosesTime', { selectedTime: context.env.selectedTime })
-                      .then(() => {
-                        return context.requests.run('put-vendorCancelsAppt')
-                          .then((response) => {
-                            context.expect(response.statusCode).to.equal(200);
-                          });
-                      });
-                  });
-              });
-          });
-      });
+        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
+      })
+
   });
   
 });

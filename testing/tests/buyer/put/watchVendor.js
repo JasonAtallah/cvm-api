@@ -3,21 +3,28 @@ const context = require('../../../lib/context');
 describe('start watching vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-watchVendor')
+    return context.requests.run('put-watchVendor', { VENDOR_ID: context.data.VENDOR_ID })
       .catch((err) => {
         context.expect(err.statusCode).to.equal(401);
       });
   });
 
   it('should return a 201 Ok', function () {
-    return context.requests.run('post-token')
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.rejectionEmail
+    };
+  
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-watchVendor'
+    ];
+  
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('put-watchVendor')
-          .then((response) => {
-            context.expect(response.statusCode).to.equal(201);
-          });
-      });
+        context.expect(response.statusCode).to.equal(201);
+      })
   });
 
 });

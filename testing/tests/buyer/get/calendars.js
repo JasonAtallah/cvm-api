@@ -2,22 +2,26 @@ const context = require('../../../lib/context');
 
 describe('get calendars', function () {
 
-  it('should return 400 Unauthorized without buyer token', function () {
+  it('should return 401 Unauthorized without buyer token', function () {
     return context.requests.run('get-calendars')
       .catch((err) => {
-        context.expect(err.statusCode).to.equal(400);
+        context.expect(err.statusCode).to.equal(401);
       });
   });
 
   it('should return all calendars', function () {
-    return context.requests.run('post-token')
+    const localEnv = {};
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      'get-calendars'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('get-calendars')
-          .then((response) => {
-            context.expect(response.statusCode).to.equal(200);
-          });
-      });
+        context.expect(response.statusCode).to.equal(200);
+      })
   });
+
 
 });

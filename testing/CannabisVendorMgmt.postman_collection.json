@@ -896,7 +896,7 @@
 							"description": "",
 							"item": [
 								{
-									"name": "buyer",
+									"name": "buyerAsVendor",
 									"event": [
 										{
 											"listen": "test",
@@ -936,7 +936,7 @@
 									"response": []
 								},
 								{
-									"name": "vendor",
+									"name": "vendorAsVendor",
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -1050,16 +1050,16 @@
 										"method": "PUT",
 										"header": [
 											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
 												"key": "Origin",
-												"value": "{{BUYER_HOST}}"
+												"value": "{{VENDOR_HOST}}"
 											},
 											{
 												"key": "Content-Type",
 												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{BUYER_TOKEN}}"
 											}
 										],
 										"body": {
@@ -1090,12 +1090,12 @@
 										"method": "PUT",
 										"header": [
 											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
 												"key": "Content-Type",
 												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{BUYER_TOKEN}}"
 											}
 										],
 										"body": {
@@ -1126,12 +1126,12 @@
 										"method": "PUT",
 										"header": [
 											{
-												"key": "Authorization",
-												"value": "Bearer {{BUYER_TOKEN}}"
-											},
-											{
 												"key": "Content-Type",
 												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{BUYER_TOKEN}}"
 											}
 										],
 										"body": {

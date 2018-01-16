@@ -3,31 +3,33 @@ const context = require('../../../lib/context');
 describe('buyer sends times', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-buyerSendsTimes', { vendor: context.env.vendor1 })
+    return context.requests.run('put-buyerSendsTimes', { VENDOR_ID: context.data.VENDOR_ID })
       .catch((err) => {
         context.expect(err.statusCode).to.equal(401);
       });
   });
 
   it('should return vendor with updated state', function () {
-    return context.requests.run('post-token')
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.approvalEmail,
+      suggestedTimes: context.data.suggestedTimes,
+      selectedTime: context.data.suggestedTimes[0]
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorApproved',
+      'put-buyerSendsTimes'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('post-vendor', { vendor: context.env.vendor1 })
-          .then((response) => {
-            context.env.VENDOR_ID = response.body._id;
-            return context.requests.run('put-vendorApproved', { email: context.env.approvalEmail })
-              .then(() => {                
-                return context.requests.run('put-buyerSendsTimes', { suggestedTimes: context.env.suggestedTimes })
-                  .then((response) => {
-                    context.expect(response.statusCode).to.equal(200);
-                    context.expect(response.body).to.deep.include({ name: context.env.vendor1.company.name });
-                    context.expect(response.body.state).to.deep.include({ name: 'VendorNeedsToReviewTimes'});
-                    context.expect(response.body.state.suggestedTimes).to.not.have.lengthOf(0);
-                  })
-              });
-          });
-      });
+        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body.state).to.deep.include({ name: 'VendorNeedsToReviewTimes' });
+      })
+
   });
   
 });

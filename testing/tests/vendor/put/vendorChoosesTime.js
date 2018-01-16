@@ -1,6 +1,6 @@
 const context = require('../../../lib/context');
 
-describe('vendor rejects all times', function () {
+describe('vendor chooses time', function () {
 
   it('should return 400 selectedTime not in suggestedTimes', function () {
     let localEnv = {

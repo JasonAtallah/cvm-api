@@ -9,15 +9,21 @@ describe('get buyer', function () {
       });
   });
 
-  it('should return buyer', function () {
-    return context.requests.run('post-token')
+  it('should return the buyer', function () {
+    const localEnv = {
+      vendor: context.data.vendor1,
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id'}],
+      'get-buyer'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.env.BUYER_TOKEN = response.body
-        return context.requests.run('get-buyer')
-          .then((response) => {
-            context.expect(response.statusCode).to.equal(200);
-          });
-      });
+        context.expect(response.statusCode).to.equal(200);
+      })
   });
 
 });
