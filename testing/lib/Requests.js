@@ -19,15 +19,15 @@ module.exports = class Requests
   run(reqName, localEnv, envUpdates)
   {
     return this.requests[reqName].execute(Object.assign({}, this.globalEnv, localEnv))
-    .then((response) => {
-      if(envUpdates) {
-          Object.keys(envUpdates).forEach((key) => {
-            const envValue = _.get(response, envUpdates[key]);
-            _.set(localEnv, key, envValue);
-          });          
-        }
-        return response;
-      });
+      .then((response) => {
+        if(envUpdates) {
+            Object.keys(envUpdates).forEach((key) => {
+              const envValue = _.get(response, envUpdates[key]);
+              _.set(localEnv, key, envValue);
+            });          
+          }
+          return response;
+        });
   }
 
   runAll(reqList, localEnv)

@@ -64,7 +64,9 @@ module.exports = function (app) {
       mw.mongo.get.thread,
     ]),
     mw.compose([
+      mw.threads.loadCurrentState,
       mw.threads.createBuyerAction,
+      mw.threads.performActionValidation,
       mw.threads.transitionThreadState,
       mw.logic.ifTrueInReq('stateChanged', [
         mw.mongo.threads.update,

@@ -90,22 +90,25 @@ module.exports = function (app) {
       mw.responses.sendReqVar('buyer')
     ]));
 
-  router.put('/vendors/:vendorId/actions/:action',
+    router.put('/vendors/:vendorId/actions/:action',
+    mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.buyer.get,
+    ]),
+    mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor
+      mw.mongo.get.vendor,
     ]),
     mw.compose([
-      mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread
+      mw.data.queries.prepThreadQueryForBuyerVendor,
+      mw.mongo.get.thread,
     ]),
     mw.compose([
-      mw.data.queries.prepBuyerQueryFromThread,
-      mw.mongo.buyer.get
-    ]),
-    mw.compose([
-      mw.threads.createVendorAction,
+      mw.threads.loadCurrentState,
+      mw.threads.createBuyerAction,
+      mw.threads.performActionValidation,
       mw.threads.transitionThreadState,
       mw.logic.ifTrueInReq('stateChanged', [
         mw.mongo.threads.update,
@@ -113,9 +116,9 @@ module.exports = function (app) {
       ])
     ]),
     mw.compose([
-      mw.data.responses.prepThreadAsBuyerResponse,
-      mw.data.validation.validateReqVar('buyer', 'buyer-item'),
-      mw.responses.sendReqVar('buyer')
+      mw.data.responses.prepThreadAsVendorResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor-item'),
+      mw.responses.sendReqVar('vendor')
     ]));
 
   return router;

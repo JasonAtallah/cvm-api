@@ -1,0 +1,22 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-choosesTime.json",
+  "type": "object",
+  "properties": {
+    "selectedTime": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "$ref": "location.json"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "startDate": {
+          "type": "string"
+        }
+      },
+      "required": ["location", "duration", "startDate"]
+    }
+  },
+  "required": ["selectedTime"]
+}

@@ -1,4 +1,4 @@
-const mw = require('../../../mw');
+const mw = require('../../../../mw');
 
 module.exports = mw.compose([
   mw.data.emails.prepBuyerCancelsApptEmail,

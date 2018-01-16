@@ -52,24 +52,30 @@ module.exports = {
     body: 'Not interested'
   },
 
-  suggestedTimes: {
-    location1: {
-      address: '111 main street',
-      city: 'San Mateo',
-      state: 'CA',
-      zip: '94401'
+  suggestedTimes: [
+    {
+      location: {
+        name: 'HQ',
+        address: '111 main street',
+        zip: '94401',
+        city: 'San Mateo',
+        state: 'CA'
+      },
+      duration: 30,
+      startDate: '2018-01-15T05:30:30.393Z'
     },
-    startDate1: 'Thu Jan 12 2018 07:30:12 GMT-0800 (PST)',
-    duration1: 30,
-    location2: {
-      address: '22 main street',
-      city: 'San Mateo',
-      state: 'CA',
-      zip: '94401'
-    },
-    startDate2: 'Thu Jan 11 2018 07:30:12 GMT-0800 (PST)',
-    duration2: 30
-  },
+    {
+      location: {
+        name: 'HQ',
+        address: '222 main street',
+        zip: '94401',
+        city: 'San Mateo',
+        state: 'CA'
+      },
+      duration: 30,
+      startDate: '2018-01-16T05:30:30.393Z'
+    }
+  ],
   vendorUrl: `${this.BUYER_HOST}/?vid=${this.VENDOR_ID}`,
 
   profile: {
@@ -99,15 +105,14 @@ module.exports = {
     }
   },
 
-  selectedTime: {
+  badSelectedTime: {
     location: {
-        name: 'Jason Atallah',
         address: '860 prospect row',
         zip: '94401',
         city: 'San Mateo',
         state: 'CA'
     },
-    duration: 30,
-    startDate: '2018-01-11T15:15:12.637Z'
+    startDate: '2018-01-11T15:15:12.637Z',
+    duration: 30
 }
 };

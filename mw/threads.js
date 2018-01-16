@@ -12,9 +12,23 @@ module.exports = {
     next();
   },
 
+  loadCurrentState(req, res, next) {
+    req.curState = threads.loadState(req.thread);
+    next();
+  },
+
   performActionFollowup(req, res, next) {
     try {
-      const actionMW = require(`./threads/actions/${req.action.name}`);
+      const actionMW = require(`./threads/actions/followup/${req.action.name}`);
+      actionMW(req, res, next);
+    } catch (err) {
+      next();
+    }
+  },
+
+  performActionValidation(req, res, next) {
+    try {
+      const actionMW = require(`./threads/actions/validation/${req.action.name}`);
       actionMW(req, res, next);
     } catch (err) {
       next();
@@ -22,10 +36,12 @@ module.exports = {
   },
 
   transitionThreadState(req, res, next) {
-    const result = threads.transition(req.thread, req.action);
-    req.prevState = result.oldState;
-    req.state = result.newState;
-    req.stateChanged = (result.newState !== result.oldState);
+    req.prevState = req.curState;
+    req.state = threads.transition(req.prevState, req.action);
+    console.dir(req.prevState);
+    console.dir(req.state);
+    req.stateChanged = (req.state.name !== req.prevState.name);
+    console.dir(req.stateChanged);
     next();
   },
 
