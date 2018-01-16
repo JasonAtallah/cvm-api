@@ -9,25 +9,25 @@ module.exports = class Request
     this.config = config;
   }
 
-  getMethod(params)
+  getMethod(env)
   {
     return this.config.method;
   }
 
-  getUri(params)
+  getUri(env)
   {
-    return utils.replaceVars(this.config.url.raw, params);
+    return utils.replaceVars(this.config.url.raw, env);
   }
 
-  getHeaders(params)
+  getHeaders(env)
   {
     return this.config.header.reduce((memo, val) => {
-      memo[val.key] = utils.replaceVars(val.value, params);
+      memo[val.key] = utils.replaceVars(val.value, env);
       return memo;
     }, {});
   }
 
-  getData(params)
+  getData(env)
   {
     if (this.config.method === 'GET') {
       return null;
@@ -36,7 +36,7 @@ module.exports = class Request
     let data;
 
     try {
-      let raw = utils.replaceVars(this.config.body.raw, params);
+      let raw = utils.replaceVars(this.config.body.raw, env);
       data = JSON.parse(raw);
     } catch (err) {
       data = {};
@@ -45,20 +45,20 @@ module.exports = class Request
     return data;
   }
 
-  getOptions(params)
+  getOptions(env)
   {
     return {
-      method: this.getMethod(params),
-      uri: this.getUri(params),
-      headers: this.getHeaders(params),
-      body: this.getData(params),
+      method: this.getMethod(env),
+      uri: this.getUri(env),
+      headers: this.getHeaders(env),
+      body: this.getData(env),
       json: true,
       resolveWithFullResponse: true
     };
   }
 
-  execute(params) {
-    const options = this.getOptions(params);
+  execute(env) {
+    const options = this.getOptions(env);
 
     return request(options)
       .then((response) => {
