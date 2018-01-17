@@ -53,7 +53,7 @@ module.exports = {
     var message = '';
     message += `To: ${req.buyer.gProfile.email} \r\n`;
     message += `Subject: Vendor cancelled their appointment \r\n`;
-    message += `${req.vendor.company.name} cancelled their appointment on ${req.prevState.selectedTime.startDate} ${req.prevState.selectedTime.startTime}. It has been removed from your calendar.`;
+    message += `${req.vendor.company.name} cancelled their appointment on ${req.prevState.data.selectedTime.startDate} ${req.prevState.data.selectedTime.startTime}. It has been removed from your calendar.`;
 
     req.email = {
       message: message
