@@ -35,13 +35,16 @@ module.exports = class Request
 
     let data;
 
-    try {
-      let raw = utils.replaceVars(this.config.body.raw, env);
-      data = JSON.parse(raw);
-    } catch (err) {
-      data = {};
+    if (this.config.body.raw) {
+      try {
+        data = JSON.parse(this.config.body.raw);
+        utils.traverseVars(data, env);
+      } catch (err) {
+        console.log(err);
+        data = {};
+      }  
     }
-
+    
     return data;
   }
 
@@ -59,7 +62,6 @@ module.exports = class Request
 
   execute(env) {
     const options = this.getOptions(env);
-
     return request(options)
       .then((response) => {
         let body = response.body;
@@ -71,6 +73,16 @@ module.exports = class Request
         return {
           statusCode: response.statusCode,
           body
+        };
+      })
+      .catch((err) => {
+        if (!err.statusCode) {
+          throw err;
+        }
+        
+        return {
+          statusCode: err.statusCode,
+          body: err.body
         };
       });
   }

@@ -2,10 +2,19 @@ const context = require('../../../lib/context');
 
 describe('get buyer token', function() {
 
+  // returning 500
   it('should return 400 on bad buyerId', function() {
     return context.requests.run('post-token', { BUYER_ID: null })
       .then((response) => {
         context.expect(response.statusCode).to.equal(400);
+      })
+  });
+
+  // returning 500
+  it('should return a 404 buyer not found', function() {
+    return context.requests.run('post-token', { BUYER_ID: '5a5e89c1fa3e933ba969c1ef' })
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(404);
       })
   });
 

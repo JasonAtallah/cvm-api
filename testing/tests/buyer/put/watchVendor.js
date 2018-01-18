@@ -4,8 +4,8 @@ describe('start watching vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
     return context.requests.run('put-watchVendor', { VENDOR_ID: context.data.VENDOR_ID })
-      .catch((err) => {
-        context.expect(err.statusCode).to.equal(401);
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(401);
       });
   });
 
@@ -18,11 +18,12 @@ describe('start watching vendor', function () {
     const requestList = [
       ['post-token', { 'BUYER_TOKEN': 'body' }],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorRejected',
       'put-watchVendor'
     ];
   
     return context.requests.runAll(requestList, localEnv)
-      .then((response) => {
+      .then((response) => {                
         context.expect(response.statusCode).to.equal(201);
       })
   });

@@ -4,8 +4,8 @@ describe('approve vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
     return context.requests.run('put-vendorApproved', { VENDOR_ID: context.data.VENDOR_ID })
-      .catch((err) => {
-        context.expect(err.statusCode).to.equal(401);
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(401);
       });
   });
 

@@ -11,7 +11,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.data.validation.validateReqVar('body', 'email-template'),
     mw.mongo.buyer.updateEmailTemplate,
-    mw.responses.sendOk(200));
+    mw.responses.send(200));
 
   router.put('/gcalendar',
     mw.auth.isLoggedIn,
@@ -27,7 +27,8 @@ module.exports = function (app) {
       ],
       [
         mw.data.validation.validateReqVar('body', 'new-calendar'),
-        mw.gcalendar.createCalendar
+        mw.gcalendar.createCalendar,
+        mw.data.responses.prepCalendarResponse
       ]),
     mw.mongo.buyer.updateCalendar,
     mw.data.validation.validateReqVar('calendar', 'calendar'),
@@ -39,14 +40,14 @@ module.exports = function (app) {
     mw.data.validation.validateReqVar('body', 'buyer-profile'),
     mw.data.incoming.prepBuyerProfileUpdate,
     mw.mongo.buyer.updateLoggedInBuyer,
-    mw.responses.sendOk(204));
+    mw.responses.send(204));
 
   router.put('/schedule',
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.data.validation.validateReqVar('body', 'buyer-schedule'),
     mw.mongo.buyer.updateSchedule,
-    mw.responses.sendOk(204));
+    mw.responses.send(204));
 
   router.put('/vendors/:vendorId/actions/:action',
     mw.auth.isLoggedIn,
@@ -99,7 +100,7 @@ module.exports = function (app) {
       mw.logic.ifNotUndefinedInReq('attribute', [
         mw.mongo.threads.updateAttribute,
       ]),
-      mw.responses.sendOk('201')
+      mw.responses.send('201')
     ])
   );
 

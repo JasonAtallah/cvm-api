@@ -1,4 +1,4 @@
 {
   "$id": "http://cannabisvendormgmt.com/schemas/buyer-schedule.json",
-  "type": "object"
+  "type": "array"
 }

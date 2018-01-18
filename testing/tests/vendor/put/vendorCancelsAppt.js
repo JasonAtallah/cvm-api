@@ -3,7 +3,7 @@ const context = require('../../../lib/context');
 describe('vendor cancels appt', function () {
 
   it('should return vendor with updated state', function () {
-    const localEnv = {
+    let localEnv = {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
@@ -23,8 +23,7 @@ describe('vendor cancels appt', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
-      })
-
+      });
   });
   
 });

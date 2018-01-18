@@ -13,7 +13,8 @@ const logic = module.exports = new class LogicMiddleware {
 
   ifNullInReq(reqVarName, ...args) {
     const testFn = function(req) {
-      return _.get(req, reqVarName) === null;
+      const value = _.get(req, reqVarName);
+      return (value === null) || (value === undefined);
     };
 
     return logic.runMWIfElse(testFn, ...args);

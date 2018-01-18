@@ -1,3 +1,7 @@
+/*
+first test 'should return 401...' works when running test individually,
+fails when runngin npm test
+*/
 const context = require('../../../lib/context');
 
 describe('get a vendor', function () {
@@ -9,8 +13,8 @@ describe('get a vendor', function () {
     };
 
     return context.requests.run('get-vendor', { VENDOR_ID: localEnv.VENDOR_ID})
-      .catch((err) => {
-        context.expect(err.statusCode).to.equal(401);
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(401);
       });
   });
 

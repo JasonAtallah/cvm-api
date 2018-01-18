@@ -26,10 +26,15 @@ module.exports = function (app) {
   if (config.env === 'development') {
     router.post('/buyer/token',
       mw.parse.json,
+      mw.data.validation.validateReqVar('body', 'buyer-token-request'),
       mw.data.queries.prepBuyerQueryFromBody,
       mw.mongo.buyer.get,
-      mw.auth.generateClientJWT,
-      mw.responses.sendReqVar('clientJWT'))
+      mw.logic.ifNullInReq('buyer', [
+        mw.responses.send(404, 'buyer not found')
+      ], [
+        mw.auth.generateClientJWT,
+        mw.responses.sendReqVar('clientJWT')
+      ]));
   }
 
   return router;

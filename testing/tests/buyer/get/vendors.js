@@ -4,8 +4,8 @@ describe('get vendors', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
     return context.requests.run('get-vendors')
-      .catch((err) => {
-        context.expect(err.statusCode).to.equal(401);
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(401);
       });
   });
 

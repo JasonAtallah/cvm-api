@@ -61,7 +61,7 @@ module.exports = function (app) {
       mw.data.validation.validateReqVar('sendGridMsg', 'sendgrid-email'),
       mw.sendGrid.sendEmail
     ]),
-    mw.responses.sendOk(201));
+    mw.responses.send(201));
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     mw.parse.file('file'),

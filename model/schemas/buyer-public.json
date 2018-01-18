@@ -1,0 +1,37 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-public.json",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "object"
+    },
+    "emails": {
+      "type": "object",
+      "properties": {
+        "approveVendor": {
+          "$ref": "email-template.json"
+        },
+        "rejectVendor": {
+          "$ref": "email-template.json"
+        },
+        "newVendor": {
+          "$ref": "email-template.json"
+        }
+      },
+      "required": ["approveVendor", "rejectVendor", "newVendor"]
+    },
+    "gcalendar": {
+      "$ref": "gcalendar-public.json"
+    },
+    "gProfile": {
+      "$ref": "buyer-gProfile.json"
+    },
+    "profile": {
+      "$ref": "buyer-profile.json"
+    },
+    "schedule": {
+      "$ref": "buyer-schedule.json"
+    }
+  },
+  "required": ["_id", "emails", "gcalendar", "gProfile", "profile"]
+}

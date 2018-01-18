@@ -3,13 +3,16 @@
   "type": "object",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "city": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "state": {
       "type": "string",
@@ -18,7 +21,7 @@
     },
     "zip": {
       "type": "string",
-      "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$"
+      "pattern": "^\\d{5}(?:[-\\s]\\d{4})?$"      
     }
   },
   "required": ["name", "address", "city", "state", "zip"]

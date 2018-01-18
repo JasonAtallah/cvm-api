@@ -9,7 +9,7 @@ module.exports = {
     };
   },
 
-  sendOk(status = 202 , msg = 'OK') {
+  send(status = 202 , msg = 'OK') {
     return (req, res, next) => {
       res.status(status).send({
         status: msg

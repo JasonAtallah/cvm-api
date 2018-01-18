@@ -357,7 +357,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": {{event.duration}}\n}"
+											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": \"{{event.duration}}\"\n}"
 										},
 										"url": {
 											"raw": "http://localhost:8081/buyer/v1/events",
@@ -648,7 +648,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"suggestedTimes\": [\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.0.location.name}}\",\n        \"address\": \"{{suggestedTimes.0.location.address}}\",\n        \"city\": \"{{suggestedTimes.0.location.city}}\",\n        \"state\": \"{{suggestedTimes.0.location.state}}\",\n        \"zip\": \"{{suggestedTimes.0.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.0.startDate}}\",\n      \"duration\": {{suggestedTimes.0.duration}}\n    },\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.1.location.name}}\",\n        \"address\": \"{{suggestedTimes.1.location.address}}\",\n        \"city\": \"{{suggestedTimes.1.location.city}}\",\n        \"state\": \"{{suggestedTimes.1.location.state}}\",\n        \"zip\": \"{{suggestedTimes.1.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.1.startDate}}\",\n      \"duration\": {{suggestedTimes.1.duration}}\n    }\n  ],\n  \"vendorUrl\": \"{{vendorUrl}}\"\n}"
+											"raw": "{\n  \"suggestedTimes\": [\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.0.location.name}}\",\n        \"address\": \"{{suggestedTimes.0.location.address}}\",\n        \"city\": \"{{suggestedTimes.0.location.city}}\",\n        \"state\": \"{{suggestedTimes.0.location.state}}\",\n        \"zip\": \"{{suggestedTimes.0.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.0.startDate}}\",\n      \"duration\": \"{{suggestedTimes.0.duration}}\"\n    },\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.1.location.name}}\",\n        \"address\": \"{{suggestedTimes.1.location.address}}\",\n        \"city\": \"{{suggestedTimes.1.location.city}}\",\n        \"state\": \"{{suggestedTimes.1.location.state}}\",\n        \"zip\": \"{{suggestedTimes.1.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.1.startDate}}\",\n      \"duration\": \"{{suggestedTimes.1.duration}}\"\n    }\n  ],\n  \"vendorUrl\": \"{{vendorUrl}}\"\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/BuyerSendsTimes",
@@ -726,7 +726,7 @@
 									"response": []
 								},
 								{
-									"name": "calendars",
+									"name": "calendar",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -745,7 +745,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"name\": \"{{gcalendar.name}}\",\n\t\"timezone\": \"{{gcalendar.timezone}}\"\n}"
+											"raw": "{\n\t\"name\": \"{{calendar.name}}\",\n\t\"timezone\": \"{{calendar.timezone}}\"\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/gcalendar",
@@ -1001,7 +1001,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"company\": {\n    \"name\": \"{{questionnaireResponse.company.name}}\",\n    \"city\": \"{{questionnaireResponse.company.city}}\"\n  },\n  \"contact\": {\n    \"firstName\": \"{{questionnaireResponse.contact.firstName}}\",\n    \"email\": \"{{questionnaireResponse.contact.email}}\"\n  },\n  \"flowers\": {\n    \"products\": [\n      {\n        \"name\": \"{{questionnaireResponse.flowers1.name}}\",\n        \"weightAvailable\": {{questionnaireResponse.flowers1.weightAvailable}},\n        \"thc\": {{questionnaireResponse.flowers1.thc}}\n      }\n    ]\n  },\n  \"edibles\": {\n    \"products\": []\n  },\n  \"concentrates\": {\n    \"products\": []\n  }\n}"
+											"raw": "{\n  \"company\": {\n    \"name\": \"{{questionnaireResponse.company.name}}\",\n    \"city\": \"{{questionnaireResponse.company.city}}\"\n  },\n  \"contact\": {\n    \"firstName\": \"{{questionnaireResponse.contact.firstName}}\",\n    \"email\": \"{{questionnaireResponse.contact.email}}\"\n  },\n  \"flowers\": {\n    \"products\": [\n      {\n        \"name\": \"{{questionnaireResponse.flowers1.name}}\",\n        \"weightAvailable\": \"{{questionnaireResponse.flowers1.weightAvailable}}\",\n        \"thc\": \"{{questionnaireResponse.flowers1.thc}}\"\n      }\n    ]\n  },\n  \"edibles\": {\n    \"products\": []\n  },\n  \"concentrates\": {\n    \"products\": []\n  }\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}/responses",
@@ -1100,7 +1100,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"{{selectedTime.location.name}}\",\n\t        \"address\": \"{{selectedTime.location.address}}\",\n\t        \"zip\": \"{{selectedTime.location.zip}}\",\n\t        \"city\": \"{{selectedTime.location.city}}\",\n\t        \"state\": \"{{selectedTime.location.state}}\"\n\t    },\n\t    \"duration\": {{selectedTime.duration}},\n\t    \"startDate\": \"{{selectedTime.startDate}}\"\n\t}\n}"
+											"raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"{{selectedTime.location.name}}\",\n\t        \"address\": \"{{selectedTime.location.address}}\",\n\t        \"zip\": \"{{selectedTime.location.zip}}\",\n\t        \"city\": \"{{selectedTime.location.city}}\",\n\t        \"state\": \"{{selectedTime.location.state}}\"\n\t    },\n\t    \"duration\": \"{{selectedTime.duration}}\",\n\t    \"startDate\": \"{{selectedTime.startDate}}\"\n\t}\n}"
 										},
 										"url": {
 											"raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/VendorChoosesTime",

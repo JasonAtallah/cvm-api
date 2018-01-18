@@ -1,0 +1,10 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-token-request.json",
+  "type": "object",
+  "properties": {
+    "buyerId": {
+      "type": "string"
+    } 
+  },
+  "required": ["buyerId"]
+}
