@@ -13,8 +13,9 @@ describe('add a new location', function () {
   describe('missing fields', function () {
 
     it('should return a 400 empty name field', function () {
+      const testLocation = context.data.location
       const localEnv = {
-        location: context.data.get('location', { name: '' })
+        location: context.data.get(testLocation, { name: '' })
       };
 
       const requestList = [
@@ -28,9 +29,10 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 missing name field', function () {      
+    it('should return a 400 missing name field', function () {    
+      const testLocation = context.data.location  
       const localEnv = {
-        location: context.data.get('location', { name: null })
+        location: context.data.get(testLocation, { name: null })
       };
 
       const requestList = [
@@ -44,9 +46,10 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 empty address field', function () {      
+    it('should return a 400 empty address field', function () { 
+      const testLocation = context.data.location     
       const localEnv = {
-        location: context.data.get('location', { address: '' })
+        location: context.data.get(testLocation, { address: '' })
       };
 
       const requestList = [
@@ -60,9 +63,10 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 empty city field', function () {      
+    it('should return a 400 empty city field', function () {    
+      const testLocation = context.data.location  
       const localEnv = {        
-        location: context.data.get('location', { city: '' })
+        location: context.data.get(testLocation, { city: '' })
       };
 
       const requestList = [
@@ -77,8 +81,9 @@ describe('add a new location', function () {
     });
 
     it('should return a 400 empty state field', function () {
+      const testLocation = context.data.location
       const localEnv = {
-        location: context.data.get('location', { state: '' })
+        location: context.data.get(testLocation, { state: '' })
       };
 
       const requestList = [
@@ -92,9 +97,10 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 empty zip field', function () {      
+    it('should return a 400 empty zip field', function () {     
+      const testLocation = context.data.location 
       const localEnv = {
-        location: context.data.get('location', { zip: '' })
+        location: context.data.get(testLocation, { zip: '' })
       };
 
       const requestList = [

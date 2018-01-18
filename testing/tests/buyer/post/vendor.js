@@ -12,8 +12,9 @@ describe('create vendor', function () {
   describe('missing fields', function () {
     it('should return 400 empty company name field', function () {
 
+      const testVendor = context.data.vendor1
       const localEnv = {
-        vendor: context.data.get('vendor1', { 'company.name': '' })
+        vendor: context.data.get(testVendor, { 'company.name': '' })
       };
 
       const requestList = [
@@ -29,8 +30,9 @@ describe('create vendor', function () {
 
     it('should return 400 missing company name field', function () {
 
+      const testVendor = context.data.vendor1
       const localEnv = {
-        vendor: context.data.get('vendor1', { 'company.name': null })
+        vendor: context.data.get(testVendor, { 'company.name': null })
       };
 
       const requestList = [

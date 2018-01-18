@@ -21,7 +21,7 @@
       "required": ["approveVendor", "rejectVendor", "newVendor"]
     },
     "gcalendar": {
-      "$ref": "gcalendar-public.json"
+      "$ref": "buyer-public-gcalendar.json"
     },
     "gProfile": {
       "$ref": "buyer-gProfile.json"

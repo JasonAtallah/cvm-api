@@ -1,5 +1,5 @@
 {
-  "$id": "http://cannabisvendormgmt.com/schemas/gcalendar-pubic.json",
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-public-gcalendar.json",
   "type": "object",
   "properties": {
     "type": {
