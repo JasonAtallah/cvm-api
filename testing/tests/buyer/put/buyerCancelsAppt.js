@@ -14,7 +14,8 @@ describe('buyer cancels appt', function () {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
-      selectedTime: context.data.suggestedTimes[0]
+      selectedTime: context.data.suggestedTimes[0],
+      event: context.data.event
     };
 
     const requestList = [
@@ -29,6 +30,7 @@ describe('buyer cancels appt', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
       })
 

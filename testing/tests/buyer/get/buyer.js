@@ -20,6 +20,7 @@ describe('get buyer', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');        
       })
   });
 

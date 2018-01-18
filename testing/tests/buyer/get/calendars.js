@@ -25,6 +25,7 @@ describe('get calendars', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200, response.body);
+        context.expect(response.body).to.be.an('array');        
       })
   });
 

@@ -16,6 +16,7 @@ describe('get events', function() {
         return context.requests.run('get-events', { BUYER_TOKEN: response.body })
           .then((response) => {
             context.expect(response.statusCode).to.equal(200);
+            context.expect(response.body).to.be.an('array');        
           });
       });
   });

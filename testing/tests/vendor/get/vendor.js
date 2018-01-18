@@ -16,6 +16,7 @@ describe('get vendor', function () {
     return context.requests.runAll(reqList, localEnv)
       .then((response) => {        
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
         context.expect(response.body).to.have.all.keys('_id', 'company', 'contact', 'flowers', 'edibles', 'concentrates');        
       });
   });

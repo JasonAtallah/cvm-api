@@ -14,15 +14,19 @@ describe('vendor rejects all times', function () {
       ['post-token', { 'BUYER_TOKEN': 'body' }],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
       'put-vendorApproved',
-      'put-buyerSendsTimes',
+      ['put-buyerSendsTimes', {'suggestedTimes': 'body.state.suggestedTimes'}],
       'put-vendorRejectsAllTimes'
     ];
 
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
+        context.expect(response.body._id).to.equal(localEnv.VENDOR_ID)
+        context.expect(response.body.name).to.equal(localEnv.vendor.company.name)
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
         context.expect(response.body.state.rejectedTimes).to.not.be.null;
+        context.expect(response.body.state.rejectedTimes).to.deep.equal(localEnv.suggestedTimes);
       })
 
   });

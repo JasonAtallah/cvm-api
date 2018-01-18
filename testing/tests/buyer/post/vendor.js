@@ -9,12 +9,29 @@ describe('create vendor', function () {
       });
   });
 
-  describe('missing fields', function () {
+  describe('empty fields', function () {
     it('should return 400 empty company name field', function () {
-
-      const testVendor = context.data.vendor1
       const localEnv = {
-        vendor: context.data.get(testVendor, { 'company.name': '' })
+        vendor: context.data.get('vendor1', { 'company.name': '' })
+      };
+
+      const requestList = [
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
+        ['post-vendor', { 'VENDOR_ID': 'body._id' }]
+      ]
+
+      return context.requests.runAll(requestList, localEnv)
+        .then((response) => {
+          context.expect(response.statusCode).to.equal(400);
+        });
+    });
+
+  });
+
+  describe('missing fields', function () {
+    it('should return 400 missing company name field', function () {
+      const localEnv = {
+        vendor: context.data.get('vendor1', { 'company.name': null })
       };
 
       const requestList = [
@@ -29,10 +46,8 @@ describe('create vendor', function () {
     });
 
     it('should return 400 missing company name field', function () {
-
-      const testVendor = context.data.vendor1
       const localEnv = {
-        vendor: context.data.get(testVendor, { 'company.name': null })
+        vendor: context.data.get('vendor1', { 'company.name': null })
       };
 
       const requestList = [

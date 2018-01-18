@@ -19,9 +19,8 @@ describe('create a new event', function () {
   describe('empty fields', function() {
     
     it('should return a 400 for empty name field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { name: '' })
+        event: context.data.get('event', { name: '' })
       };
   
       const requestList = [
@@ -36,9 +35,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for empty location field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { location: '' })
+        event: context.data.get('event', { location: '' })
       };
   
       const requestList = [
@@ -53,9 +51,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for empty time field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { time: '' })
+        event: context.data.get('event', { time: '' })
       };
   
       const requestList = [
@@ -70,9 +67,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for empty date field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { date: '' })
+        event: context.data.get('event', { date: '' })
       };
   
       const requestList = [
@@ -87,9 +83,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for empty duration field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { duration: '' })
+        event: context.data.get('event', { duration: '' })
       };
   
       const requestList = [
@@ -108,9 +103,8 @@ describe('create a new event', function () {
   describe('missing fields', function() {
     
     it('should return a 400 for missing name field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { name: null })
+        event: context.data.get('event', { name: null })
       };
   
       const requestList = [
@@ -125,9 +119,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for missing location field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { location: null })
+        event: context.data.get('event', { location: null })
       };
   
       const requestList = [
@@ -142,9 +135,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for missing time field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { time: null })
+        event: context.data.get('event', { time: null })
       };
   
       const requestList = [
@@ -159,9 +151,8 @@ describe('create a new event', function () {
     });
     
     it('should return a 400 for missing date field', function () {
-      const testEvent = context.data.event;
       const localEnv = {
-        event: context.data.get(testEvent, { date: null })
+        event: context.data.get('event', { date: null })
       };
   
       const requestList = [
@@ -175,10 +166,9 @@ describe('create a new event', function () {
         });
     });
     
-    it('should return a 400 for missing duration field', function () {
-      const testEvent = context.data.event;
+    it('should return a 400 for missing duration field', function () {      
       const localEnv = {
-        event: context.data.get(testEvent, { duration: null })
+        event: context.data.get('event', { duration: null })
       };
   
       const requestList = [
@@ -188,6 +178,7 @@ describe('create a new event', function () {
   
       return context.requests.runAll(requestList, localEnv)
         .then((response) => {
+          console.log(localEnv.event);
           context.expect(response.statusCode).to.equal(400);
         });
     });
@@ -195,6 +186,7 @@ describe('create a new event', function () {
   });
 
   it('should return the new event', function () {
+    this.timeout(5000);
     const localEnv = {
       event: context.data.event
     };
@@ -207,6 +199,7 @@ describe('create a new event', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
         context.expect(response.body).to.deep.include({
           status: 'confirmed',
           title: context.data.event.name

@@ -7,14 +7,16 @@ describe('get questionnaire', function () {
       QID: context.data.QID
     };
 
-    const requestList = [      
+    const requestList = [
       'get-questionnaire'
     ];
 
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
-        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');        })
+        context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');        
+      })
   });
 
 });

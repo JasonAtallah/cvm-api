@@ -16,6 +16,7 @@ describe('Set calendar to new gCalendar', function () {
         return context.requests.run('put-calendar', { BUYER_TOKEN: response.body, calendar: context.data.newCalendar })
           .then((response) => {
             context.expect(response.statusCode).to.equal(200);
+            context.expect(response.body).to.be.an('object');
           });
       });
     })

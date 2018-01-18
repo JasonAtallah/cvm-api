@@ -24,6 +24,7 @@ describe('approve vendor', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
         context.expect(response.body).to.deep.include({ name: context.data.vendor1.company.name });
       })

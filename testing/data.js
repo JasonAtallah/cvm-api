@@ -108,6 +108,7 @@ const values = {
 
   badSelectedTime: {
     location: {
+      name: 'HQ',
       address: '860 prospect row',
       zip: '94401',
       city: 'San Mateo',
@@ -129,8 +130,8 @@ module.exports = Object.assign(values, {
     if (override && typeof value === 'object') {
       Object.keys(override).forEach((key) => {
         _.set(value, key, override[key]);
-      });      
-    }    
+      });
+    }
     return value;
   }
 });
