@@ -10,6 +10,10 @@
     },
     "fileId": {
       "$ref": "mongo-id-str.json"
+    },
+    "attribute": {
+      "type": "string",
+      "pattern": "\\b(?:watchVendor|unwatchVendor)\\b"
     }
   }
 }

@@ -84,7 +84,7 @@ module.exports = function (app) {
     ]));
 
   router.put('/vendors/:vendorId/attributes/:attribute',
-  mw.data.validation.validateReqVar('params', 'url-params'),
+    mw.data.validation.validateReqVar('params', 'url-params'),
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
