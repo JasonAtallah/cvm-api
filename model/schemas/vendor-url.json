@@ -1,0 +1,4 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-url.json",
+  "type": "string"
+}

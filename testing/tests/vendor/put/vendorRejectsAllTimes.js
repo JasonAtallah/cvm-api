@@ -7,7 +7,7 @@ describe('vendor rejects all times', function () {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
-      selectedTime: context.data.suggestedTimes[0]
+      vendorUrl: context.data.vendorUrl,
     };
 
     const requestList = [
@@ -27,8 +27,7 @@ describe('vendor rejects all times', function () {
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
         context.expect(response.body.state.rejectedTimes).to.not.be.null;
         context.expect(response.body.state.rejectedTimes).to.deep.equal(localEnv.suggestedTimes);
-      })
-
+      });
   });
   
 });

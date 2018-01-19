@@ -14,7 +14,7 @@ describe('buyer sends times', function () {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
-      selectedTime: context.data.suggestedTimes[0]
+      vendorUrl: context.data.vendorUrl
     };
 
     const requestList = [
@@ -29,8 +29,7 @@ describe('buyer sends times', function () {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
         context.expect(response.body.state).to.deep.include({ name: 'VendorNeedsToReviewTimes' });
-      })
-
+      });
   });
   
 });

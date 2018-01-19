@@ -7,6 +7,7 @@ module.exports = function (app) {
   const router = express.Router();
 
   router.get('/questionnaires/:questionnaireId',
+    mw.data.validation.validateReqVar('params', 'url-params'),
     mw.data.queries.prepQuestionnaireQueryById,
     mw.mongo.get.questionnaire,
     mw.data.responses.prepQuestionnaireForResponse,

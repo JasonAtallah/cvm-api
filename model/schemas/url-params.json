@@ -1,0 +1,15 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/url-params.json",
+  "type": "object",
+  "properties": {
+    "questionnaireId": {
+      "$ref": "mongo-id-str.json"
+    },
+    "vendorId": {
+      "$ref": "mongo-id-str.json"
+    },
+    "fileId": {
+      "$ref": "mongo-id-str.json"
+    }
+  }
+}

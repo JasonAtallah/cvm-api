@@ -8,12 +8,12 @@ describe('get vendor', function () {
       vendor: context.data.vendor1
     }
 
-    const reqList = [
+    const requestList = [
       ['post-token', { 'BUYER_TOKEN': 'body' } ],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
       'get-vendorAsVendor'
     ]
-    return context.requests.runAll(reqList, localEnv)
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {        
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');

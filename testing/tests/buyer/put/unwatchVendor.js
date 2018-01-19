@@ -26,7 +26,7 @@ describe('stop watching vendor', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {                
         context.expect(response.statusCode).to.equal(201);
-      })
+      });
   });
 
 });

@@ -7,6 +7,7 @@ describe('vendor cancels appt', function () {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
+      vendorUrl: context.data.vendorUrl,
       selectedTime: context.data.suggestedTimes[0]
     };
 

@@ -7,6 +7,7 @@ describe('vendor chooses time', function () {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
+      vendorUrl: context.data.vendorUrl,
       selectedTime: context.data.badSelectedTime
     };
 
@@ -32,6 +33,7 @@ describe('vendor chooses time', function () {
         vendor: context.data.vendor1,
         email: context.data.approvalEmail,
         suggestedTimes: context.data.suggestedTimes,
+        vendorUrl: context.data.vendorUrl,
         selectedTime: context.data.get(selectedTime, { location: null })
       };
   
@@ -59,6 +61,7 @@ describe('vendor chooses time', function () {
         vendor: context.data.vendor1,
         email: context.data.approvalEmail,
         suggestedTimes: context.data.suggestedTimes,
+        vendorUrl: context.data.vendorUrl,
         selectedTime: context.data.get(selectedTime, { location: '' })
       };
   
@@ -78,33 +81,12 @@ describe('vendor chooses time', function () {
 
   });
 
-  it('should return 400 selectedTime not in suggestedTimes', function () {
-    const localEnv = {
-      vendor: context.data.vendor1,
-      email: context.data.approvalEmail,
-      suggestedTimes: context.data.suggestedTimes,
-      selectedTime: context.data.badSelectedTime
-    };
-
-    const requestList = [
-      ['post-token', { 'BUYER_TOKEN': 'body' }],
-      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
-      'put-vendorApproved',
-      'put-buyerSendsTimes',
-      'put-vendorChoosesTime'
-    ];
-
-    return context.requests.runAll(requestList, localEnv)
-      .then((response) => {
-        context.expect(response.statusCode).to.equal(400);
-      });
-  });
-
   it('should return vendor with updated state', function () {
     const localEnv = {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
       suggestedTimes: context.data.suggestedTimes,
+      vendorUrl: context.data.vendorUrl,
       selectedTime: context.data.suggestedTimes[0]
     };
 

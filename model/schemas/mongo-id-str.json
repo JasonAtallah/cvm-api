@@ -1,0 +1,5 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/mongo-id-str.json",
+  "type": "string",
+  "pattern": "^[0-9a-fA-F]{24}$"
+}

@@ -3,7 +3,8 @@
   "$ref": "questionnaire.json",
   "properties": {
     "_id": {
-      "type": "object"
+      "type": "object",
+      "minLength": 1
     }
   },
   "required": ["_id"]

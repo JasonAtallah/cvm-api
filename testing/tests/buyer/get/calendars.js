@@ -1,7 +1,3 @@
-/*
-getting all calendars returns a 400 "Unexpected token n in JSON at position 0"
-works fine in Postman
-*/
 const context = require('../../../lib/context');
 
 describe('get calendars', function () {
@@ -26,7 +22,7 @@ describe('get calendars', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200, response.body);
         context.expect(response.body).to.be.an('array');        
-      })
+      });
   });
 
 

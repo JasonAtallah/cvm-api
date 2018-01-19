@@ -1,18 +1,20 @@
-/*
-Status code 400 is being returned on the missing fields but locations with name, and location
-missing are still being created with those fields being undefined
-
-tests with time and date field missed are returning a 500
-*/
-const _ = require('lodash');
 const context = require('../../../lib/context');
 
 describe('create a new event', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('post-event', { event: context.data.event })
+    this.timeout(5000);
+    const localEnv = {
+      event: context.data.event
+    };
+
+    const requestList = [
+      'post-event'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.expect(response.statusCode).to.equal(401);
+        context.expect(response.statusCode).to.equal(401);              
       });
   });
 
@@ -178,7 +180,6 @@ describe('create a new event', function () {
   
       return context.requests.runAll(requestList, localEnv)
         .then((response) => {
-          console.log(localEnv.event);
           context.expect(response.statusCode).to.equal(400);
         });
     });

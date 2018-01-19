@@ -58,6 +58,7 @@ module.exports = function (app) {
     ]));
 
   router.get('/vendors/:vendorId',
+    mw.data.validation.validateReqVar('params', 'url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
@@ -68,6 +69,7 @@ module.exports = function (app) {
     ]));
 
   router.get('/vendors/:vendorId/files/:fileId',
+    mw.data.validation.validateReqVar('params', 'url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,

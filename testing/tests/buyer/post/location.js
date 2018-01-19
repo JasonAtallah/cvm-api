@@ -1,10 +1,17 @@
-const _ = require('lodash');
 const context = require('../../../lib/context');
 
 describe('add a new location', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('post-location', { location: context.data.location })
+    const localEnv = {
+      location: context.data.location
+    };
+
+    const requestList = [
+      'post-location'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(401);
       });

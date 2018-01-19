@@ -52,6 +52,9 @@ module.exports = function (app) {
   router.put('/vendors/:vendorId/actions/:action',
     mw.auth.isLoggedIn,
     mw.parse.json,
+    mw.data.validation.validateReqVar('params', 'buyer-action-params'),
+    // mw.data.validation.validateReqVar('params', 'url-params'),
+    mw.data.validation.validateReqVar('body', 'buyer-action-{{params.action}}'),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
       mw.mongo.buyer.get,
@@ -81,6 +84,7 @@ module.exports = function (app) {
     ]));
 
   router.put('/vendors/:vendorId/attributes/:attribute',
+  mw.data.validation.validateReqVar('params', 'url-params'),
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([

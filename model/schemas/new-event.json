@@ -3,19 +3,23 @@
   "type": "object",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "location": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },          
     "date": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "time": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "duration": {
-      "type": "number"
+      "type": "number"      
     }
   },
   "required": ["name", "location", "time", "date", "duration"]

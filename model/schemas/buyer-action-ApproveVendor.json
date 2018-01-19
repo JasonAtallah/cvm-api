@@ -1,0 +1,14 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-action-ApproveVendor.json",
+  "type": "object",
+  "properties": {
+    "email": {
+      "$ref": "email-template.json"
+    },
+    "scheduleUrl": {
+      "$ref": "vendor-url.json"
+    }
+  },
+  "required": ["email", "scheduleUrl"],
+  "additionalProperties": false
+}

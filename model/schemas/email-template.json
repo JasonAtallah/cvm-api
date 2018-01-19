@@ -3,10 +3,12 @@
   "type": "object",
   "properties": {
     "subject": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "body": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     }
   },
   "required": ["subject", "body"],

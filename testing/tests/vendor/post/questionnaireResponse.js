@@ -10,11 +10,11 @@ describe('submit questionnaire response', function () {
       questionnaireResponse: context.data.questionnaireResponse
     };
 
-    reqList = [
+    requestList = [
       'post-questionnaireResponse'
     ];
 
-    return context.requests.runAll(reqList, localEnv)
+    return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
