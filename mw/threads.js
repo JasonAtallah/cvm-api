@@ -1,3 +1,4 @@
+const debug = require('debug')('cvm-api.mw.threads');
 const threads = require('../lib/threads');
 
 module.exports = {
@@ -38,11 +39,14 @@ module.exports = {
   transitionThreadState(req, res, next) {
     req.prevState = req.curState;
     req.state = threads.transition(req.prevState, req.action);
-    console.dir(req.prevState);
-    console.dir(req.state);
-    req.stateChanged = (req.state.name !== req.prevState.name);
-    console.dir(req.stateChanged);
-    next();
+    req.stateChanged = (req.state.name !== req.prevState.name);    
+    if (!req.stateChanged) {      
+      const err = new Error(`Invalid action ${req.action.name} while in state ${req.prevState.name}`);
+      err.status = 400;
+      next(err);
+    } else {
+      next();
+    }
   },
 
 }

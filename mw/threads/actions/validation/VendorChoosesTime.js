@@ -1,4 +1,4 @@
-const debug = require('debug')('mw.threads.actions.validation');
+const debug = require('debug')('cvm-api.mw.threads.actions.validation');
 const _ = require('lodash');
 const mw = require('../../../../mw');
 

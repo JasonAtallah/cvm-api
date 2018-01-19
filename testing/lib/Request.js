@@ -82,7 +82,7 @@ module.exports = class Request
         
         return {
           statusCode: err.statusCode,
-          body: err.body
+          body: err.error
         };
       });
   }

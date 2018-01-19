@@ -2,6 +2,29 @@ const context = require('../../../lib/context');
 
 describe('vendor chooses time', function () {
 
+  it('should return 400 buyer hasnt sent times yet', function() {
+
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.approvalEmail,
+      suggestedTimes: context.data.suggestedTximes,
+      vendorUrl: context.data.vendorUrl,
+      selectedTime: context.data.suggestedTimes[0]
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorApproved',
+      'put-vendorChoosesTime'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(400);
+      });
+  });
+
   it('should return 400 selectedTime not in suggestedTimes', function () {
     const localEnv = {
       vendor: context.data.vendor1,
