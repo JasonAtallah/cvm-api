@@ -13,6 +13,7 @@ module.exports = {
 
   validateReqVar(reqVarName, schemaName) {
     return (req, res, next) => {
+      console.log(req.body);
       const reqSchemaName = utils.replaceVars(schemaName, req);
       debug(`validate req[${reqVarName}] with ${reqSchemaName}`);
       const schemaPath = `http://cannabisvendormgmt.com/schemas/${reqSchemaName}.json`;
