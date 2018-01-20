@@ -85,7 +85,7 @@ describe('Set calendar to new gCalendar', function () {
     this.timeout(10000);
     return context.requests.run('post-token')
       .then((response) => {        
-        return context.requests.run('put-calendar', { BUYER_TOKEN: response.body, calendar: context.data.newCalendar })
+        return context.requests.run('put-calendar', { BUYER_TOKEN: response.body, calendar: context.data.calendar })
           .then((response) => {
             context.expect(response.statusCode).to.equal(200);
             context.expect(response.body).to.be.an('object');

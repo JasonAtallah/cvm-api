@@ -115,7 +115,7 @@
     "duration": 30
   },
 
-  "newCalendar": {
+  "calendar": {
     "name": "new cal 1",
     "timezone": "America/Los_Angeles"
   }

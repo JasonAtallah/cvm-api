@@ -2,7 +2,7 @@ const context = require('../../../lib/context');
 
 describe('vendor cancels appt', function () {
 
-  it('should return 400 vendor hasnt chosen time', function () {
+  it('should return 400 vendor has not chosen time', function () {
     const localEnv = {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,

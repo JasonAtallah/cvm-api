@@ -9,6 +9,30 @@ describe('buyer cancels appt', function () {
       });
   });
 
+  it('should return 400 vendor has not chosen time', function () {
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.approvalEmail,
+      suggestedTimes: context.data.suggestedTimes,
+      vendorUrl: context.data.vendorUrl,
+      selectedTime: context.data.suggestedTimes[0],
+      event: context.data.event
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorApproved',
+      'put-buyerSendsTimes',      
+      'put-buyerCancelsAppt'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(400);
+      });
+  });
+
   it('should return vendor with updated state', function () {
     const localEnv = {
       vendor: context.data.vendor1,

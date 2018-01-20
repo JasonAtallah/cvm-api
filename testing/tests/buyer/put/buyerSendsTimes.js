@@ -9,6 +9,29 @@ describe('buyer sends times', function () {
       });
   });
 
+  it('should return 400 buyer has not been approved', function () {
+    const localEnv = {
+      vendor: context.data.vendor1,
+      email: context.data.approvalEmail,
+      suggestedTimes: context.data.suggestedTimes,
+      vendorUrl: context.data.vendorUrl
+    };
+
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      ['post-vendor', { 'VENDOR_ID': 'body._id' }],
+      'put-vendorApproved',
+      'put-buyerSendsTimes'
+    ];
+
+    return context.requests.runAll(requestList, localEnv)
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.be.an('object');
+        context.expect(response.body.state).to.deep.include({ name: 'VendorNeedsToReviewTimes' });
+      });
+  });
+
   it('should return vendor with updated state', function () {
     const localEnv = {
       vendor: context.data.vendor1,
