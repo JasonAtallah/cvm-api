@@ -349,12 +349,10 @@
 											"raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": \"{{event.duration}}\"\n}"
 										},
 										"url": {
-											"raw": "http://localhost:8081/buyer/v1/events",
-											"protocol": "http",
+											"raw": "{{API_HOST}}/buyer/v1/events",
 											"host": [
-												"localhost"
+												"{{API_HOST}}"
 											],
-											"port": "8081",
 											"path": [
 												"buyer",
 												"v1",

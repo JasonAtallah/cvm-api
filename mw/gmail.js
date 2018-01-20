@@ -9,20 +9,21 @@ module.exports = new class GmailService {
     const auth = config.google.client;
     auth.credentials = req.buyer.gAuth;
 
-    gmail.users.messages.send({
-      auth,
-      userId: 'me',
-      resource: {
-        raw: base64url(req.email.message)
-      }
-    }, function (err, response) {
-      if (err) {
-        next(err);
-      } else {
-        req.result = response;
-        next();
-      }
-    });
+    next();
+    // gmail.users.messages.send({
+    //   auth,
+    //   userId: 'me',
+    //   resource: {
+    //     raw: base64url(req.email.message)
+    //   }
+    // }, function (err, response) {
+    //   if (err) {
+    //     next(err);
+    //   } else {
+    //     req.result = response;
+    //     next();
+    //   }
+    // });
   }
 
 }
