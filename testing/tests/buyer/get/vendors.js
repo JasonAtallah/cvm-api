@@ -21,6 +21,11 @@ describe('get vendors', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('array');
+        if (response.body.length > 0) {
+          context.expect(response.body[0]).to.have.property('_id');
+          context.expect(response.body[0]).to.have.property('name');
+          context.expect(response.body[0]).to.have.property('state');
+        }
       });
   });
   

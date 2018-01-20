@@ -43,8 +43,9 @@ describe('vendor rejects all times', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
-        context.expect(response.body._id).to.equal(localEnv.VENDOR_ID)
-        context.expect(response.body.name).to.equal(localEnv.vendor.company.name)
+        context.expect(response.body).to.have.all.keys('_id', 'name', 'state');
+        context.expect(response.body._id).to.equal(localEnv.VENDOR_ID);
+        context.expect(response.body.name).to.equal(localEnv.vendor.company.name);
         context.expect(response.body.state).to.deep.include({ name: 'BuyerNeedsToSendTimes' });
         context.expect(response.body.state.rejectedTimes).to.not.be.null;
         context.expect(response.body.state.rejectedTimes).to.deep.equal(localEnv.suggestedTimes);

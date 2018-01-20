@@ -11,7 +11,7 @@ module.exports = function (app) {
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.validation.validateReqVar('body', 'new-event'),
@@ -49,7 +49,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,

@@ -18,9 +18,17 @@ describe('get buyer', function () {
     ];
 
     return context.requests.runAll(requestList, localEnv)
-      .then((response) => {
+      .then((response) => {        
         context.expect(response.statusCode).to.equal(200);
-        context.expect(response.body).to.be.an('object');        
+        context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.property('_id');
+        context.expect(response.body).to.have.property('emails');
+        context.expect(response.body).to.have.property('gcalendar');
+        context.expect(response.body).to.have.property('gProfile');
+        context.expect(response.body).to.have.property('profile');
+        context.expect(response.body).to.have.property('schedule');
+        context.expect(response.body).to.have.property('firstName');
+        context.expect(response.body).to.have.property('locations');
       });
   });
 

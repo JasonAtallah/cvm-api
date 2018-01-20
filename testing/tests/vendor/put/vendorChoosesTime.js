@@ -72,6 +72,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 missing location zip', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -94,6 +95,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 missing location city', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -116,6 +118,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 missing location state', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -138,6 +141,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 missing duration', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -160,6 +164,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 missing startDate', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -184,8 +189,6 @@ describe('vendor chooses time', function () {
     });
 
   });
-
-  
   
   describe('empty fields', function() {
 
@@ -211,6 +214,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 empty location zip', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -233,6 +237,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 empty location city', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -255,6 +260,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 empty location state', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -277,6 +283,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 empty duration', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -299,6 +306,7 @@ describe('vendor chooses time', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
+
     it('should return 400 empty startDate', function () {
       const localEnv = {
         vendor: context.data.vendor1,
@@ -345,8 +353,9 @@ describe('vendor chooses time', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
-        context.expect(response.body._id).to.equal(localEnv.VENDOR_ID)
-        context.expect(response.body.name).to.equal(localEnv.vendor.company.name)
+        context.expect(response.body).to.have.all.keys('_id', 'name', 'state');
+        context.expect(response.body._id).to.equal(localEnv.VENDOR_ID);
+        context.expect(response.body.name).to.equal(localEnv.vendor.company.name);
         context.expect(response.body.state).to.deep.include({ name: 'ApptScheduled' });
         context.expect(response.body.state.selectedTime).to.deep.equal(localEnv.selectedTime);
       });

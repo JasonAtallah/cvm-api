@@ -10,7 +10,7 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get,
+      mw.mongo.get.buyer,
       mw.data.responses.prepBuyerForResponse,
       mw.data.validation.validateReqVar('buyer', 'buyer-public'),
       mw.responses.sendReqVar('buyer')
@@ -25,7 +25,7 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.gcalendar.getCalendarList,
@@ -38,7 +38,7 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.gcalendar.getCalendarEvents,
@@ -51,14 +51,14 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorListQueryForLoggedInBuyer,
-      mw.mongo.get.vendorList,
+      mw.mongo.vendors.getList,
       mw.data.responses.prepVendorListForResponse,
       mw.data.validation.validateReqVar('vendors', 'vendors'),
       mw.responses.sendReqVar('vendors')
     ]));
 
   router.get('/vendors/:vendorId',
-    mw.data.validation.validateReqVar('params', 'url-params'),
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
@@ -69,7 +69,7 @@ module.exports = function (app) {
     ]));
 
   router.get('/vendors/:vendorId/files/:fileId',
-    mw.data.validation.validateReqVar('params', 'url-params'),
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,

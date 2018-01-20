@@ -16,7 +16,17 @@ describe('get events', function() {
         return context.requests.run('get-events', { BUYER_TOKEN: response.body })
           .then((response) => {
             context.expect(response.statusCode).to.equal(200);
-            context.expect(response.body).to.be.an('array');        
+            context.expect(response.body).to.be.an('array');
+            if (response.body.length > 0) {
+              context.expect(response.body[0]).to.have.property('id');
+              context.expect(response.body[0]).to.have.property('status');
+              context.expect(response.body[0]).to.have.property('htmlLink');
+              context.expect(response.body[0]).to.have.property('created');
+              context.expect(response.body[0]).to.have.property('updated');
+              context.expect(response.body[0]).to.have.property('title');
+              context.expect(response.body[0]).to.have.property('startDate');
+              context.expect(response.body[0]).to.have.property('endDate');
+            }
           });
       });
   });

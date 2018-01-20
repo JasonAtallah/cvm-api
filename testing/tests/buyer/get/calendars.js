@@ -9,7 +9,7 @@ describe('get calendars', function () {
       });
   });
 
-  it('should return all calendars', function () {
+  it('should return array of calendars in expected format', function () {
     this.timeout(5000);
     const localEnv = {};
 
@@ -21,9 +21,14 @@ describe('get calendars', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200, response.body);
-        context.expect(response.body).to.be.an('array');        
+        context.expect(response.body).to.be.an('array');
+        if (response.body.length > 0) {
+          context.expect(response.body[0]).to.have.property('type');
+          context.expect(response.body[0]).to.have.property('id');
+          context.expect(response.body[0]).to.have.property('name');
+          context.expect(response.body[0]).to.have.property('timezone');
+        }
       });
   });
-
 
 });

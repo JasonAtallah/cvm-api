@@ -9,15 +9,15 @@ describe('Set calendar to new gCalendar', function () {
       });
   });
 
-  describe('missing fields', function() {
+  describe('missing fields', function () {
 
-    it('should return 400 missing calendar name', function() {
+    it('should return 400 missing calendar name', function () {
       const localEnv = {
         calendar: context.data.get('calendar', { name: null })
       };
 
       const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body'}],
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
         'put-calendar'
       ];
 
@@ -27,13 +27,13 @@ describe('Set calendar to new gCalendar', function () {
         });
     });
 
-    it('should return 400 missing calendar timezone', function() {
+    it('should return 400 missing calendar timezone', function () {
       const localEnv = {
         calendar: context.data.get('calendar', { timezone: null })
       };
 
       const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body'}],
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
         'put-calendar'
       ];
 
@@ -45,15 +45,15 @@ describe('Set calendar to new gCalendar', function () {
 
   });
 
-  describe('empty fields', function() {
+  describe('empty fields', function () {
 
-    it('should return 400 empty calendar name', function() {
+    it('should return 400 empty calendar name', function () {
       const localEnv = {
         calendar: context.data.get('calendar', { name: '' })
       };
 
       const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body'}],
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
         'put-calendar'
       ];
 
@@ -63,13 +63,13 @@ describe('Set calendar to new gCalendar', function () {
         });
     });
 
-    it('should return 400 empty calendar timezone', function() {
+    it('should return 400 empty calendar timezone', function () {
       const localEnv = {
         calendar: context.data.get('calendar', { timezone: '' })
       };
 
       const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body'}],
+        ['post-token', { 'BUYER_TOKEN': 'body' }],
         'put-calendar'
       ];
 
@@ -84,13 +84,18 @@ describe('Set calendar to new gCalendar', function () {
   it('should return new calendar', function () {
     this.timeout(10000);
     return context.requests.run('post-token')
-      .then((response) => {        
+      .then((response) => {
         return context.requests.run('put-calendar', { BUYER_TOKEN: response.body, calendar: context.data.calendar })
           .then((response) => {
             context.expect(response.statusCode).to.equal(200);
             context.expect(response.body).to.be.an('object');
+            context.expect(response.body).to.have.all.keys('type', 'id', 'name', 'timezone');
+            context.expect(response.body).to.deep.include({
+              name: context.data.calendar.name,
+              timezone: context.data.calendar.timezone
+            });
           });
       });
-    });
-      
   });
+
+});

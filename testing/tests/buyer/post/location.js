@@ -203,7 +203,8 @@ describe('add a new location', function () {
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
-        context.expect(response.body).to.be.an('object');        
+        context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.all.keys('name', 'address', 'city', 'state', 'zip');
         context.expect(response.body).to.deep.equal(localEnv.location);
       });
   });

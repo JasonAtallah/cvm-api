@@ -195,6 +195,8 @@ describe('create vendor', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(201);
         context.expect(response.body.name).to.equal(localEnv.vendor.company.name);
+        context.expect(response.body).to.have.all.keys('_id', 'name', 'state');
+        context.expect(response.body).to.have.property('name');
         context.expect(response.body.state).to.deep.include({ name: 'NewVendor' });
       })
   });

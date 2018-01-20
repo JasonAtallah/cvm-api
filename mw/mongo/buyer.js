@@ -3,24 +3,6 @@ const config = require('../../config');
 
 module.exports = {
 
-  get(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        return db.collection('buyers').findOne(req.buyerQuery)
-          .then((buyer) => {
-            if (buyer) {
-              req.buyer = buyer;
-              next();
-            } else {
-              next();
-            }
-          });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
-
   initialize(req, res, next) {
     const select = {
       'gProfile.id': req.gProfile.id

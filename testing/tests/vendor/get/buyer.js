@@ -17,6 +17,7 @@ describe('get buyer', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.all.keys('_id', 'state', 'name');
       });
   });
 

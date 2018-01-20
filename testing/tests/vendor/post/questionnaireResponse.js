@@ -18,6 +18,7 @@ describe('submit questionnaire response', function () {
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.all.keys('company', 'contact', 'flowers', 'edibles', 'concentrates', '_id');
         context.expect(response.body).to.deep.include({
           company: {
             name: localEnv.questionnaireResponse.company.name,

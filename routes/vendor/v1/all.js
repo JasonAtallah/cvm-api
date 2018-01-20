@@ -7,7 +7,7 @@ module.exports = function (app) {
   const router = express.Router();
 
   router.get('/questionnaires/:questionnaireId',
-    mw.data.validation.validateReqVar('params', 'url-params'),
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.data.queries.prepQuestionnaireQueryById,
     mw.mongo.get.questionnaire,
     mw.data.responses.prepQuestionnaireForResponse,
@@ -16,6 +16,7 @@ module.exports = function (app) {
 
   // router.post('/vendors/:vendorId/submitQuestionnaire');
   router.post('/questionnaires/:questionnaireId/responses',
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepQuestionnaireQueryById,
@@ -23,7 +24,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromQuestionnaire,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorFromQuestionnaire,
@@ -43,6 +44,7 @@ module.exports = function (app) {
 
   // router.put('/vendors/:vendorId/finalizeQuestionnaire');
   router.put('/questionnaires/:questionnaireId/responses/:responseId',
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepQuestionnaireQueryById,
@@ -50,7 +52,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromQuestionnaire,
-      mw.mongo.buyer.get
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.incoming.prepQuestionnaireResponseForUpdate,
@@ -65,6 +67,8 @@ module.exports = function (app) {
     mw.responses.send(201));
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
+
     mw.parse.file('file'),
     mw.data.validation.validateReqVar('file', 'file-object'),
     mw.responses.sendReqVar('file'));
@@ -81,6 +85,7 @@ module.exports = function (app) {
     ]));
 
   router.get('/vendors/:vendorId/buyer',
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
       mw.mongo.get.thread
@@ -91,12 +96,13 @@ module.exports = function (app) {
       mw.responses.sendReqVar('buyer')
     ]));
 
-    router.put('/vendors/:vendorId/actions/:action',
+  router.put('/vendors/:vendorId/actions/:action',
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.buyer.get,
+      mw.mongo.get.buyer,
     ]),
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,

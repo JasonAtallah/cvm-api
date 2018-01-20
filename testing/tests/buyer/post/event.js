@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const context = require('../../../lib/context');
 
 describe('create a new event', function () {
@@ -197,15 +198,23 @@ describe('create a new event', function () {
       'post-event'
     ];
 
+    const startDate = moment(`${localEnv.event.date} ${localEnv.event.time}`, 'MM/DD/YYYY HH:mm')
+
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
+        context.expect(response.body).to.have.property('id');
+        context.expect(response.body).to.have.property('htmlLink');
+        context.expect(response.body).to.have.property('created');
+        context.expect(response.body).to.have.property('updated');
         context.expect(response.body).to.deep.include({
           status: 'confirmed',
-          title: context.data.event.name
+          title: context.data.event.name,
+          startDate: moment.tz(startDate, 'America/Los_Angeles').format(),
+          endDate: startDate.add(localEnv.event.duration, 'minutes').format()
         });        
-      })
+      });
   });
 
 });

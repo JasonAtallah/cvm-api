@@ -28,7 +28,7 @@ module.exports = function (app) {
       mw.parse.json,
       mw.data.validation.validateReqVar('body', 'buyer-token-request'),
       mw.data.queries.prepBuyerQueryFromBody,
-      mw.mongo.buyer.get,
+      mw.mongo.get.buyer,
       mw.logic.ifNullInReq('buyer', [
         mw.responses.send(404, 'buyer not found')
       ], [
