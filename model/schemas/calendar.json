@@ -11,10 +11,10 @@
     "name": {
       "type": "string"
     },
-    "tz": {
+    "timezone": {
       "type": "string"
     }
   },
-  "required": ["type", "id", "name", "tz"],
+  "required": ["type", "id", "name", "timezone"],
   "additionalProperties": false
 }
