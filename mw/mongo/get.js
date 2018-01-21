@@ -2,6 +2,26 @@ const config = require('../../config');
 
 module.exports = {
 
+  buyer(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        return db.collection('buyers').findOne(req.buyerQuery)
+          .then((buyer) => {
+            if (buyer) {
+              req.buyer = buyer;
+              next();
+            } else {
+              const err = new Error('Buyer not found.');
+              err.status = 404;
+              next(err);
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   questionnaire(req, res, next) {
     config.mongo.getDB
       .then((db) => {
@@ -60,22 +80,5 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
-  },
-
-  vendorList(req, res, next) {
-    config.mongo.getDB
-      .then((db) => {
-        db.collection('threads').find(req.vendorQuery).project(req.vendorProjection).toArray(function (err, vendors) {
-          if (err) {
-            next(err);
-          } else {
-            req.vendors = vendors;
-            next();
-          }
-        });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  },
+  }
 };

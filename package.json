@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "dev": "DEBUG=cvm-api* nodemon index.js"
+    "dev": "DEBUG=cvm-api* nodemon index.js",
+    "test": "./node_modules/mocha/bin/mocha testing/tests/**/*.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
@@ -32,14 +33,14 @@
     "morgan": "^1.9.0",
     "multer": "^1.3.0",
     "multer-gridfs-storage": "^2.1.0",
-    "request-promise": "^4.2.2",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "require-directory": "^2.1.1",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "express": "^4.14.1",
-    "mocha": "^3.2.0",
+    "mocha": "^3.5.3",
     "sinon": "^4.0.0",
     "sinon-chai": "^2.8.0"
   },

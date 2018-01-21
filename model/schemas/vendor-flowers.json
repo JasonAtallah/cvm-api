@@ -1,0 +1,50 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-flowers.json",
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "weightAvailable": {
+            "type": "number"
+          },
+          "thc": {
+            "type": "number"
+          },
+          "cbd": {
+            "type": "number"
+          },
+          "growStyle": {
+            "type": "string",
+            "enum": [
+              "indoor",
+              "outdoor"
+            ]
+          },
+          "budSize": {
+            "type": "number"
+          },
+          "shelfReady": {
+            "type": "boolean"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          },
+          "testResults": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}

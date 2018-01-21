@@ -1,0 +1,16 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/email-template.json",
+  "type": "object",
+  "properties": {
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "body": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["subject", "body"],
+  "additionalProperties": false
+}

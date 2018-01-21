@@ -1,0 +1,17 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-action-BuyerSendsTimes.json",
+  "type": "object",
+  "properties": {
+    "suggestedTimes": {
+      "type": "array",
+      "items": {
+        "$ref": "suggested-time.json" 
+      }
+    },
+    "vendorUrl": {
+      "$ref": "vendor-url.json"
+    }
+  },
+  "required": ["suggestedTimes", "vendorUrl"],
+  "additionalProperties": false
+}

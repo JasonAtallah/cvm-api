@@ -1,0 +1,26 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/new-event.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "location": {
+      "type": "string",
+      "minLength": 1
+    },          
+    "date": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time": {
+      "type": "string",
+      "minLength": 1
+    },
+    "duration": {
+      "type": "number"      
+    }
+  },
+  "required": ["name", "location", "time", "date", "duration"]
+}

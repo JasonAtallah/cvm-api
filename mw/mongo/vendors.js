@@ -28,6 +28,23 @@ module.exports = {
       });
   },
 
+  getList(req, res, next) {
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('threads').find(req.vendorQuery).project(req.vendorProjection).toArray(function (err, vendors) {
+          if (err) {
+            next(err);
+          } else {
+            req.vendors = vendors;
+            next();
+          }
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   insertVendor(req, res, next) {
     config.mongo.getDB
       .then((db) => {

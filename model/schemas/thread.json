@@ -1,0 +1,62 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/thread.json",
+  "type": "object",
+  "properties": {
+    "buyer": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "vendor": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["buyer", "vendor", "actions", "states", "state"]
+}

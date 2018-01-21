@@ -1,0 +1,13 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-profile.json",
+  "type": "object",
+  "properties": {
+    "company": {
+      "$ref": "buyer-company.json"
+    },
+    "contact": {
+      "$ref": "buyer-contact.json"
+    }
+  },
+  "required": ["company", "contact"]
+}

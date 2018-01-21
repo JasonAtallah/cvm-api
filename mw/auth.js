@@ -1,6 +1,6 @@
 const moment = require('moment');
+const request = require('request-promise-native');
 const jwksRsa = require('jwks-rsa');
-const request = require('request-promise');
 const config = require('../config');
 const jwt = require('../services/jwt');
 

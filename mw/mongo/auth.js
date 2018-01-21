@@ -90,9 +90,16 @@ module.exports = {
     const update = {
       $set: {
         gProfile: req.gProfile,
-        gAuth: req.gAuth
+        'gAuth.access_token': req.gAuth.access_token,
+        'gAuth.id_token': req.gAuth.id_token,
+        'gAuth.token_type': req.gAuth.token_type,
+        'gAuth.expiry_date': req.gAuth.expiry_date
       }
     };
+
+    if (req.gAuth.refresh_token) {
+      update.$set['gAuth.refresh_token'] = req.gAuth.refresh_token;
+    }
 
     const options = {
       upsert: true

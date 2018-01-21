@@ -1,0 +1,43 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/vendor-concentrates.json",
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "unitsAvailable": {
+            "type": "number"
+          },
+          "thc": {
+            "type": "number"
+          },
+          "cbd": {
+            "type": "number"
+          },
+          "shelfReady": {
+            "type": "boolean"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          },
+          "testResults": {
+            "type": "array",
+            "items": {
+              "$ref": "file-object.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}

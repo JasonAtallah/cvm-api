@@ -1,40 +1,31 @@
+const _ = require('lodash');
 const Ajv = require('ajv');
 const debug = require('debug')('cvm-api.mw.data.validation');
-const { ValidationError } = require('../../errors');
 const config = require('../../config');
+const { ValidationError } = require('../../errors');
+const utils = require('../../lib/utils');
 
-const schemas = {
-  newCalendar: require('../../model/schemas/new-calendar.json'),
-  newVendor: require('../../model/schemas/new-vendor.json')
-};
-
-const validators = {
-  newCalendar: new Ajv().compile(schemas.newCalendar),
-  newVendor: new Ajv().compile(schemas.newVendor)
-};
+const ajv = new Ajv({
+  schemas: _.values(require('../../model/schemas'))
+});
 
 module.exports = {
 
-  validateNewCalendar(req, res, next) {
-    debug('validateNewCalendar');
-    var valid = validators.newCalendar(req.body);
+  validateReqVar(reqVarName, schemaName) {
+    return (req, res, next) => {
+      const reqSchemaName = utils.replaceVars(schemaName, req);
+      debug(`validate req[${reqVarName}] with ${reqSchemaName}`);
+      const schemaPath = `http://cannabisvendormgmt.com/schemas/${reqSchemaName}.json`;
+      const validate = ajv.getSchema(schemaPath);
+      const data = _.get(req, reqVarName);
+      const valid = validate(data);
 
-    if (!valid) {
-      next(new ValidationError(validators.newCalendar, req.body));
-    } else {
-      next();
-    }
-  },
-
-  validateNewVendor(req, res, next) {
-    debug('validateNewVendor');
-    var valid = validators.newVendor(req.vendor);
-
-    if (!valid) {
-      next(new ValidationError(validators.newVendor, req.vendor));
-    } else {
-      next();
-    }
+      if (!valid) {
+        next(new ValidationError(validate.errors, data));
+      } else {
+        next();
+      }
+    };
   }
 
 };

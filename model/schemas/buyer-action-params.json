@@ -1,0 +1,13 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/buyer-action-params.json",
+  "type": "object",
+  "properties": {
+    "vendorId": {
+      "$ref": "mongo-id-str.json"
+    },
+    "action": {
+      "pattern": "^\\w+$"
+    }
+  },
+  "additionalProperties": false
+}

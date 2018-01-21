@@ -2,6 +2,7 @@ const ObjectID = require('mongodb').ObjectID;
 const moment = require('moment');
 const config = require('../../config');
 const threads = require('../../lib/threads');
+const validation = require('./validation');
 
 module.exports = {
 
@@ -58,7 +59,7 @@ module.exports = {
     req.thread = {
       buyer: {
         _id: req.buyer._id,
-        name: req.buyer.name
+        name: req.buyer.profile.company.name
       },
       vendor: {
         _id: req.vendor._id,
