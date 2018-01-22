@@ -15,7 +15,7 @@
     "location": "{{event.location}}",
     "date": "{{event.date}}",
     "time": "{{event.time}}",
-    "duration": "{{event.duration}",
+    "duration": "{{event.duration}}",
     "timezone": "{{event.timezone}}"
   },
   "url": {
