@@ -22,7 +22,7 @@ module.exports = {
 
   prepCalendarEventForInsert (req, res, next) {
     const timeParts = req.body.time.split(':');
-    const startM = moment(req.body.date).set('hour', timeParts[0]).set('minute', timeParts[1]);
+    const startM = moment.tz(moment(req.body.date, 'MM/DD/YYYY'), req.body.timezone).set('hour', timeParts[0]).set('minute', timeParts[1]);
     req.event = {
       start: {
         dateTime: startM.toDate()

@@ -187,7 +187,7 @@ describe('create a new event', function () {
 
   });
 
-  it.only('should return the new event', function () {
+  it('should return the new event', function () {
     this.timeout(5000);
 
     const localEnv = {

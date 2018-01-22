@@ -3,7 +3,7 @@ const context = require('../../../lib/context');
 describe('approve vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-vendorApproved', { VENDOR_ID: context.data.VENDOR_ID })
+    return context.requests.run('put-vendorApproved', { VENDOR_ID: context.env.VENDOR_ID })
       .then((response) => {
         context.expect(response.statusCode).to.equal(401);
       });

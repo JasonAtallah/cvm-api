@@ -3,7 +3,7 @@ const context = require('../../../lib/context');
 describe('buyer cancels appt', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-buyerCancelsAppt', { VENDOR_ID: context.data.VENDOR_ID })
+    return context.requests.run('put-buyerCancelsAppt', { VENDOR_ID: context.env.VENDOR_ID })
       .then((response) => {
         context.expect(response.statusCode).to.equal(401);
       });
@@ -23,7 +23,7 @@ describe('buyer cancels appt', function () {
       ['post-token', { 'BUYER_TOKEN': 'body' }],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
       'put-vendorApproved',
-      'put-buyerSendsTimes',      
+      'put-buyerSendsTimes',
       'put-buyerCancelsAppt'
     ];
 
@@ -52,6 +52,8 @@ describe('buyer cancels appt', function () {
       'put-buyerCancelsAppt'
     ];
 
+    this.timeout(1000 * requestList.length);
+
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
@@ -63,5 +65,5 @@ describe('buyer cancels appt', function () {
         context.expect(response.body.name).to.equal(localEnv.vendor.company.name);
       });
   });
-  
+
 });
