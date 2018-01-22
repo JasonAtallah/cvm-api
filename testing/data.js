@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const values = require('./data.json');
+const values = require('../docs/data.json');
 
 module.exports = _.cloneDeep(values);
 module.exports.get = (path, override) => {
