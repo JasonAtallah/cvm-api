@@ -11,8 +11,11 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n\t\"name\": \"{{location.name}}\",\n\t\"address\": \"{{location.address}}\",\n\t\"city\": \"{{location.city}}\",\n\t\"state\": \"{{location.state}}\",\n\t\"zip\": \"{{location.zip}}\"\n}"
+    "name": "{{location.name}}",
+    "address": "{{location.address}}",
+    "city": "{{location.city}}",
+    "state": "{{location.state}}",
+    "zip": "{{location.zip}}"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/locations",

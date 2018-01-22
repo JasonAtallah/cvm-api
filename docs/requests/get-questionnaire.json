@@ -1,10 +1,7 @@
 {
   "method": "GET",
   "header": [],
-  "body": {
-    "mode": "raw",
-    "raw": ""
-  },
+  "body": null,
   "url": {
     "raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}",
     "host": [

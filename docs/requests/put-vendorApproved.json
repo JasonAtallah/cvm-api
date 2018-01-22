@@ -15,8 +15,11 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n\t\"email\" : {\n\t\t\"subject\": \"{{email.subject}}\",\n\t\t\"body\": \"{{email.body}}\"\n\t},\n\t\"scheduleUrl\": \"{{email.scheduleUrl}}\"\n}"
+    "email": {
+      "subject": "{{email.subject}}",
+      "body": "{{email.body}}"
+    },
+    "scheduleUrl": "{{email.scheduleUrl}}"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/ApproveVendor",

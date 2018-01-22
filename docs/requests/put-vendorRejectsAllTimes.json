@@ -14,10 +14,7 @@
       "value": "{{BUYER_TOKEN}}"
     }
   ],
-  "body": {
-    "mode": "raw",
-    "raw": ""
-  },
+  "body": null,
   "url": {
     "raw": "{{API_HOST}}/vendor/v1/vendors/{{VENDOR_ID}}/actions/VendorRejectsAllTimes",
     "host": [

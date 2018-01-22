@@ -15,8 +15,8 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n\t\"subject\": \"Congrats\",\n\t\"body\": \"We'd like to set up a meeting\"\n}"
+    "subject": "Congrats",
+    "body": "We'd like to set up a meeting"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/emails/approveVendor",

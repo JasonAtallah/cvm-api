@@ -15,8 +15,31 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n  \"suggestedTimes\": [\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.0.location.name}}\",\n        \"address\": \"{{suggestedTimes.0.location.address}}\",\n        \"city\": \"{{suggestedTimes.0.location.city}}\",\n        \"state\": \"{{suggestedTimes.0.location.state}}\",\n        \"zip\": \"{{suggestedTimes.0.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.0.startDate}}\",\n      \"duration\": \"{{suggestedTimes.0.duration}}\"\n    },\n    {\n      \"location\": {\n      \t\"name\": \"{{suggestedTimes.1.location.name}}\",\n        \"address\": \"{{suggestedTimes.1.location.address}}\",\n        \"city\": \"{{suggestedTimes.1.location.city}}\",\n        \"state\": \"{{suggestedTimes.1.location.state}}\",\n        \"zip\": \"{{suggestedTimes.1.location.zip}}\"\n      },\n      \"startDate\": \"{{suggestedTimes.1.startDate}}\",\n      \"duration\": \"{{suggestedTimes.1.duration}}\"\n    }\n  ],\n  \"vendorUrl\": \"{{vendorUrl}}\"\n}"
+    "suggestedTimes": [
+      {
+        "location": {
+          "name": "{{suggestedTimes.0.location.name}}",
+          "address": "{{suggestedTimes.0.location.address}}",
+          "city": "{{suggestedTimes.0.location.city}}",
+          "state": "{{suggestedTimes.0.location.state}}",
+          "zip": "{{suggestedTimes.0.location.zip}}"
+        },
+        "startDate": "{{suggestedTimes.0.startDate}}",
+        "duration": "{{suggestedTimes.0.duration}}"
+      },
+      {
+        "location": {
+          "name": "{{suggestedTimes.1.location.name}}",
+          "address": "{{suggestedTimes.1.location.address}}",
+          "city": "{{suggestedTimes.1.location.city}}",
+          "state": "{{suggestedTimes.1.location.state}}",
+          "zip": "{{suggestedTimes.1.location.zip}}"
+        },
+        "startDate": "{{suggestedTimes.1.startDate}}",
+        "duration": "{{suggestedTimes.1.duration}}"
+      }
+    ],
+    "vendorUrl": "{{vendorUrl}}"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/BuyerSendsTimes",

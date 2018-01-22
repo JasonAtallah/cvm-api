@@ -3,7 +3,7 @@ const context = require('../../../lib/context');
 
 describe('create a new event', function () {
 
-  it.only('should return 401 Unauthorized without buyer token', function () {
+  it('should return 401 Unauthorized without buyer token', function () {
     this.timeout(5000);
     const localEnv = {
       event: context.data.event

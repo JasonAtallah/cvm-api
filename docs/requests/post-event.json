@@ -11,8 +11,12 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n\t\"name\": \"{{event.name}}\",\n\t\"location\": \"{{event.location}}\",\n\t\"date\": \"{{event.date}}\",\n\t\"time\": \"{{event.time}}\",\n\t\"duration\": \"{{event.duration},\n\t\"timezone\": \"{{event.timezone}}\"\n}"
+    "name": "{{event.name}}",
+    "location": "{{event.location}}",
+    "date": "{{event.date}}",
+    "time": "{{event.time}}",
+    "duration": "{{event.duration}",
+    "timezone": "{{event.timezone}}"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/events",

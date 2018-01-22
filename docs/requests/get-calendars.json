@@ -14,10 +14,7 @@
       "value": "{{BUYER_HOST}}"
     }
   ],
-  "body": {
-    "mode": "raw",
-    "raw": ""
-  },
+  "body": null,
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/calendars",
     "host": [

@@ -11,8 +11,14 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n  \"company\": {\n      \"name\": \"{{vendor.company.name}}\",\n      \"city\": \"{{vendor.company.city}}\"\n    },\n    \"contact\": {\n      \"firstName\": \"{{vendor.contact.firstName}}\",\n      \"email\": \"{{vendor.contact.email}}\"\n    }\n}"
+    "company": {
+      "name": "{{vendor.company.name}}",
+      "city": "{{vendor.company.city}}"
+    },
+    "contact": {
+      "firstName": "{{vendor.contact.firstName}}",
+      "email": "{{vendor.contact.email}}"
+    }
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/vendors",

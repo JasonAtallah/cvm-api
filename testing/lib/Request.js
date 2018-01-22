@@ -1,5 +1,6 @@
 const traverse = require('traverse');
 const request = require('request-promise-native');
+const _ = require('lodash');
 const utils = require('./utils');
 
 module.exports = class Request
@@ -35,14 +36,9 @@ module.exports = class Request
 
     let data;
 
-    if (this.config.body.raw) {
-      try {
-        data = JSON.parse(this.config.body.raw);
-        utils.traverseVars(data, env);
-      } catch (err) {
-        console.log(err);
-        data = {};
-      }
+    if (this.config.body) {
+      data = _.cloneDeep(this.config.body);
+      utils.traverseVars(data, env);
     }
 
     return data;

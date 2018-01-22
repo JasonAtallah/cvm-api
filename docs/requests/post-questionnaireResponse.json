@@ -7,8 +7,29 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n  \"company\": {\n    \"name\": \"{{questionnaireResponse.company.name}}\",\n    \"city\": \"{{questionnaireResponse.company.city}}\"\n  },\n  \"contact\": {\n    \"firstName\": \"{{questionnaireResponse.contact.firstName}}\",\n    \"email\": \"{{questionnaireResponse.contact.email}}\"\n  },\n  \"flowers\": {\n    \"products\": [\n      {\n        \"name\": \"{{questionnaireResponse.flowers1.name}}\",\n        \"weightAvailable\": \"{{questionnaireResponse.flowers1.weightAvailable}}\",\n        \"thc\": \"{{questionnaireResponse.flowers1.thc}}\"\n      }\n    ]\n  },\n  \"edibles\": {\n    \"products\": []\n  },\n  \"concentrates\": {\n    \"products\": []\n  }\n}"
+    "company": {
+      "name": "{{questionnaireResponse.company.name}}",
+      "city": "{{questionnaireResponse.company.city}}"
+    },
+    "contact": {
+      "firstName": "{{questionnaireResponse.contact.firstName}}",
+      "email": "{{questionnaireResponse.contact.email}}"
+    },
+    "flowers": {
+      "products": [
+        {
+          "name": "{{questionnaireResponse.flowers1.name}}",
+          "weightAvailable": "{{questionnaireResponse.flowers1.weightAvailable}}",
+          "thc": "{{questionnaireResponse.flowers1.thc}}"
+        }
+      ]
+    },
+    "edibles": {
+      "products": []
+    },
+    "concentrates": {
+      "products": []
+    }
   },
   "url": {
     "raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}/responses",

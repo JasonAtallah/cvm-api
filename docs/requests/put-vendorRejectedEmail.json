@@ -15,8 +15,8 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n\t\"subject\": \"Sorry\",\n\t\"body\": \"buzz off\"\n}"
+    "subject": "Sorry",
+    "body": "buzz off"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/emails/rejectVendor",

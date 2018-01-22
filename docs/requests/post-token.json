@@ -7,8 +7,7 @@
     }
   ],
   "body": {
-    "mode": "raw",
-    "raw": "{\n  \"buyerId\": \"{{BUYER_ID}}\"\n}"
+    "buyerId": "{{BUYER_ID}}"
   },
   "url": {
     "raw": "{{API_HOST}}/buyer/token",
