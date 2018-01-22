@@ -11,7 +11,7 @@ describe('get vendor', function () {
     const requestList = [
       ['post-token', { 'BUYER_TOKEN': 'body' } ],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
-      'get-vendorAsVendor'
+      'vendor-get-vendor'
     ]
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
