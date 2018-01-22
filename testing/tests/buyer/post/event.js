@@ -187,8 +187,9 @@ describe('create a new event', function () {
 
   });
 
-  it('should return the new event', function () {
+  it.only('should return the new event', function () {
     this.timeout(5000);
+
     const localEnv = {
       event: context.data.event
     };
@@ -203,7 +204,7 @@ describe('create a new event', function () {
 
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
-        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.statusCode).to.equal(200, response.body);
         context.expect(response.body).to.be.an('object');
         context.expect(response.body).to.have.property('id');
         context.expect(response.body).to.have.property('htmlLink');
@@ -213,8 +214,7 @@ describe('create a new event', function () {
           status: 'confirmed',
           title: context.data.event.name,
           startDate: startDate.format(),
-          endDate: startDate.add(localEnv.event.duration, 'minutes').format(),
-          timezone: timezone
+          endDate: startDate.add(localEnv.event.duration, 'minutes').format()
         });
       });
   });

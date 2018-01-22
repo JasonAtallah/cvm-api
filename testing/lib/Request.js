@@ -58,7 +58,7 @@ module.exports = class Request
 
   execute(env) {
     const options = this.getOptions(env);
-
+    
     return request(options)
       .then((response) => {
         let body = response.body;
