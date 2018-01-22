@@ -1,0 +1,20 @@
+{
+  "method": "GET",
+  "header": [],
+  "body": {
+    "mode": "raw",
+    "raw": ""
+  },
+  "url": {
+    "raw": "{{API_HOST}}/vendor/v1/vendors/{{VENDOR_ID}}",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "vendor",
+      "v1",
+      "vendors",
+      "{{VENDOR_ID}}"
+    ]
+  }
+}

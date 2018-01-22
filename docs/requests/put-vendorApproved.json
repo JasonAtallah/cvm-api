@@ -1,0 +1,35 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "Origin",
+      "value": "{{BUYER_HOST}}"
+    },
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"email\" : {\n\t\t\"subject\": \"{{email.subject}}\",\n\t\t\"body\": \"{{email.body}}\"\n\t},\n\t\"scheduleUrl\": \"{{email.scheduleUrl}}\"\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/ApproveVendor",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "vendors",
+      "{{VENDOR_ID}}",
+      "actions",
+      "ApproveVendor"
+    ]
+  }
+}

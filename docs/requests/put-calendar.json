@@ -1,0 +1,32 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "origin",
+      "value": "{{BUYER_HOST}}"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"name\": \"{{calendar.name}}\",\n\t\"timezone\": \"{{calendar.timezone}}\"\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/gcalendar",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "gcalendar"
+    ]
+  }
+}

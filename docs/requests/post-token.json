@@ -1,0 +1,23 @@
+{
+  "method": "POST",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n  \"buyerId\": \"{{BUYER_ID}}\"\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/token",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "token"
+    ]
+  }
+}

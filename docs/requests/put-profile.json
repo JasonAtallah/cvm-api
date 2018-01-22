@@ -1,0 +1,28 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"company\": {\n\t\t\"name\": \"{{profile.company.name}}\",\n\t\t\"city\": \"{{profile.company.city}}\"\n\t},\n\t\"contact\": {\n\t\t\"firstName\": \"{{profile.contact.firstName}}\",\n\t\t\"email\": \"{{profile.contact.email}}\"\n\t}\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/profile",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "profile"
+    ]
+  }
+}

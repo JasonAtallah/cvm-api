@@ -1,0 +1,28 @@
+{
+  "method": "POST",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n  \"company\": {\n      \"name\": \"{{vendor.company.name}}\",\n      \"city\": \"{{vendor.company.city}}\"\n    },\n    \"contact\": {\n      \"firstName\": \"{{vendor.contact.firstName}}\",\n      \"email\": \"{{vendor.contact.email}}\"\n    }\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/vendors",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "vendors"
+    ]
+  }
+}

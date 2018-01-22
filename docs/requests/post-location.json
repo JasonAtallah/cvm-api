@@ -1,0 +1,28 @@
+{
+  "method": "POST",
+  "header": [
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"name\": \"{{location.name}}\",\n\t\"address\": \"{{location.address}}\",\n\t\"city\": \"{{location.city}}\",\n\t\"state\": \"{{location.state}}\",\n\t\"zip\": \"{{location.zip}}\"\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/locations",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "locations"
+    ]
+  }
+}

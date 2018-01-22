@@ -1,0 +1,26 @@
+{
+  "method": "POST",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n  \"company\": {\n    \"name\": \"{{questionnaireResponse.company.name}}\",\n    \"city\": \"{{questionnaireResponse.company.city}}\"\n  },\n  \"contact\": {\n    \"firstName\": \"{{questionnaireResponse.contact.firstName}}\",\n    \"email\": \"{{questionnaireResponse.contact.email}}\"\n  },\n  \"flowers\": {\n    \"products\": [\n      {\n        \"name\": \"{{questionnaireResponse.flowers1.name}}\",\n        \"weightAvailable\": \"{{questionnaireResponse.flowers1.weightAvailable}}\",\n        \"thc\": \"{{questionnaireResponse.flowers1.thc}}\"\n      }\n    ]\n  },\n  \"edibles\": {\n    \"products\": []\n  },\n  \"concentrates\": {\n    \"products\": []\n  }\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}/responses",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "vendor",
+      "v1",
+      "questionnaires",
+      "{{QID}}",
+      "responses"
+    ]
+  }
+}

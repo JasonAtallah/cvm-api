@@ -1,0 +1,31 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Authorization",
+      "value": "{{BUYER_TOKEN}}"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"selectedTime\": {\n\t    \"location\": {\n\t        \"name\": \"{{selectedTime.location.name}}\",\n\t        \"address\": \"{{selectedTime.location.address}}\",\n\t        \"zip\": \"{{selectedTime.location.zip}}\",\n\t        \"city\": \"{{selectedTime.location.city}}\",\n\t        \"state\": \"{{selectedTime.location.state}}\"\n\t    },\n\t    \"duration\": \"{{selectedTime.duration}}\",\n\t    \"startDate\": \"{{selectedTime.startDate}}\"\n\t}\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/vendor/v1/vendors/{{VENDOR_ID}}/actions/VendorChoosesTime",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "vendor",
+      "v1",
+      "vendors",
+      "{{VENDOR_ID}}",
+      "actions",
+      "VendorChoosesTime"
+    ]
+  }
+}

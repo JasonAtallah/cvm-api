@@ -1,0 +1,36 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "Origin",
+      "value": "{{BUYER_HOST}}"
+    },
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": ""
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/actions/BuyerCancelsAppt",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "vendors",
+      "{{VENDOR_ID}}",
+      "actions",
+      "BuyerCancelsAppt"
+    ]
+  },
+  "description": "Tests for correct new state and status code 200 is returned"
+}

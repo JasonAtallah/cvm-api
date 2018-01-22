@@ -1,0 +1,33 @@
+{
+  "method": "PUT",
+  "header": [
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "Origin",
+      "value": "{{BUYER_HOST}}"
+    },
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "body": {
+    "mode": "raw",
+    "raw": "{\n\t\"subject\": \"Congrats\",\n\t\"body\": \"We'd like to set up a meeting\"\n}"
+  },
+  "url": {
+    "raw": "{{API_HOST}}/buyer/v1/emails/approveVendor",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "buyer",
+      "v1",
+      "emails",
+      "approveVendor"
+    ]
+  }
+}
