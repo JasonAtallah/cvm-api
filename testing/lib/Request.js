@@ -42,9 +42,9 @@ module.exports = class Request
       } catch (err) {
         console.log(err);
         data = {};
-      }  
+      }
     }
-    
+
     return data;
   }
 
@@ -62,6 +62,7 @@ module.exports = class Request
 
   execute(env) {
     const options = this.getOptions(env);
+
     return request(options)
       .then((response) => {
         let body = response.body;
@@ -79,7 +80,7 @@ module.exports = class Request
         if (!err.statusCode) {
           throw err;
         }
-        
+
         return {
           statusCode: err.statusCode,
           body: err.error

@@ -4,16 +4,10 @@ const Request = require('./Request');
 
 module.exports = class Requests
 {
-  constructor(collection, globalEnv)
+  constructor(requests, globalEnv)
   {
+    this.requests = _.mapValues(requests, config => new Request(config));
     this.globalEnv = globalEnv;
-    this.requests = traverse(collection).reduce((memo, node) => {
-      if (node && node.hasOwnProperty('request')) {
-        const requestName = `${node.request.method.toLowerCase()}-${node.name}`;
-        memo[requestName] = new Request(node.request);
-      }
-      return memo;
-    }, {});
   }
 
   run(reqName, localEnv, envUpdates)
@@ -24,7 +18,7 @@ module.exports = class Requests
             Object.keys(envUpdates).forEach((key) => {
               const envValue = _.get(response, envUpdates[key]);
               _.set(localEnv, key, envValue);
-            });          
+            });
           }
           return response;
         });
