@@ -23,7 +23,7 @@ module.exports = function (app) {
     mw.auth.redirectToClient
   );
 
-  if (config.env === 'development') {
+  if (config.env === 'development' || config.env === 'testing') {
     router.post('/buyer/token',
       mw.parse.json,
       mw.data.validation.validateReqVar('body', 'buyer-token-request'),
