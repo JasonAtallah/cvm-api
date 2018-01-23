@@ -15,6 +15,9 @@
           "type": "string"
         }
       }
+    },
+    "attributes": {
+      "$ref": "thread-attributes.json"
     }
   },
   "required": ["_id", "name", "state"]

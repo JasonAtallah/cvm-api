@@ -59,9 +59,19 @@ module.exports = {
       }
     };
 
+    const options = {
+      returnOriginal: false,
+      projection: {
+        buyer: 1,
+        vendor: 1,
+        state: 1,
+        attributes: 1
+      }
+    };
+
     config.mongo.getDB
       .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update)
+        return db.collection('threads').findOneAndUpdate(select, update, options)
           .then((result) => {
             req.thread = result.value;
             next();

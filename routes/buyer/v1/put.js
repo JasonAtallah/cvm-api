@@ -104,7 +104,9 @@ module.exports = function (app) {
       mw.logic.ifNotUndefinedInReq('attribute', [
         mw.mongo.threads.updateAttribute,
       ]),
-      mw.responses.send('201')
+      mw.data.responses.prepThreadAsVendorResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor-item'),
+      mw.responses.sendReqVar('vendor')
     ])
   );
 
