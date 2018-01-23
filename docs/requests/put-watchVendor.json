@@ -10,9 +10,11 @@
       "value": "application/json"
     }
   ],
-  "body": null,
+  "body": {
+    "watchVendor": "{{watchVendor}}"
+  },
   "url": {
-    "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/attributes/watchVendor",
+    "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/attributes",
     "host": [
       "{{API_HOST}}"
     ],
@@ -21,8 +23,7 @@
       "v1",
       "vendors",
       "{{VENDOR_ID}}",
-      "attributes",
-      "watchVendor"
+      "attributes"
     ]
   }
 }

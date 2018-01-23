@@ -52,6 +52,18 @@ module.exports = {
     next();
   },
 
+  prepThreadAttributeUpdate(req, res, next) {
+    req.attributeUpdate = {
+      $set: {}
+    };
+
+    for (let attribute in req.body) {
+      req.attributeUpdate.$set[`attributes.${attribute}`] = req.body[attribute];
+    }
+
+    next();
+  },
+
   prepThreadQueryForBuyerVendor(req, res, next) {
     req.threadQuery = {
       'vendor._id': req.vendor._id,

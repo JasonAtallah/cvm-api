@@ -83,17 +83,6 @@ module.exports = {
     next();
   },
 
-  prepThreadAttribute(req, res, next) {
-    if (req.params.attribute === 'watchVendor') {
-      req.attribute = 'watchVendor';
-      req.value = true;
-    } else if (req.params.attribute === 'unwatchVendor') {
-      req.attribute = 'watchVendor';
-      req.value = false;
-    }
-    next();
-  },
-
   prepVendorApprovalEmail(req, res, next) {
     var message = '';
     message += `To: ${req.vendor.contact.email} \r\n`;

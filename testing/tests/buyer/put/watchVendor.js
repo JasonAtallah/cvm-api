@@ -9,10 +9,11 @@ describe('start watching vendor', function () {
       });
   });
 
-  it('should return a 200 Ok', function () {
+  it('should return a 200 with correct fields', function () {
     const localEnv = {
       vendor: context.data.vendor1,
-      email: context.data.rejectionEmail
+      email: context.data.rejectionEmail,
+      watchVendor: true
     };
   
     const requestList = [
@@ -23,7 +24,7 @@ describe('start watching vendor', function () {
     ];
   
     return context.requests.runAll(requestList, localEnv)
-      .then((response) => {                
+      .then((response) => {
         context.expect(response.statusCode).to.equal(200);
         context.expect(response.body).to.be.an('object');
         context.expect(response.body).to.have.all.keys('_id', 'name', 'state', 'attributes');

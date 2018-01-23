@@ -83,10 +83,11 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-  router.put('/vendors/:vendorId/attributes/:attribute',
-    mw.data.validation.validateReqVar('params', 'global-url-params'),
+  router.put('/vendors/:vendorId/attributes',
     mw.auth.isLoggedIn,
     mw.parse.json,
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
+    mw.data.validation.validateReqVar('body', 'thread-attributes'),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
       mw.mongo.get.buyer,
@@ -100,10 +101,8 @@ module.exports = function (app) {
       mw.mongo.get.thread,
     ]),
     mw.compose([
-      mw.data.incoming.prepThreadAttribute,
-      mw.logic.ifNotUndefinedInReq('attribute', [
-        mw.mongo.threads.updateAttribute,
-      ]),
+      mw.data.queries.prepThreadAttributeUpdate,
+      mw.mongo.threads.updateAttributes,      
       mw.data.responses.prepThreadAsVendorResponse,
       mw.data.validation.validateReqVar('vendor', 'vendor-item'),
       mw.responses.sendReqVar('vendor')

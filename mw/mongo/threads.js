@@ -48,16 +48,12 @@ module.exports = {
       });
   },
 
-  updateAttribute(req, res, next) {
+  updateAttributes(req, res, next) {
     const select = {
       _id: req.thread._id
     };
 
-    const update = {
-      $set: {
-        [`attributes.${req.attribute}`]: req.value
-      }
-    };
+    const update = req.attributeUpdate;
 
     const options = {
       returnOriginal: false,
