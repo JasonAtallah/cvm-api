@@ -54,11 +54,13 @@ module.exports = {
 
   prepQuestionnairePageUpdate(req, res, next) {
     req.questionnaireUpdate = {
-      $set: {
-        introduction: req.body.introduction,
-        completion: req.body.completion
-      }
+      $set: {}
     };
+
+    for (let page in req.body) {
+      req.questionnaireUpdate.$set[`${page}`] = req.body[page];
+    }
+
     next();
   },
 

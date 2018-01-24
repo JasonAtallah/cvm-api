@@ -9,6 +9,5 @@
       "$ref": "questionnaire-introduction.json"
     }
   },
-  "required": ["completion", "introduction"],
   "additionalProperties": false
 }
