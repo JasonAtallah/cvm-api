@@ -83,10 +83,6 @@ module.exports = {
       });
   },
 
-  /**
-  Input: req.user, req.calendar
-  Output: req.result
-  **/
   updateCalendar(req, res, next) {
     const select = {
       _id: new ObjectID(req.userId)

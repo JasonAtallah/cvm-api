@@ -42,6 +42,14 @@ module.exports = function (app) {
     mw.mongo.buyer.updateLoggedInBuyer,
     mw.responses.send(204));
 
+  router.put('/questionnaire',
+    mw.auth.isLoggedIn,
+    mw.parse.json,
+    mw.data.validation.validateReqVar('body', 'questionnaire-update'),
+    mw.data.queries.prepQuestionnairePageUpdate,
+    mw.mongo.questionnaire.update,
+    mw.responses.sendReqVar('questionnaire'));
+
   router.put('/schedule',
     mw.auth.isLoggedIn,
     mw.parse.json,

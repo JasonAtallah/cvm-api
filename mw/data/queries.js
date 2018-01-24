@@ -52,6 +52,16 @@ module.exports = {
     next();
   },
 
+  prepQuestionnairePageUpdate(req, res, next) {
+    req.questionnaireUpdate = {
+      $set: {
+        introduction: req.body.introduction,
+        completion: req.body.completion
+      }
+    };
+    next();
+  },
+
   prepQuestionnaireQueryFromAuth(req, res, next) {
     req.questionnaireQuery = {
       buyerId: new ObjectID(req.userId)

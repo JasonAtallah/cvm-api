@@ -1,0 +1,5 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/questionnaire-completion.json",
+  "type": "string",
+  "minLength": 1
+}
