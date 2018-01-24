@@ -46,8 +46,11 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.data.validation.validateReqVar('body', 'questionnaire-update'),
+    mw.data.queries.prepQuestionnaireQueryFromAuth,
     mw.data.queries.prepQuestionnairePageUpdate,
-    mw.mongo.questionnaire.update,
+    mw.mongo.questionnaires.update,
+    mw.data.responses.prepQuestionnaireForResponse,
+    mw.data.validation.validateReqVar('questionnaire', 'questionnaire'),
     mw.responses.sendReqVar('questionnaire'));
 
   router.put('/schedule',

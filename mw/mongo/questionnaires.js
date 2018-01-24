@@ -5,7 +5,7 @@ module.exports = {
 
   update(req, res, next) {
     const select = {
-      _id: new ObjectID(req.body._id)
+      buyerId: new ObjectID(req.questionnaireQuery.buyerId)
     };
     
     const update = req.questionnaireUpdate;
