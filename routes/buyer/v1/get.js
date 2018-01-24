@@ -47,6 +47,16 @@ module.exports = function (app) {
       mw.responses.sendReqVar('events')
     ]));
 
+  router.get('/questionnaire',
+    mw.auth.isLoggedIn,
+    mw.compose([
+      mw.data.queries.prepQuestionnaireQueryFromAuth,
+      mw.mongo.get.questionnaire,
+      mw.data.responses.prepQuestionnaireForResponse,
+      mw.data.validation.validateReqVar('questionnaire', 'questionnaire'),
+      mw.responses.sendReqVar('questionnaire')
+    ]));
+
   router.get('/vendors',
     mw.auth.isLoggedIn,
     mw.compose([

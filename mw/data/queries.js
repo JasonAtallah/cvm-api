@@ -52,6 +52,13 @@ module.exports = {
     next();
   },
 
+  prepQuestionnaireQueryFromAuth(req, res, next) {
+    req.questionnaireQuery = {
+      buyerId: new ObjectID(req.userId)
+    };
+    next();
+  },
+
   prepThreadAttributeUpdate(req, res, next) {
     req.attributeUpdate = {
       $set: {}
