@@ -70,11 +70,15 @@ module.exports = {
       }
     };
 
+    const options = {
+      returnOriginal: false
+    };
+
     config.mongo.getDB
       .then((db) => {
-        return db.collection('buyers').update(select, update)
+        return db.collection('buyers').findOneAndUpdate(select, update, options)
           .then((result) => {
-            req.result = result;
+            req.emails = result.value.emails;
             next();
           });
       })

@@ -10,8 +10,11 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.data.validation.validateReqVar('body', 'email-template'),
+    mw.data.queries.prepBuyerQueryFromAuth,
+    mw.mongo.get.buyer,
     mw.mongo.buyer.updateEmailTemplate,
-    mw.responses.send(200));
+    mw.data.validation.validateReqVar('emails', 'buyer-emails'),
+    mw.responses.sendReqVar('emails'));
 
   router.put('/gcalendar',
     mw.auth.isLoggedIn,

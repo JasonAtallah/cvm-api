@@ -6,19 +6,7 @@
       "type": "object"
     },
     "emails": {
-      "type": "object",
-      "properties": {
-        "approveVendor": {
-          "$ref": "email-template.json"
-        },
-        "rejectVendor": {
-          "$ref": "email-template.json"
-        },
-        "newVendor": {
-          "$ref": "email-template.json"
-        }
-      },
-      "required": ["approveVendor", "rejectVendor", "newVendor"]
+      "$ref": "buyer-emails.json"
     },
     "gcalendar": {
       "$ref": "buyer-public-gcalendar.json"

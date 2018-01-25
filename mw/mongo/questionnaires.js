@@ -10,7 +10,7 @@ module.exports = {
     
     const update = req.questionnaireUpdate;
 
-    const options ={
+    const options = {
       returnOriginal: false
     };
 
