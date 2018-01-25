@@ -3,6 +3,54 @@
     "introduction": "# Welcome",
     "completion": "# Thanks for applying"
   },
+  
+  "buyer": {
+    "gProfile": {
+      "id":"",
+      "firstName":"Ceevee",
+      "lastName":"Em",
+      "email":""
+    },
+    "emails":{
+      "approveVendor":{
+        "subject":"Congrats",
+        "body":"We'd like to set up a meeting"
+      },
+      "rejectVendor":{
+        "subject":"Sorry",
+        "body":"buzz off"
+      },
+      "newVendor":{
+        "subject":"New vendor applied",
+        "body":"Check CVM"
+      }
+    },
+    "schedule":[],
+    "profile":{
+      "company":{
+        "name":"CVM Collective",
+        "city":"Santa Rosa"
+      },
+      "contact":{
+        "firstName":"Ceevee",
+        "email":""
+      }
+    },
+    "gcalendar":{
+      "type":"google",
+      "id":"",
+      "name":"CVM Calendar",
+      "timezone":"America/Los_Angeles"
+    },
+    "locations":[],
+    "gAuth":{
+      "access_token":"",
+      "id_token":"",
+      "refresh_token":"",
+      "token_type": "Bearer",
+      "expiry_date": 1515960954549
+    }
+  },
 
   "vendor1": {
     "company": {
@@ -88,6 +136,15 @@
       "firstName": "Jason",
       "email": "cvmtest0001@gmail.com"
     }
+  },
+
+  "questionnaire": {
+    "buyerId":"",
+    "pages":[
+      {"id":"company","name":"Company","enabled":true,"questions":[{"id":"name","name":"Name","enabled":true,"required":true},{"id":"website","name":"Website","enabled":true,"required":true},{"id":"address","name":"Address","enabled":true,"required":true},{"id":"zip","name":"Zip","enabled":true,"required":true},{"id":"city","name":"City","enabled":true,"required":true},{"id":"state","name":"State","enabled":true,"required":true},{"id":"srea","name":"SREA","enabled":true,"required":true},{"id":"haveTaxId","name":"HaveTaxId","enabled":true,"required":true},{"id":"haveSellerPermit","name":"HaveSellerPermit","enabled":true,"required":true},{"id":"partOfCollective","name":"PartOfCollective","enabled":true,"required":true}]},{"id":"contact","name":"Contact","enabled":true,"questions":[{"id":"firstName","name":"FirstName","enabled":true,"required":true},{"id":"lastName","name":"LastName","enabled":true,"required":true},{"id":"email","name":"Email","enabled":true,"required":true},{"id":"phone","name":"Phone","enabled":true,"required":true}]},{"id":"flowers","name":"Flowers","enabled":true,"questions":[{"id":"products","name":"Flowers","type":"Array","enabled":true,"required":false,"default":[],"items":{"Name":{"id":"name","name":"Name","type":"Text","enabled":true,"required":true,"default":"New Product"},"WeightAvailable":{"id":"weightAvailable","name":"WeightAvailable","type":"Number","enabled":true,"required":true,"default":20},"Thc":{"id":"thc","name":"THC","type":"Number","enabled":true,"required":true,"default":null},"Cbd":{"id":"cbd","name":"CBD","type":"Number","enabled":true,"required":true,"default":null},"GrowStyle":{"id":"growStyle","name":"GrowStyle","type":"String","enabled":true,"required":true,"default":null},"BudSize":{"id":"budSize","name":"BudSize","type":"String","enabled":true,"required":true,"default":null},"ShelfReady":{"id":"shelfReady","name":"ShelfReady","type":"Checkbox","enabled":true,"required":false,"default":false},"Photos":{"id":"photos","name":"Photos","type":"Array","enabled":true,"required":true,"default":[],"items":"File"},"TestResults":{"id":"testResults","name":"TestResults","type":"Array","enabled":true,"required":true,"default":[],"items":"File"}}}]},{"id":"edibles","name":"Edibles","enabled":true,"questions":[{"id":"products","name":"Edibles & Topicals","type":"Array","enabled":true,"required":false,"default":[],"items":{"Name":{"id":"name","name":"Name","type":"Text","enabled":true,"required":true,"default":"New Product"},"UnitsAvailable":{"id":"unitsAvailable","name":"UnitsAvailable","type":"Number","enabled":true,"required":true,"default":20},"Thc":{"id":"thc","name":"THC","type":"Number","enabled":true,"required":true,"default":null},"Cbd":{"id":"cbd","name":"CBD","type":"Number","enabled":true,"required":true,"default":null},"ShelfReady":{"id":"shelfReady","name":"ShelfReady","type":"Checkbox","enabled":true,"required":false,"default":false},"Photos":{"id":"photos","name":"Photos","type":"Array","enabled":true,"required":true,"default":[],"items":"File"},"TestResults":{"id":"testResults","name":"TestResults","type":"Array","enabled":true,"required":true,"default":[],"items":"File"}}}]},{"id":"concentrates","name":"Concentrates","enabled":true,"questions":[{"id":"products","name":"Concentrates","type":"Array","enabled":true,"required":false,"default":[],"items":{"Name":{"id":"name","name":"Name","type":"Text","enabled":true,"required":true,"default":"New Product"},"Type":{"id":"type","name":"Type","type":"String","enabled":true,"required":true,"default":null},"UnitsAvailable":{"id":"unitsAvailable","name":"UnitsAvailable","type":"Number","enabled":true,"required":true,"default":20},"Thc":{"id":"thc","name":"THC","type":"String","enabled":true,"required":true,"default":null},"Cbd":{"id":"cbd","name":"CBD","type":"String","enabled":true,"required":true,"default":null},"ShelfReady":{"id":"shelfReady","name":"ShelfReady","type":"Checkbox","enabled":true,"required":false,"default":false},"Photos":{"id":"photos","name":"Photos","type":"Array","enabled":true,"required":true,"default":[],"items":"File"},"TestResults":{"id":"testResults","name":"TestResults","type":"Array","enabled":true,"required":true,"default":[],"items":"File"}}}]}
+    ],
+    "completion":"### Thank you for your submission. We will get back to you.",
+    "introduction":"# Become a Vendor"
   },
 
   "questionnaireResponse": {

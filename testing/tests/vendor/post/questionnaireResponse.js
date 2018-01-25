@@ -6,7 +6,7 @@ describe('submit questionnaire response', function () {
   it('should return response and vendorId', function () {
 
     localEnv = {
-      QID: context.data.QID,
+      QID: context.env.QID,
       questionnaireResponse: context.data.questionnaireResponse
     };
 

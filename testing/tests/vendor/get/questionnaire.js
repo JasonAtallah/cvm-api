@@ -37,7 +37,7 @@ describe('get questionnaire', function () {
 
   it('should return the questionnaire', function () {
     const localEnv = {
-      QID: context.data.QID
+      QID: context.env.QID
     };
 
     const requestList = [
@@ -50,7 +50,7 @@ describe('get questionnaire', function () {
         context.expect(response.body).to.be.an('object');
         context.expect(response.body._id).to.equal(localEnv.QID);
         context.expect(response.body.pages).to.be.an('array');
-        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');        
+        context.expect(response.body).to.have.all.keys('_id', 'introduction', 'completion', 'pages');
       })
   });
 

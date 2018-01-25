@@ -44,18 +44,8 @@ const config = module.exports = {
       }
     });
 
-    switch (process.env.NODE_ENV) {
-      case 'production':
-      case 'testing':
-        _.extend(config, {
-
-        });
-        break;
-
-      default:
-        _.extend(config, {
-
-        });
+    if (process.env.NODE_ENV === 'testing') {
+      config.mongo.uri += '-test';
     }
 
     let mongoDBResolve, mongoDBReject;

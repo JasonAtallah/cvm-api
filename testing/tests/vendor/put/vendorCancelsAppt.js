@@ -26,6 +26,8 @@ describe('vendor cancels appt', function () {
   });
 
   it('should return vendor with updated state', function () {
+    this.timeout(3000);
+    
     const localEnv = {
       vendor: context.data.vendor1,
       email: context.data.approvalEmail,
