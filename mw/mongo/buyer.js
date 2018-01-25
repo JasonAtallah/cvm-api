@@ -61,14 +61,7 @@ module.exports = {
       _id: new ObjectID(req.userId)
     };
 
-    var update = {
-      $set: {
-        [`emails.${req.params.templateId}`]: {
-          subject: req.body.subject,
-          body: req.body.body
-        }
-      }
-    };
+    var update = req.emailTemplateUpdate;
 
     const options = {
       returnOriginal: false

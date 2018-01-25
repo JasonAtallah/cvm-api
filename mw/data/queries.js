@@ -45,6 +45,18 @@ module.exports = {
     next();
   },
 
+  prepEmailTemplateUpdate(req, res, next) {
+    req.emailTemplateUpdate = {
+      $set: {
+        [`emails.${req.params.templateId}`]: {
+          subject: req.body.subject,
+          body: req.body.body
+        }
+      }
+    };
+    next();
+  },
+
   prepQuestionnaireQueryById(req, res, next) {
     req.questionnaireQuery = {
       _id: new ObjectID(req.params.questionnaireId)
