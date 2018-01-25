@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/cannabiscloudapps/cvm-api/tree/master.svg?style=svg&circle-token=9d9e9aeb4e163cc0e8a398163b0dbf211980c7f0)](https://circleci.com/gh/cannabiscloudapps/cvm-api/tree/master)
+[ ![Codeship Status for cannabiscloudapps/cvm-api](https://app.codeship.com/projects/6b374c70-e21f-0135-d752-128d52603903/status?branch=master)](https://app.codeship.com/projects/267112)
 
 # cvm-api
 
