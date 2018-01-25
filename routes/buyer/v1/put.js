@@ -18,7 +18,7 @@ module.exports = function (app) {
       mw.data.queries.prepEmailTemplateUpdate,
       mw.mongo.buyer.updateEmailTemplate,
       mw.data.validation.validateReqVar('emails', 'buyer-emails'),
-    ])
+    ]),
     mw.responses.sendReqVar('emails'));
 
   router.put('/gcalendar',
