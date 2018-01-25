@@ -1,0 +1,17 @@
+{
+  "method": "GET",
+  "header": [],
+  "body": null,
+  "url": {
+    "raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "vendor",
+      "v1",
+      "questionnaires",
+      "{{QID}}"
+    ]
+  }
+}

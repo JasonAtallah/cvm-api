@@ -164,7 +164,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "Cbd": {
               "id": "cbd",
@@ -172,7 +172,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "GrowStyle": {
               "id": "growStyle",
@@ -188,7 +188,7 @@
               "type": "String",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "ShelfReady": {
               "id": "shelfReady",
@@ -255,7 +255,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "Cbd": {
               "id": "cbd",
@@ -263,7 +263,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "ShelfReady": {
               "id": "shelfReady",
@@ -338,7 +338,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "Cbd": {
               "id": "cbd",
@@ -346,7 +346,7 @@
               "type": "Number",
               "enabled": true,
               "required": true,
-              "default": null
+              "default": 0
             },
             "ShelfReady": {
               "id": "shelfReady",

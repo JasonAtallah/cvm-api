@@ -1,4 +1,9 @@
 {
+  "questionnaireUpdate": {
+    "introduction": "# Welcome",
+    "completion": "# Thanks for applying"
+  },
+  
   "buyer": {
     "gProfile": {
       "id":"",
@@ -70,7 +75,7 @@
   },
 
   "event": {
-    "name": "New Meeting",
+    "name": "TIMEZONE MEETING",
     "location": "11 Main Street",
     "date": "01/20/2018",
     "time": "8:00",

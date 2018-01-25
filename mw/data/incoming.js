@@ -1,5 +1,5 @@
 const ObjectID = require('mongodb').ObjectID;
-const moment = require('moment');
+const { DateTime } = require('luxon');
 const config = require('../../config');
 const threads = require('../../lib/threads');
 const validation = require('./validation');
@@ -21,14 +21,13 @@ module.exports = {
   },
 
   prepCalendarEventForInsert (req, res, next) {
-    const timeParts = req.body.time.split(':');
-    const startM = moment.tz(moment(req.body.date, 'MM/DD/YYYY'), req.body.timezone).set('hour', timeParts[0]).set('minute', timeParts[1]);
+    const startM = DateTime.fromFormat(`${req.body.date} ${req.body.time}`, 'MM/dd/yyyy H:mm', {zone: req.body.timezone});    
     req.event = {
       start: {
-        dateTime: startM.toDate()
+        dateTime: startM.toISO()
       },
       end: {
-        dateTime: startM.add(req.body.duration, 'minutes').toDate()
+        dateTime: startM.plus({minutes: req.body.duration}).toISO()
       },
       summary: req.body.name,
       location: req.body.location
@@ -80,17 +79,6 @@ module.exports = {
   prepQuestionnaireResponseForUpdate(req, res, next) {
     req.response = req.body;
     req.response._id = new ObjectID(req.params.responseId);
-    next();
-  },
-
-  prepThreadAttribute(req, res, next) {
-    if (req.params.attribute === 'watchVendor') {
-      req.attribute = 'watchVendor';
-      req.value = true;
-    } else if (req.params.attribute === 'unwatchVendor') {
-      req.attribute = 'watchVendor';
-      req.value = false;
-    }
     next();
   },
 

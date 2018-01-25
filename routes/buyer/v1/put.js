@@ -10,8 +10,16 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.data.validation.validateReqVar('body', 'email-template'),
-    mw.mongo.buyer.updateEmailTemplate,
-    mw.responses.send(200));
+    mw.compose([
+      mw.data.queries.prepBuyerQueryFromAuth,
+      mw.mongo.get.buyer
+    ]),
+    mw.compose([
+      mw.data.queries.prepEmailTemplateUpdate,
+      mw.mongo.buyer.updateEmailTemplate,
+      mw.data.validation.validateReqVar('emails', 'buyer-emails'),
+    ])
+    mw.responses.sendReqVar('emails'));
 
   router.put('/gcalendar',
     mw.auth.isLoggedIn,
@@ -41,6 +49,21 @@ module.exports = function (app) {
     mw.data.incoming.prepBuyerProfileUpdate,
     mw.mongo.buyer.updateLoggedInBuyer,
     mw.responses.send(204));
+
+  router.put('/questionnaire',
+    mw.auth.isLoggedIn,
+    mw.parse.json,
+    mw.data.validation.validateReqVar('body', 'questionnaire-update'),
+    mw.compose([
+      mw.data.queries.prepQuestionnaireQueryFromAuth,
+      mw.data.queries.prepQuestionnairePageUpdate,
+      mw.mongo.questionnaires.update
+    ]),
+    mw.compose([
+      mw.data.responses.prepQuestionnaireForResponse,
+      mw.data.validation.validateReqVar('questionnaire', 'questionnaire')
+    ]),
+    mw.responses.sendReqVar('questionnaire'));
 
   router.put('/schedule',
     mw.auth.isLoggedIn,
@@ -83,30 +106,32 @@ module.exports = function (app) {
       mw.responses.sendReqVar('vendor')
     ]));
 
-  router.put('/vendors/:vendorId/attributes/:attribute',
-    mw.data.validation.validateReqVar('params', 'global-url-params'),
+  router.put('/vendors/:vendorId/attributes',
     mw.auth.isLoggedIn,
     mw.parse.json,
+    mw.data.validation.validateReqVar('params', 'global-url-params'),
+    mw.data.validation.validateReqVar('body', 'thread-attributes'),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
-      mw.mongo.get.buyer,
+      mw.mongo.get.buyer
     ]),
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
-      mw.mongo.get.vendor,
+      mw.mongo.get.vendor
     ]),
     mw.compose([
       mw.data.queries.prepThreadQueryForVendorInUrl,
-      mw.mongo.get.thread,
+      mw.mongo.get.thread
     ]),
     mw.compose([
-      mw.data.incoming.prepThreadAttribute,
-      mw.logic.ifNotUndefinedInReq('attribute', [
-        mw.mongo.threads.updateAttribute,
-      ]),
-      mw.responses.send('201')
-    ])
-  );
+      mw.data.queries.prepThreadAttributeUpdate,
+      mw.mongo.threads.updateAttributes
+    ]),
+    mw.compose([
+      mw.data.responses.prepThreadAsVendorResponse,
+      mw.data.validation.validateReqVar('vendor', 'vendor-item')
+    ]),
+    mw.responses.sendReqVar('vendor'));
 
   return router;
 };

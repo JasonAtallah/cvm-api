@@ -49,10 +49,10 @@
       }
     },
     "completion": {
-      "type": "string"
+      "$ref": "questionnaire-completion.json"
     },
     "introduction": {
-      "type": "string"
+      "$ref": "questionnaire-introduction.json"
     }
   },
   "required": ["pages"]

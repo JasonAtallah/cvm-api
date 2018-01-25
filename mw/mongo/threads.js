@@ -48,20 +48,26 @@ module.exports = {
       });
   },
 
-  updateAttribute(req, res, next) {
+  updateAttributes(req, res, next) {
     const select = {
       _id: req.thread._id
     };
 
-    const update = {
-      $set: {
-        [`attributes.${req.attribute}`]: req.value
+    const update = req.attributeUpdate;
+
+    const options = {
+      returnOriginal: false,
+      projection: {
+        buyer: 1,
+        vendor: 1,
+        state: 1,
+        attributes: 1
       }
     };
 
     config.mongo.getDB
       .then((db) => {
-        return db.collection('threads').findOneAndUpdate(select, update)
+        return db.collection('threads').findOneAndUpdate(select, update, options)
           .then((result) => {
             req.thread = result.value;
             next();

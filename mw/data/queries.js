@@ -45,10 +45,53 @@ module.exports = {
     next();
   },
 
+  prepEmailTemplateUpdate(req, res, next) {
+    req.emailTemplateUpdate = {
+      $set: {
+        [`emails.${req.params.templateId}`]: {
+          subject: req.body.subject,
+          body: req.body.body
+        }
+      }
+    };
+    next();
+  },
+
   prepQuestionnaireQueryById(req, res, next) {
     req.questionnaireQuery = {
       _id: new ObjectID(req.params.questionnaireId)
     };
+    next();
+  },
+
+  prepQuestionnairePageUpdate(req, res, next) {
+    req.questionnaireUpdate = {
+      $set: {}
+    };
+
+    for (let page in req.body) {
+      req.questionnaireUpdate.$set[`${page}`] = req.body[page];
+    }
+
+    next();
+  },
+
+  prepQuestionnaireQueryFromAuth(req, res, next) {
+    req.questionnaireQuery = {
+      buyerId: new ObjectID(req.userId)
+    };
+    next();
+  },
+
+  prepThreadAttributeUpdate(req, res, next) {
+    req.attributeUpdate = {
+      $set: {}
+    };
+
+    for (let attribute in req.body) {
+      req.attributeUpdate.$set[`attributes.${attribute}`] = req.body[attribute];
+    }
+
     next();
   },
 

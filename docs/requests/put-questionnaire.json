@@ -10,19 +10,19 @@
       "value": "application/json"
     }
   ],
-  "body": null,
+  "body": {
+    "completion": "{{questionnaire.completion}}",
+    "introduction": "{{questionnaire.introduction}}"
+  },
   "url": {
-    "raw": "{{API_HOST}}/buyer/v1/vendors/{{VENDOR_ID}}/attributes/unwatchVendor",
+    "raw": "{{API_HOST}}/buyer/v1/questionnaire",
     "host": [
       "{{API_HOST}}"
     ],
     "path": [
       "buyer",
       "v1",
-      "vendors",
-      "{{VENDOR_ID}}",
-      "attributes",
-      "unwatchVendor"
+      "questionnaire"
     ]
   }
 }

@@ -47,7 +47,7 @@ module.exports = {
   },
 
   prepQuestionnaireForResponse(req, res, next) {
-    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
+    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);    
     next();
   },
 

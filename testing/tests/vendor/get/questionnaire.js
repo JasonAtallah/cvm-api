@@ -9,7 +9,7 @@ describe('get questionnaire', function () {
       };
 
       const requestList = [
-        'get-questionnaire'
+        'vendor-get-questionnaire'
       ];
 
       return context.requests.runAll(requestList, localEnv)
@@ -24,7 +24,7 @@ describe('get questionnaire', function () {
       };
 
       const requestList = [
-        'get-questionnaire'
+        'vendor-get-questionnaire'
       ];
 
       return context.requests.runAll(requestList, localEnv)
@@ -41,7 +41,7 @@ describe('get questionnaire', function () {
     };
 
     const requestList = [
-      'get-questionnaire'
+      'vendor-get-questionnaire'
     ];
 
     return context.requests.runAll(requestList, localEnv)

@@ -1,0 +1,10 @@
+{
+  "$id": "http://cannabisvendormgmt.com/schemas/thread-attributes.json",
+  "type": "object",
+  "properties": {
+    "watchVendor": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

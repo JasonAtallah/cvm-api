@@ -56,6 +56,9 @@
           "type": "string"
         }
       }
+    },
+    "attributes": {
+      "$ref": "thread-attributes.json"
     }
   },
   "required": ["buyer", "vendor", "actions", "states", "state"]

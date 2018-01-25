@@ -1,17 +1,29 @@
 {
   "method": "GET",
-  "header": [],
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "origin",
+      "value": "{{BUYER_HOST}}"
+    }
+  ],
   "body": null,
   "url": {
-    "raw": "{{API_HOST}}/vendor/v1/questionnaires/{{QID}}",
+    "raw": "{{API_HOST}}/buyer/v1/questionnaire",
     "host": [
       "{{API_HOST}}"
     ],
     "path": [
-      "vendor",
+      "buyer",
       "v1",
-      "questionnaires",
-      "{{QID}}"
+      "questionnaire"
     ]
   }
 }
