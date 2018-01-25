@@ -1,4 +1,4 @@
-const moment = require('moment-timezone');
+const DateTime = require('luxon').DateTime;
 const context = require('../../../lib/context');
 
 describe('create a new event', function () {
@@ -187,7 +187,7 @@ describe('create a new event', function () {
 
   });
 
-  it('should return the new event', function () {
+  it.only('should return the new event', function () {
     this.timeout(5000);
 
     const localEnv = {
@@ -199,8 +199,7 @@ describe('create a new event', function () {
       'post-event'
     ];
 
-    const timezone = 'America/Los_Angeles';
-    const startDate = moment.tz(moment(`${localEnv.event.date} ${localEnv.event.time}`, 'MM/DD/YYYY HH:mm'), timezone);
+    const startDate = DateTime.fromFormat(`${localEnv.event.date} ${localEnv.event.time}`, 'MM/dd/yyyy H:mm', { zone : localEnv.event.timezone });
 
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
@@ -213,8 +212,8 @@ describe('create a new event', function () {
         context.expect(response.body).to.deep.include({
           status: 'confirmed',
           title: context.data.event.name,
-          startDate: startDate.format(),
-          endDate: startDate.add(localEnv.event.duration, 'minutes').format()
+          startDate: startDate.toISO({ suppressMilliseconds: true }),
+          endDate: startDate.plus({ minutes: localEnv.event.duration }).toISO({ suppressMilliseconds: true })
         });
       });
   });
