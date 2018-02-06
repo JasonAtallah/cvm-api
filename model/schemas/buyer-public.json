@@ -9,7 +9,7 @@
       "$ref": "buyer-emails.json"
     },
     "gcalendar": {
-      "$ref": "buyer-public-gcalendar.json"
+      "$ref": "buyer-gcalendar.json"
     },
     "gProfile": {
       "$ref": "buyer-gProfile.json"
