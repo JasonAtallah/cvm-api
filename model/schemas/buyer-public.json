@@ -21,5 +21,5 @@
       "$ref": "buyer-schedule.json"
     }
   },
-  "required": ["_id", "emails", "gcalendar", "gProfile", "profile"]
+  "required": ["_id", "emails", "gProfile", "profile"]
 }

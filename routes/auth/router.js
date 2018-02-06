@@ -16,7 +16,8 @@ module.exports = function (app) {
     mw.auth.getGoogleProfile,
     mw.mongo.auth.updateGoogleAuthAndProfileForBuyer,
     mw.logic.ifNullInReq('buyer', [
-      mw.mongo.buyer.initialize
+      mw.mongo.buyer.initialize,
+      mw.mongo.questionnaires.initialize
     ]),
     mw.auth.generateClientJWT,
     mw.mongo.auth.createClientCode,

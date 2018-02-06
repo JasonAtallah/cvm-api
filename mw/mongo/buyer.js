@@ -24,8 +24,17 @@ module.exports = {
             body: 'Check CVM'
           }
         },
-        gcalendar: null,
-        schedule: []
+        schedule: [],
+        profile: {
+          company: {
+            name: 'New Company'
+          },
+          contact: {
+            firstName: req.gProfile.firstName,
+            lastName: req.gProfile.lastName,
+            email: req.gProfile.email
+          }
+        }
       }
     };
 
