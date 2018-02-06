@@ -21,7 +21,7 @@ module.exports = {
   },
 
   prepCalendarEventForInsert (req, res, next) {
-    const startM = DateTime.fromFormat(`${req.body.date} ${req.body.time}`, 'MM/dd/yyyy H:mm', {zone: req.body.timezone});    
+    const startM = DateTime.fromJSDate(new Date(req.body.dateTime), {zone: req.body.timezone});
     req.event = {
       start: {
         dateTime: startM.toISO()

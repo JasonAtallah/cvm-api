@@ -13,8 +13,7 @@
   "body": {
     "name": "{{event.name}}",
     "location": "{{event.location}}",
-    "date": "{{event.date}}",
-    "time": "{{event.time}}",
+    "dateTime": "{{event.dateTime}}",
     "duration": "{{event.duration}}",
     "timezone": "{{event.timezone}}"
   },

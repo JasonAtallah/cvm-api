@@ -10,13 +10,9 @@
       "type": "string",
       "minLength": 1
     },
-    "date": {
+    "dateTime": {
       "type": "string",
-      "minLength": 1
-    },
-    "time": {
-      "type": "string",
-      "minLength": 1
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.\\d{3})?Z"
     },
     "duration": {
       "type": "number"
@@ -25,5 +21,5 @@
       "type": "string"
     }
   },
-  "required": ["name", "location", "date", "time", "duration", "timezone"]
+  "required": ["name", "location", "dateTime", "duration", "timezone"]
 }

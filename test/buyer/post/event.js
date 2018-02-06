@@ -52,25 +52,9 @@ describe('create a new event', function () {
         });
     });
 
-    it('should return a 400 for empty time field', function () {
+    it('should return a 400 for empty dateTime field', function () {
       const localEnv = {
-        event: context.data.get('event', { time: '' })
-      };
-
-      const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body' }],
-        'post-event'
-      ];
-
-      return context.requests.runAll(requestList, localEnv)
-        .then((response) => {
-          context.expect(response.statusCode).to.equal(400);
-        });
-    });
-
-    it('should return a 400 for empty date field', function () {
-      const localEnv = {
-        event: context.data.get('event', { date: '' })
+        event: context.data.get('event', { dateTime: '' })
       };
 
       const requestList = [
@@ -136,25 +120,9 @@ describe('create a new event', function () {
         });
     });
 
-    it('should return a 400 for missing time field', function () {
+    it('should return a 400 for missing dateTime field', function () {
       const localEnv = {
-        event: context.data.get('event', { time: null })
-      };
-
-      const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body' }],
-        'post-event'
-      ];
-
-      return context.requests.runAll(requestList, localEnv)
-        .then((response) => {
-          context.expect(response.statusCode).to.equal(400);
-        });
-    });
-
-    it('should return a 400 for missing date field', function () {
-      const localEnv = {
-        event: context.data.get('event', { date: null })
+        event: context.data.get('event', { dateTime: null })
       };
 
       const requestList = [
@@ -196,7 +164,7 @@ describe('create a new event', function () {
       'post-event'
     ];
 
-    const startDate = DateTime.fromFormat(`${localEnv.event.date} ${localEnv.event.time}`, 'MM/dd/yyyy H:mm', { zone : localEnv.event.timezone });
+    const startDate = DateTime.fromJSDate(new Date(localEnv.event.dateTime), { zone : localEnv.event.timezone });
 
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {

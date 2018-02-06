@@ -68,7 +68,9 @@ module.exports = new class AuthMiddleware {
         next();
       })
       .catch((err) => {
-        res.status(401).send('Unauthorized');
+        const error = new Error('Unauthorized');
+        error.statusCode = 401;
+        next(error);
       });
   }
 
