@@ -54,7 +54,7 @@
 
   "vendor1": {
     "company": {
-      "name": "unit test 1",
+      "name": "Test Vendor 1",
       "city": "Redwood City"
     },
     "contact": {
@@ -65,7 +65,7 @@
 
   "vendor2": {
     "company": {
-      "name": "unit test 2",
+      "name": "Test Vendor 2",
       "city": "San Jose"
     },
     "contact": {

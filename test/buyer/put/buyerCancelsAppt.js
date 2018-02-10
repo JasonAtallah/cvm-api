@@ -3,7 +3,7 @@ const context = require('../../../testing/lib/context');
 describe('buyer cancels appt', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-buyerCancelsAppt', { VENDOR_ID: context.env.VENDOR_ID })
+    return context.requests.run('put-buyerCancelsAppt', { VENDOR_ID: '5a7eb237ac385cb1de7bff85' })
       .then((response) => {
         context.expect(response.statusCode).to.equal(401);
       });

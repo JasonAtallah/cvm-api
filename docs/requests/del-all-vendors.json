@@ -1,5 +1,5 @@
 {
-  "method": "GET",
+  "method": "DELETE",
   "header": [
     {
       "key": "Content-Type",
@@ -16,7 +16,7 @@
   ],
   "body": null,
   "url": {
-    "raw": "{{API_HOST}}/buyer/v1/vendors?q={{query}}",
+    "raw": "{{API_HOST}}/buyer/v1/vendors",
     "host": [
       "{{API_HOST}}"
     ],

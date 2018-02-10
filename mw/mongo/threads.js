@@ -2,6 +2,52 @@ const config = require('../../config');
 
 module.exports = {
 
+  getBuyers(req, res, next) {
+    const buyerProjection = {
+      buyer: 1,
+      state: 1,
+      attributes: 1
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('threads').find(req.threadQuery).project(buyerProjection).toArray(function (err, buyers) {
+          if (err) {
+            next(err);
+          } else {
+            req.buyers = buyers;
+            next();
+          }
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
+  getVendors(req, res, next) {
+    const vendorProjection = {
+      vendor: 1,
+      state: 1,
+      attributes: 1
+    };
+
+    config.mongo.getDB
+      .then((db) => {
+        db.collection('threads').find(req.threadQuery).project(vendorProjection).toArray(function (err, vendors) {
+          if (err) {
+            next(err);
+          } else {
+            req.vendors = vendors;
+            next();
+          }
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+
   insert(req, res, next) {
     config.mongo.getDB
       .then((db) => {

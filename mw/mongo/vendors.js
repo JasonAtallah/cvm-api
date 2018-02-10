@@ -28,10 +28,31 @@ module.exports = {
       });
   },
 
-  getList(req, res, next) {
+  deleteAll(req, res, next) {
+    if (process.env.NODE_ENV === 'testing') {
+      config.mongo.getDB
+        .then((db) => {
+          return db.collection('vendors').remove({})
+            .then(() => {
+              next();
+            });
+        })
+        .catch((err) => {
+          next(err);
+        });
+    } else {
+      next();
+    }
+  },
+
+  find(req, res, next) {
+    if (!req.vendorProjection) {
+      req.vendorProjection = {};
+    }
+
     config.mongo.getDB
       .then((db) => {
-        db.collection('threads').find(req.vendorQuery).project(req.vendorProjection).toArray(function (err, vendors) {
+        db.collection('vendors').find(req.vendorQuery).project(req.vendorProjection).toArray(function (err, vendors) {
           if (err) {
             next(err);
           } else {

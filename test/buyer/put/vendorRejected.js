@@ -4,7 +4,7 @@ describe('reject vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
     const localEnv = {
-      VENDOR_ID: context.env.VENDOR_ID,
+      VENDOR_ID: '5a7eb237ac385cb1de7bff85',
       email: context.data.rejectionEmail
     };
 

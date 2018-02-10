@@ -61,9 +61,17 @@ module.exports = function (app) {
 
   router.get('/vendors',
     mw.auth.isLoggedIn,
+    mw.logic.ifTruthyInReq('query.q',
+      [
+        mw.data.queries.prepVendorSearchQuery,
+        mw.mongo.vendors.find,
+        mw.data.queries.prepVendorIdList,
+      ]),
     mw.compose([
       mw.data.queries.prepVendorListQueryForLoggedInBuyer,
-      mw.mongo.vendors.getList,
+      mw.mongo.threads.getVendors
+    ]),
+    mw.compose([
       mw.data.responses.prepVendorListForResponse,
       mw.data.validation.validateReqVar('vendors', 'vendors'),
       mw.responses.sendReqVar('vendors')

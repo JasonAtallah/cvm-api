@@ -110,32 +110,37 @@ module.exports = {
     next();
   },
 
+  prepVendorIdList(req, res, next) {
+    req.vendorIdList = req.vendors.map(v => v._id);
+    next();
+  },
+
   prepVendorListQueryForLoggedInBuyer(req, res, next) {
-    req.vendorQuery = {
+    req.threadQuery = {
       'buyer._id': new ObjectID(req.userId)
     };
 
-    if (req.query.status) {
-      if (req.query.status === 'New') {
-        req.vendorQuery['state.name'] = 'NewVendor';
-      } else if (req.query.status === 'Rejected') {
-        req.vendorQuery['state.name'] = 'VendorRejected';
-      } else if (req.query.status === 'Approved') {
-        req.vendorQuery['state.name'] = {
-          '$in': [
-            'AwaitingBuyerAppointmentTimes',
-            'AwaitingVendorAppointmentTimes'
-          ]
-        };
-      }
+    if (req.vendorIdList) {
+      req.threadQuery['vendor._id'] = {
+        $in: req.vendorIdList
+      };
     }
 
-    req.vendorProjection = {
-      vendor: 1,
-      state: 1,
-      attributes: 1
-    };
+    next();
+  },
 
+  prepVendorSearchQuery(req, res, next) {
+    req.vendorQuery = {
+      $or: [
+        { 'company.name': { $regex: req.query.q, $options: 'i' } },
+        { 'company.city': { $regex: req.query.q, $options: 'i' } },
+        { 'contact.firstName': { $regex: req.query.q, $options: 'i' } },
+        { 'contact.lastName': { $regex: req.query.q, $options: 'i' } }
+      ]
+    };
+    req.vendorProjection = {
+      _id: 1
+    };
     next();
   },
 

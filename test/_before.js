@@ -12,7 +12,6 @@ before(function(done) {
   let db;
   let buyer;
   let questionnaire;
-  let vendor;
 
   config.mongo.getDB
     .then((database) => {
@@ -67,26 +66,8 @@ before(function(done) {
       questionnaire = result.value;
     })
     .then(() => {
-      const vendorValues = _.cloneDeep(data.vendor1);
-
-      const vendorQuery = {
-        'company.name': vendorValues.company.name
-      };
-
-      const vendorOptions = {
-        upsert: true,
-        returnOriginal: false
-      };
-
-      return db.collection('vendors').findOneAndUpdate(vendorQuery, vendorValues, vendorOptions);
-    })
-    .then((result) => {
-      vendor = result.value;
-    })
-    .then(() => {
       context.env.BUYER_ID = buyer._id.toString();
       context.env.QID = questionnaire._id.toString();
-      context.env.VENDOR_ID = vendor._id.toString();
       done();
     })
     .catch((err) => {

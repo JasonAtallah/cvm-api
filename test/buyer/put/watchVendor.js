@@ -3,7 +3,7 @@ const context = require('../../../testing/lib/context');
 describe('start watching vendor', function () {
 
   it('should return 401 Unauthorized without buyer token', function () {
-    return context.requests.run('put-watchVendor', { VENDOR_ID: context.env.VENDOR_ID })
+    return context.requests.run('put-watchVendor', { VENDOR_ID: '5a7eb237ac385cb1de7bff85' })
       .then((response) => {
         context.expect(response.statusCode).to.equal(401);
       });
@@ -15,14 +15,14 @@ describe('start watching vendor', function () {
       email: context.data.rejectionEmail,
       watchVendor: true
     };
-  
+
     const requestList = [
       ['post-token', { 'BUYER_TOKEN': 'body' }],
       ['post-vendor', { 'VENDOR_ID': 'body._id' }],
       'put-vendorRejected',
       'put-watchVendor'
     ];
-  
+
     return context.requests.runAll(requestList, localEnv)
       .then((response) => {
         context.expect(response.statusCode).to.equal(200);
