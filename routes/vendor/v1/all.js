@@ -56,7 +56,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepQuestionnaireResponseForUpdate,
-      mw.data.validation.validateReqVar('response', 'questionnaire-record'),
+      mw.data.validation.validateReqVar('response', 'vendor'),
       mw.mongo.vendors.updateQuestionnaireResponse
     ]),
     mw.compose([

@@ -7,22 +7,24 @@
       "items": {
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "unitsAvailable": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "thc": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "cbd": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "shelfReady": {
-            "type": "boolean"
+            "type": ["null", "boolean"]
           },
           "photos": {
             "type": "array",

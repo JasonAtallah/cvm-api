@@ -3,10 +3,10 @@
   "type": "object",
   "properties": {
     "questionnaireId": {
-      "$ref": "mongo-id-str.json"
+      "$ref": "mongo-id.json"
     },
     "vendorId": {
-      "$ref": "mongo-id-str.json"
+      "$ref": "mongo-id.json"
     }
   }
 }

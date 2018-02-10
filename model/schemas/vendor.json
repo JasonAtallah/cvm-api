@@ -2,6 +2,9 @@
   "$id": "http://cannabisvendormgmt.com/schemas/vendor.json",
   "type": "object",
   "properties": {
+    "_id": {
+      "$ref": "mongo-id.json"
+    },
     "company": {
       "$ref": "vendor-company.json"
     },
@@ -15,7 +18,7 @@
       "$ref": "vendor-edibles.json"
     },
     "concentrates": {
-      "$ref": "vendor-concentrates.json" 
+      "$ref": "vendor-concentrates.json"
     }
   },
   "required": ["company", "contact", "flowers", "edibles", "concentrates"]

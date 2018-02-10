@@ -7,29 +7,37 @@
       "items": {
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "weightAvailable": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "thc": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "cbd": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "growStyle": {
-            "type": "string",
-            "enum": [
-              "indoor",
-              "outdoor"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "indoor",
+                  "outdoor"
+                ]
+              }
             ]
           },
           "budSize": {
-            "type": "number"
+            "type": ["null", "number"]
           },
           "shelfReady": {
-            "type": "boolean"
+            "type": ["null", "boolean"]
           },
           "photos": {
             "type": "array",

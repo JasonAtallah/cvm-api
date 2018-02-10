@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "vendorId": {
-      "$ref": "mongo-id-str.json"
+      "$ref": "mongo-id.json"
     },
     "action": {
       "pattern": "^\\w+$"
