@@ -1,0 +1,22 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "selectedTime": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "$ref": "/primitives/location"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "startDate": {
+          "type": "string"
+        }
+      },
+      "required": ["location", "duration", "startDate"]
+    }
+  },
+  "required": ["selectedTime"]
+}

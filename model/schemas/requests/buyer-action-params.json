@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "vendorId": {
+      "$ref": "/primitives/mongo-id"
+    },
+    "action": {
+      "pattern": "^\\w+$"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "location": {
+      "$ref": "/primitives/location"
+    },
+    "startDate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "duration": {
+      "type": "number"
+    }
+  },
+  "required": ["location", "startDate", "duration"]
+}

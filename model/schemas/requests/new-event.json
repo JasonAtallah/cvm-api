@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "location": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dateTime": {
+      "type": "string",
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.\\d{3})?Z"
+    },
+    "duration": {
+      "type": "number"
+    },
+    "timezone": {
+      "type": "string"
+    }
+  },
+  "required": ["name", "location", "dateTime", "duration", "timezone"]
+}

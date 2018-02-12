@@ -1,0 +1,52 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "weightAvailable": {
+      "type": ["null", "number"]
+    },
+    "thc": {
+      "type": ["null", "number"]
+    },
+    "cbd": {
+      "type": ["null", "number"]
+    },
+    "growStyle": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "indoor",
+            "outdoor"
+          ]
+        }
+      ]
+    },
+    "budSize": {
+      "type": ["null", "number"]
+    },
+    "shelfReady": {
+      "type": ["null", "boolean"]
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "$ref": "/primitives/file-object"
+      }
+    },
+    "testResults": {
+      "type": "array",
+      "items": {
+        "$ref": "/primitives/file-object"
+      }
+    }
+  },
+  "additionalProperties": false
+}

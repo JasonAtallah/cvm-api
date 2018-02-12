@@ -9,7 +9,7 @@ module.exports = function (app) {
   router.post('/events',
     mw.auth.isLoggedIn,
     mw.parse.json,
-    mw.data.validation.validateReqVar('body', 'new-event'),
+    mw.data.validation.validateReqVar('body', '/requests/new-event'),
     mw.compose([
       mw.data.queries.prepBuyerQueryFromAuth,
       mw.mongo.get.buyer
@@ -20,7 +20,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepCalendarEventForResponse,
-      mw.data.validation.validateReqVar('event', 'event'),
+      mw.data.validation.validateReqVar('event', '/primitives/event'),
       mw.responses.sendReqVar('event')
     ]));
 
@@ -28,13 +28,13 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
-      mw.data.validation.validateReqVar('body', 'location'),
+      mw.data.validation.validateReqVar('body', '/primitives/location'),
       mw.data.incoming.prepNewBuyerLocation,
       mw.data.queries.prepBuyerLocationInsert,
       mw.mongo.buyer.update
     ]),
     mw.compose([
-      mw.data.validation.validateReqVar('location', 'location'),
+      mw.data.validation.validateReqVar('location', '/primitives/location'),
       mw.responses.sendReqVar('location')
     ]));
 
@@ -42,9 +42,9 @@ module.exports = function (app) {
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
-      mw.data.validation.validateReqVar('body', 'new-vendor'),
+      mw.data.validation.validateReqVar('body', '/requests/new-vendor'),
       mw.data.incoming.prepNewVendorFromBuyer,
-      mw.data.validation.validateReqVar('vendor', 'vendor'),
+      mw.data.validation.validateReqVar('vendor', '/domain/vendor'),
       mw.mongo.vendors.insertVendor
     ]),
     mw.compose([
@@ -53,12 +53,12 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.incoming.prepNewVendorThread,
-      mw.data.validation.validateReqVar('thread', 'thread'),
+      mw.data.validation.validateReqVar('thread', '/domain/thread'),
       mw.mongo.threads.insert
     ]),
     mw.compose([
       mw.data.responses.prepThreadAsVendorResponse,
-      mw.data.validation.validateReqVar('vendor', 'vendor-item'),
+      mw.data.validation.validateReqVar('vendor', '/responses/vendor-item'),
       mw.responses.sendReqVar('vendor', 201)
     ]));
 

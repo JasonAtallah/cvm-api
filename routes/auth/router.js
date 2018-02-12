@@ -27,7 +27,7 @@ module.exports = function (app) {
   if (config.env === 'testing') {
     router.post('/buyer/token',
       mw.parse.json,
-      mw.data.validation.validateReqVar('body', 'buyer-token-request'),
+      mw.data.validation.validateReqVar('body', '/requests/buyer-token-request'),
       mw.data.queries.prepBuyerQueryFromBody,
       mw.mongo.get.buyer,
       mw.logic.ifNullInReq('buyer', [

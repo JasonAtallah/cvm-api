@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "etag": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "accessRole": {
+      "type": "string"
+    },
+    "defaultReminders": {
+      "type": "array"
+    },
+    "nextSyncToken": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "/primitives/gcalendarEvent"
+      }
+    }
+  }
+}

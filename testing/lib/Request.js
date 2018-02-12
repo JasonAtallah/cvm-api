@@ -37,8 +37,11 @@ module.exports = class Request
     let data;
 
     if (this.config.body) {
-      data = _.cloneDeep(this.config.body);
+      data = {
+        body: _.cloneDeep(this.config.body)
+      };
       utils.traverseVars(data, env);
+      data = data.body;
     }
 
     return data;

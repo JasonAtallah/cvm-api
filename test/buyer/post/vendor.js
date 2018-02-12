@@ -48,7 +48,7 @@ describe('create vendor', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
-    
+
     it('should return 400 empty company name field', function () {
       const localEnv = {
         vendor: context.data.get('vendor1', { 'company.name': '' })
@@ -130,7 +130,7 @@ describe('create vendor', function () {
           context.expect(response.statusCode).to.equal(400);
         });
     });
-    
+
     it('should return 400 missing company name field', function () {
       const localEnv = {
         vendor: context.data.get('vendor1', { 'company.name': null })

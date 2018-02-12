@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "email": {
+      "$ref": "/domain/email-template"
+    }
+  },
+  "required": ["email"],
+  "additionalProperties": false
+}

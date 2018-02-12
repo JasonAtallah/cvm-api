@@ -1,0 +1,71 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "buyer": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "vendor": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "attributes": {
+      "$ref": "/domain/thread-attributes"
+    }
+  },
+  "required": ["buyer", "vendor", "actions", "states", "state"],
+  "additionalProperties": false
+}

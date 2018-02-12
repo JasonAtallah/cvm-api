@@ -93,7 +93,10 @@ module.exports = {
         'gAuth.access_token': req.gAuth.access_token,
         'gAuth.id_token': req.gAuth.id_token,
         'gAuth.token_type': req.gAuth.token_type,
-        'gAuth.expiry_date': req.gAuth.expiry_date
+        'gAuth.expiry_date': req.gAuth.expiry_date,
+        'profile.contact.firstName': req.gProfile.firstName,
+        'profile.contact.lastName': req.gProfile.lastName,
+        'profile.contact.email': req.gProfile.email
       }
     };
 

@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "$ref": "/primitives/mongo-id"
+    },
+    "buyerId": {
+      "type": "object"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "default": {
+                  "type": ["null", "boolean", "object", "array", "number", "string", "integer"]
+                },
+                "items": {
+                  "type": ["object"]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "completion": {
+      "$ref": "/domain/questionnaire-completion"
+    },
+    "introduction": {
+      "$ref": "/domain/questionnaire-introduction"
+    }
+  },
+  "required": ["pages", "completion", "introduction"],
+  "additionalProperties": false
+}

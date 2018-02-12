@@ -1,0 +1,25 @@
+{
+
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "object"
+    },
+    "emails": {
+      "$ref": "/domain/buyer-emails"
+    },
+    "gcalendar": {
+      "$ref": "/domain/buyer-gcalendar"
+    },
+    "gProfile": {
+      "$ref": "/domain/buyer-gProfile"
+    },
+    "profile": {
+      "$ref": "/domain/buyer-profile"
+    },
+    "schedule": {
+      "$ref": "/domain/buyer-schedule"
+    }
+  },
+  "required": ["_id", "emails", "gProfile", "profile"]
+}

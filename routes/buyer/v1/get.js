@@ -12,13 +12,13 @@ module.exports = function (app) {
       mw.data.queries.prepBuyerQueryFromAuth,
       mw.mongo.get.buyer,
       mw.data.responses.prepBuyerForResponse,
-      mw.data.validation.validateReqVar('buyer', 'buyer-public'),
+      mw.data.validation.validateReqVar('buyer', '/responses/buyer-public'),
       mw.responses.sendReqVar('buyer')
     ]));
 
   router.get('/token',
     mw.mongo.auth.getTokenForCode,
-    mw.data.validation.validateReqVar('token', 'jwt-token'),
+    mw.data.validation.validateReqVar('token', '/primitives/jwt-token'),
     mw.responses.sendReqVar('token'));
 
   router.get('/calendars',
@@ -30,7 +30,7 @@ module.exports = function (app) {
     mw.compose([
       mw.gcalendar.getCalendarList,
       mw.data.responses.prepCalendarListForResponse,
-      mw.data.validation.validateReqVar('calendars', 'calendars'),
+      mw.data.validation.validateReqVar('calendars', '/responses/calendars'),
       mw.responses.sendReqVar('calendars')
     ]));
 
@@ -42,8 +42,9 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.gcalendar.getCalendarEvents,
+      mw.data.validation.validateReqVar('gcalendarEvents', '/primitives/gcalendarEvents'),
       mw.data.responses.prepCalendarEventsForResponse,
-      mw.data.validation.validateReqVar('events', 'events'),
+      mw.data.validation.validateReqVar('events', '/primitives/events'),
       mw.responses.sendReqVar('events')
     ]));
 
@@ -55,7 +56,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepQuestionnaireForResponse,
-      mw.data.validation.validateReqVar('questionnaire', 'questionnaire')
+      mw.data.validation.validateReqVar('questionnaire', '/domain/questionnaire')
     ]),
     mw.responses.sendReqVar('questionnaire'));
 
@@ -73,23 +74,23 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.responses.prepVendorListForResponse,
-      mw.data.validation.validateReqVar('vendors', 'vendors'),
+      mw.data.validation.validateReqVar('vendors', '/responses/vendor-item-list'),
       mw.responses.sendReqVar('vendors')
     ]));
 
   router.get('/vendors/:vendorId',
-    mw.data.validation.validateReqVar('params', 'global-url-params'),
+    mw.data.validation.validateReqVar('params', '/requests/global-url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
       mw.mongo.get.vendor,
       mw.data.responses.prepVendorForResponse,
-      mw.data.validation.validateReqVar('vendor', 'vendor'),
+      mw.data.validation.validateReqVar('vendor', '/domain/vendor'),
       mw.responses.sendReqVar('vendor')
     ]));
 
   router.get('/vendors/:vendorId/files/:fileId',
-    mw.data.validation.validateReqVar('params', 'global-url-params'),
+    mw.data.validation.validateReqVar('params', '/requests/global-url-params'),
     mw.auth.isLoggedIn,
     mw.compose([
       mw.data.queries.prepVendorQueryFromUrl,
@@ -97,7 +98,7 @@ module.exports = function (app) {
     ]),
     mw.compose([
       mw.data.utils.locateFileInVendor,
-      mw.data.validation.validateReqVar('file', 'file-object'),
+      mw.data.validation.validateReqVar('file', '/primitives/file-object'),
       mw.mongo.files.stream
     ]));
 

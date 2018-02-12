@@ -1,7 +1,0 @@
-{
-  "$id": "http://cannabisvendormgmt.com/schemas/events.json",
-  "type": "array",
-  "items": {
-    "$ref": "event.json" 
-  }
-}

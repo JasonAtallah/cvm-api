@@ -18,7 +18,7 @@ module.exports = {
   },
 
   prepCalendarEventsForResponse (req, res, next) {
-    req.events = req.eventsResponse.items.map(mappings.mapGCalendarEventToEvent);
+    req.events = req.gcalendarEvents.items.map(mappings.mapGCalendarEventToEvent);
     next();
   },
 
@@ -47,7 +47,7 @@ module.exports = {
   },
 
   prepQuestionnaireForResponse(req, res, next) {
-    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);    
+    req.questionnaire = _.omit(req.questionnaire, ['buyerId']);
     next();
   },
 

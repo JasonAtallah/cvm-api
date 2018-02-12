@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "fieldname": {
+      "type": "string"
+    },
+    "originalname": {
+      "type": "string"
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "mimetype": {
+      "type": "string"
+    },
+    "id": {
+      "$ref": "/primitives/mongo-id"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": ["null", "object"]
+    },
+    "bucketName": {
+      "type": "string"
+    },
+    "chunkSize": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "integer"
+    },
+    "md5": {
+      "type": "string"
+    },
+    "uploadDate": {
+      "type": ["string", "object"]
+    },
+    "contentType": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "fieldname",
+    "originalname",
+    "encoding",
+    "mimetype",
+    "id",
+    "filename",
+    "metadata",
+    "bucketName",
+    "chunkSize",
+    "size",
+    "md5",
+    "uploadDate",
+    "contentType"]
+}

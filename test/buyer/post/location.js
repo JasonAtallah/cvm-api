@@ -35,7 +35,7 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 empty address field', function () { 
+    it('should return a 400 empty address field', function () {
       const localEnv = {
         location: context.data.get('location', { address: '' })
       };
@@ -52,7 +52,7 @@ describe('add a new location', function () {
     });
 
     it('should return a 400 empty city field', function () {
-      const localEnv = {        
+      const localEnv = {
         location: context.data.get('location', { city: '' })
       };
 
@@ -120,8 +120,8 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 missing address field', function () { 
-          
+    it('should return a 400 missing address field', function () {
+
       const localEnv = {
         location: context.data.get('location', { address: null })
       };
@@ -137,9 +137,9 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 missing city field', function () {    
-       
-      const localEnv = {        
+    it('should return a 400 missing city field', function () {
+
+      const localEnv = {
         location: context.data.get('location', { city: null })
       };
 
@@ -170,8 +170,8 @@ describe('add a new location', function () {
         });
     });
 
-    it('should return a 400 missing zip field', function () {     
-      
+    it('should return a 400 missing zip field', function () {
+
       const localEnv = {
         location: context.data.get('location', { zip: null })
       };

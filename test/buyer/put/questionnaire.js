@@ -12,12 +12,9 @@ describe('update questionnaire', function () {
   it('should return a 200 with the new questionnaire', function() {
 
     const localEnv = {
-      questionnaire: {
-        completion: context.data.questionnaireUpdate.completion,
-        introduction: context.data.questionnaireUpdate.introduction
-      }
+      questionnaire: context.data.questionnaire
     };
-    
+
     const requestList = [
       ['post-token', { 'BUYER_TOKEN': 'body' }],
       'put-questionnaire'

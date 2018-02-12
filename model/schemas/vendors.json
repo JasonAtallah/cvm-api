@@ -1,7 +1,0 @@
-{
-  "$id": "http://cannabisvendormgmt.com/schemas/vendors.json",
-  "type": "array",
-  "items": {
-    "$ref": "vendor-item.json"
-  }
-}

@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "company": {
+      "$ref": "/domain/buyer-company"
+    },
+    "contact": {
+      "$ref": "/domain/buyer-contact"
+    }
+  },
+  "additionalProperties": false
+}

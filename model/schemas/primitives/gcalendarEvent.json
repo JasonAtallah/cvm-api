@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "etag": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "htmlLink": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "creator": {
+      "type": ["null", "object"]
+    },
+    "organizer": {
+      "type": ["null", "object"]
+    },
+    "start": {
+      "type": "object",
+      "properties": {
+        "dateTime": {
+          "type": "string"
+        }
+      }
+    },
+    "end": {
+      "type": "object",
+      "properties": {
+        "dateTime": {
+          "type": "string"
+        }
+      }
+    },
+    "iCalUID": {
+      "type": "string"
+    },
+    "sequence": {
+      "type": "number"
+    },
+    "reminders": {
+      "type": "object"
+    }
+  },
+  "required": ["id", "htmlLink", "created", "updated", "summary", "location", "start", "end"]
+}

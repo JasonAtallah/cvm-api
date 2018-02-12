@@ -15,7 +15,7 @@ module.exports = {
     return (req, res, next) => {
       const reqSchemaName = utils.replaceVars(schemaName, req);
       debug(`validate req[${reqVarName}] with ${reqSchemaName}`);
-      const schemaPath = `http://cannabisvendormgmt.com/schemas/${reqSchemaName}.json`;
+      const schemaPath = `http://cannabisvendormgmt.com${reqSchemaName}`;
       const validate = ajv.getSchema(schemaPath);
       const data = _.get(req, reqVarName);
       const valid = validate(data);

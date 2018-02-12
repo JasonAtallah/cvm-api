@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "htmlLink": {
+      "type": "string"
+    },
+    "created": {
+      "type": "string"
+    },
+    "updated": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "required": ["id", "status", "htmlLink", "created", "updated", "title", "startDate", "endDate", "location"],
+  "additionalProperties": false
+}

@@ -8,7 +8,7 @@ describe('update buyer rejection email template', function () {
     };
 
     const requestList = [
-      'put-vendorRejectedEmail'
+      'put-email-template.rejectVendor'
     ];
 
     return context.requests.runAll(requestList, localEnv)
@@ -17,24 +17,21 @@ describe('update buyer rejection email template', function () {
       });
   });
 
-  describe('missing fields', function() {
+  it('should return 200 Ok', function() {
+    const localEnv = {
+      rejectionEmail: context.data.rejectionEmail
+    };
 
-    it('should return 200 Ok', function() {
-      const localEnv = {
-        rejectionEmail: context.data.rejectionEmail
-      };
+    const requestList = [
+      ['post-token', { 'BUYER_TOKEN': 'body' }],
+      'put-email-template.rejectVendor'
+    ];
 
-      const requestList = [
-        ['post-token', { 'BUYER_TOKEN': 'body' }],
-        'put-vendorRejectedEmail'
-      ];
-
-      return context.requests.runAll(requestList, localEnv)
-        .then((response) => {          
-          context.expect(response.statusCode).to.equal(200);
-          context.expect(response.body).to.have.all.keys('approveVendor', 'rejectVendor', 'newVendor');
-        });
-    });
+    return context.requests.runAll(requestList, localEnv)
+      .then((response) => {
+        context.expect(response.statusCode).to.equal(200);
+        context.expect(response.body).to.have.all.keys('approveVendor', 'rejectVendor', 'newVendor');
+      });
   });
 
 });

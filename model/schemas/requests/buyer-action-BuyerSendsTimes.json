@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "suggestedTimes": {
+      "type": "array",
+      "items": {
+        "$ref": "/requests/suggested-time"
+      }
+    },
+    "vendorUrl": {
+      "$ref": "/primitives/url"
+    }
+  },
+  "required": ["suggestedTimes", "vendorUrl"],
+  "additionalProperties": false
+}

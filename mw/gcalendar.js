@@ -78,7 +78,7 @@ module.exports = new class GCalendarService {
       if (err) {
         next(err);
       } else {
-        req.eventsResponse = response;
+        req.gcalendarEvents = response;
         next();
       }
     });

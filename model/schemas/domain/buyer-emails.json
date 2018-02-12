@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "approveVendor": {
+      "$ref": "/domain/email-template"
+    },
+    "rejectVendor": {
+      "$ref": "/domain/email-template"
+    },
+    "newVendor": {
+      "$ref": "/domain/email-template"
+    }
+  },
+  "required": ["approveVendor", "rejectVendor", "newVendor"],
+  "additionalProperties": false
+}

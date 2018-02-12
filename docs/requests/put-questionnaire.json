@@ -10,10 +10,7 @@
       "value": "application/json"
     }
   ],
-  "body": {
-    "completion": "{{questionnaire.completion}}",
-    "introduction": "{{questionnaire.introduction}}"
-  },
+  "body": "{{questionnaire}}",
   "url": {
     "raw": "{{API_HOST}}/buyer/v1/questionnaire",
     "host": [

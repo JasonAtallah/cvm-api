@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "to": {
+      "type": "string"
+    },
+    "from": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "required": ["to", "from", "subject", "text"]
+}

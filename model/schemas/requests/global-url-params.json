@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "questionnaireId": {
+      "$ref": "/primitives/mongo-id"
+    },
+    "vendorId": {
+      "$ref": "/primitives/mongo-id"
+    }
+  }
+}

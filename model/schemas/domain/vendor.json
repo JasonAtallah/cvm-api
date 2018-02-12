@@ -1,0 +1,25 @@
+{
+
+  "type": "object",
+  "properties": {
+    "_id": {
+      "$ref": "/primitives/mongo-id"
+    },
+    "company": {
+      "$ref": "/domain/vendor-company"
+    },
+    "contact": {
+      "$ref": "/domain/vendor-contact"
+    },
+    "flowers": {
+      "$ref": "/domain/vendor-flowers"
+    },
+    "edibles": {
+      "$ref": "/domain/vendor-edibles"
+    },
+    "concentrates": {
+      "$ref": "/domain/vendor-concentrates"
+    }
+  },
+  "required": ["company", "contact", "flowers", "edibles", "concentrates"]
+}

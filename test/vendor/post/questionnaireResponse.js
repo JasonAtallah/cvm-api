@@ -1,6 +1,5 @@
 const context = require('../../../testing/lib/context');
 
-// vendor-flowers 'number' types changes to strings
 describe('submit questionnaire response', function () {
 
   it('should return response and vendorId', function () {
