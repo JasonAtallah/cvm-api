@@ -9,7 +9,7 @@ module.exports = {
   prepBuyerProfileUpdate(req, res, next) {
     req.buyerUpdate = {
       $set: {
-        'profile.company': req.body
+        'profile': req.body
       }
     };
     next();
