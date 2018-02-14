@@ -3,22 +3,30 @@
   "properties": {
     "name": {
       "type": "string",
+      "title": "Company Name",
       "minLength": 1
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "title": "Company Address"
     },
     "city": {
-      "type": "string"
+      "type": "string",
+      "title": "Company City"
     },
     "state": {
       "type": "string",
+      "title": "Company State",
       "minLength": 2,
       "maxLength": 2
     },
     "zip": {
-      "type": "string"
+      "type": "string",
+      "title": "Company Zip",
+      "minLength": 5,
+      "pattern": "\\d{5,}"
     }
   },
+  "required": ["name", "address", "city", "state", "zip"],
   "additionalProperties": false
 }

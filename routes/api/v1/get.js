@@ -9,9 +9,7 @@ module.exports = function (app) {
   const schemas = require(schemasPath);
 
   router.get('/schemas',
-    mw.auth.isLoggedIn,
-    mw.responses.sendVar(schemas)
-    );
+    mw.responses.sendVar(schemas));
 
   return router;
 };
