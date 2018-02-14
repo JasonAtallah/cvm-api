@@ -3,7 +3,6 @@ const _ = require('lodash');
 const mw = require('../../../../mw');
 
 module.exports = mw.compose([
-  mw.data.validation.validateReqVar('body', '/requests/vendor-choosesTime'),
   (req, res, next) => {
     const suggestedTimeMatches = _.some(req.curState.data.suggestedTimes, (time) => {
       return _.isEqual(time, req.action.data.selectedTime);

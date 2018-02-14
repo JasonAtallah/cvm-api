@@ -97,7 +97,9 @@ module.exports = function (app) {
     ]));
 
   router.put('/vendors/:vendorId/actions/:action',
+    mw.data.validation.validateReqVar('params', '/requests/vendor-action-params'),
     mw.data.validation.validateReqVar('params', '/requests/global-url-params'),
+    mw.data.validation.validateReqVar('body', '/requests/vendor-action-{{params.action}}'),
     mw.auth.isLoggedIn,
     mw.parse.json,
     mw.compose([
