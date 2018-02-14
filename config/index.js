@@ -5,10 +5,15 @@ const google = require('googleapis');
 
 const config = module.exports = {
   load: function () {
+    const rootDir = path.resolve(__dirname, '..');
+
     _.extend(config, {
       app: {
         email: process.env.APP_EMAIL,
         host: process.env.APP_HOST,
+        dirs: {
+          schemas: path.resolve(rootDir, 'model/schemas')
+        },
         port: process.env.PORT
       },
       cors: {

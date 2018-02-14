@@ -1,0 +1,29 @@
+{
+  "method": "GET",
+  "header": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Authorization",
+      "value": "Bearer {{BUYER_TOKEN}}"
+    },
+    {
+      "key": "origin",
+      "value": "{{BUYER_HOST}}"
+    }
+  ],
+  "body": null,
+  "url": {
+    "raw": "{{API_HOST}}/api/v1/schemas",
+    "host": [
+      "{{API_HOST}}"
+    ],
+    "path": [
+      "api",
+      "v1",
+      "schemas"
+    ]
+  }
+}

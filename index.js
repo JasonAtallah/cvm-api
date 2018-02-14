@@ -13,6 +13,7 @@ config.load();
 const app = express();
 
 app.use(morgan('combined'));
+app.use(require('./routes/api/router')(app));
 app.use(require('./routes/auth/router')(app));
 app.use(require('./routes/buyer/router')(app));
 app.use(require('./routes/vendor/router')(app));
