@@ -3,16 +3,24 @@
   "properties": {
     "firstName": {
       "type": "string",
-      "minLength": 1
+      "title": "First Name",
+      "minLength": 1,
+      "maxLength": 30
     },
     "lastName": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
     },
     "phone": {
-      "type": "string"
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 30
     },
     "email": {
-      "$ref": "/primitives/email"
+      "$ref": "/primitives/email",
+      "minLength": 1,
+      "maxLength": 30
     }
   },
   "required": ["firstName", "email"],

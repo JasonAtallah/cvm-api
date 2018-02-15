@@ -3,21 +3,30 @@
   "properties": {
     "name": {
       "type": "string",
-      "minLength": 1
+      "title": "Event Name",
+      "minLength": 1,
+      "maxLength": 30
     },
     "location": {
       "type": "string",
-      "minLength": 1
+      "title": "Location",
+      "minLength": 1,
+      "maxLength": 30
     },
     "dateTime": {
       "type": "string",
+      "title": "Event Name",
+      "minLength": 1,
+      "maxLength": 30,
       "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.\\d{3})?Z"
     },
     "duration": {
-      "type": "number"
+      "type": "number",
+      "title": "Duration"
     },
     "timezone": {
-      "type": "string"
+      "type": "string",
+      "title": "Timezone"
     }
   },
   "required": ["name", "location", "dateTime", "duration", "timezone"]

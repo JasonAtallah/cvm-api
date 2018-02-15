@@ -4,15 +4,20 @@
     "name": {
       "type": "string",
       "title": "Company Name",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 30
     },
     "address": {
       "type": "string",
-      "title": "Company Address"
+      "title": "Company Address",
+      "minLength": 1,
+      "maxLength": 30
     },
     "city": {
       "type": "string",
-      "title": "Company City"
+      "title": "Company City",
+      "minLength": 1,
+      "maxLength": 30
     },
     "state": {
       "type": "string",
@@ -24,6 +29,7 @@
       "type": "string",
       "title": "Company Zip",
       "minLength": 5,
+      "maxLength": 30,
       "pattern": "\\d{5,}"
     }
   },
