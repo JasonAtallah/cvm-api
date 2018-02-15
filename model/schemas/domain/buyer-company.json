@@ -33,6 +33,6 @@
       "pattern": "\\d{5,}"
     }
   },
-  "required": ["name", "address", "city", "state", "zip"],
+  "required": ["name"],
   "additionalProperties": false
 }
