@@ -18,4 +18,5 @@ env.json
 *.sln
 /config/dev.env.js
 /.env
+/.env_previous
 /package-lock.json
