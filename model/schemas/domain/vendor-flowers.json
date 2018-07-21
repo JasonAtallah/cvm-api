@@ -5,7 +5,7 @@
     "products": {
       "type": "array",
       "items": {
-        "$ref": "/domain/vendor-flowers"
+        "$ref": "/domain/vendor-flower"
       }
     }
   },
