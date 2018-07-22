@@ -6,12 +6,12 @@ sgMail.setApiKey(config.sendGrid.apikey);
 var sendGrid = module.exports = new class SendGridService {
 
   prepNewVendorEmailToBuyer(req, res, next) {
-    req.sendGridMsg = {
-      to: req.buyer.gProfile.email,
-      from: config.app.email,
-      subject: req.buyer.emails.newVendor.subject,
-      text: req.buyer.emails.newVendor.body
-    };
+    // req.sendGridMsg = {
+    //   to: req.buyer.gProfile.email,
+    //   from: config.app.email,
+    //   subject: req.buyer.emails.newVendor.subject,
+    //   text: req.buyer.emails.newVendor.body
+    // };
     next();
   }
 

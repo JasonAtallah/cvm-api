@@ -1,6 +1,6 @@
 {
   "name": "cannabis-vendor-mgmt-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cannabis vendor management api",
   "author": "Ariel Jakobovits <arieljake@gmail.com>",
   "private": true,
@@ -48,6 +48,6 @@
   },
   "engines": {
     "node": "9.5.0",
-    "npm": "5.6.0"
+    "npm": "6.1.0"
   }
 }

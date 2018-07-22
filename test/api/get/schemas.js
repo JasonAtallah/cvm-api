@@ -1,6 +1,6 @@
 const context = require('../../../testing/lib/context');
 
-describe.only('get schemas', function () {
+describe('get schemas', function () {
 
   it('should return 401 Unauthorized without token', function () {
     return context.requests.run('get-schemas')

@@ -68,7 +68,6 @@ module.exports = function (app) {
 
   router.post('/questionnaires/:questionnaireId/responses/:responseId/files',
     mw.data.validation.validateReqVar('params', '/requests/global-url-params'),
-
     mw.parse.file('file'),
     mw.data.validation.validateReqVar('file', '/primitives/file-object'),
     mw.responses.sendReqVar('file'));
