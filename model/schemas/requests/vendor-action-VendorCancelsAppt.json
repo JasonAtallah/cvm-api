@@ -1,3 +1,5 @@
 {
-  "type": "null"
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
 }
